@@ -91,6 +91,20 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- jsoup -->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.10.2</version>
+		</dependency>
+
+		<!-- jna依赖 ES所需 -->
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>4.3.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
