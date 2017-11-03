@@ -7,6 +7,6 @@ jdk1.8
 maven3.0.5
 mysql5.7
 
-##  技术栈1
+##  技术栈-测试
 SpringBoot+SpringData+JPA+MySql+Druid+Spring+Thymeleaf+Redis+SpringSecurity
 +LogBack+BootStrap+ElasticSearch+JSoup+EChart
