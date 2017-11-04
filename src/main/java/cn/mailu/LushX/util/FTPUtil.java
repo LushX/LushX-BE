@@ -38,7 +38,7 @@ public class FTPUtil {
     /**
      * @Title: 对外公开上传文件方法
      * @Description:
-     * @param [fileList]
+     * @param fileList
      * @return boolean    返回类型
      * @throws
      */
