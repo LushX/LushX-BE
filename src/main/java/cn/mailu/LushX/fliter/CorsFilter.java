@@ -1,5 +1,7 @@
 package cn.mailu.LushX.fliter;
 
+import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +12,7 @@ import java.io.IOException;
  * @Description:解决跨域请求
  * @Date: Create in 2017/11/4 11:47
  */
+@Component
 public class CorsFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
