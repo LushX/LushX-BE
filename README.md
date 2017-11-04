@@ -8,9 +8,9 @@ A website for providing conveniences and happiness
 - mysql5.7
 
 ##  技术栈
-### 后台
+### 后端
 - SpringBoot+SpringData+JPA+SpringSecurity
 - MySql+Druid+Redis+ElasticSearch
 - LogBack+JSoup
 
-###前台
+### 前端
