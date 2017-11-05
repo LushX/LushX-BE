@@ -1,7 +1,8 @@
 package cn.mailu.LushX.crawler;
 
-import cn.ictgu.bean.response.Video;
-import cn.ictgu.tools.JsoupUtils;
+
+import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.util.JsoupUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.nodes.Document;
