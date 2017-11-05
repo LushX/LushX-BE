@@ -1,13 +1,5 @@
 package cn.mailu.LushX.exception;
 
-
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-
 /**
  * @Author:Drohe
  * @Description:自定义异常类（继承运行异常类）
@@ -21,6 +13,26 @@ public class LushXException extends RuntimeException {
 
     //消息是否为属性文件中的Key
     private boolean propertiesKey = true;
+
+    private LushXException(){
+
+    }
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public boolean isPropertiesKey() {
+        return propertiesKey;
+    }
+
+    public void setPropertiesKey(boolean propertiesKey) {
+        this.propertiesKey = propertiesKey;
+    }
 
     /**
      * 构造一个基本异常.
@@ -107,12 +119,4 @@ public class LushXException extends RuntimeException {
         this.setErrorCode(errorCode);
         this.setPropertiesKey(propertiesKey);
     }
-
-
-
-
-
-
-
-
 }

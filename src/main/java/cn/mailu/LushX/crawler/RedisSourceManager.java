@@ -2,18 +2,18 @@ package cn.mailu.LushX.crawler;
 
 
 import cn.mailu.LushX.entity.Video;
-import com.alibaba.fastjson.JSONObject;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
  * 视频资源管理器
  */
 @Component
-@AllArgsConstructor
 public class RedisSourceManager {
 
   public final String VIDEO_PREFIX_HOME_CAROUSEL_KEY = "HOME_VIDEO_CAROUSEL";
@@ -26,21 +26,36 @@ public class RedisSourceManager {
 
   private final StringRedisTemplate stringRedisTemplate;
 
+  public RedisSourceManager(StringRedisTemplate stringRedisTemplate) {
+    this.stringRedisTemplate = stringRedisTemplate;
+  }
+
   /**
    *  保存视频信息到 Redis
    */
   void saveVideos(String key, List<Video> videos){
-    String value = JSONObject.toJSONString(videos);
-    stringRedisTemplate.opsForValue().set(key, value);
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      String value=mapper.writeValueAsString(videos);
+      stringRedisTemplate.opsForValue().set(key, value);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
    *  得到视频信息
    */
   public List<Video> getVideosByKeyAndTag(String key, String tag){
+    ObjectMapper mapper = new ObjectMapper();
     key = key + "_" + tag;
     String cacheValue = stringRedisTemplate.opsForValue().get(key);
-    return JSONObject.parseArray(cacheValue, Video.class);
+    try {
+      return mapper.readValue(cacheValue,mapper.getTypeFactory().constructParametricType(List.class,Video.class));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
 }
