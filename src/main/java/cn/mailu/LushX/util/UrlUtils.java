@@ -1,6 +1,7 @@
 package cn.mailu.LushX.util;
 
-import lombok.extern.log4j.Log4j2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -11,16 +12,17 @@ import java.net.URL;
  * @Date:Created in 23:01 2017/11/5
  * @Modified By:
  */
-@Log4j2
 public class UrlUtils {
 
+    private static Logger logger= LoggerFactory.getLogger(UrlUtils.class);
+    
     public static String getDomain(String url) {
         String domain = "";
         try {
             URL target = new URL(url);
             domain = target.getHost();
         } catch (MalformedURLException e) {
-            log.error("Url(" + url + ") Cannot convert to BASIC-URL");
+            logger.error("Url(" + url + ") Cannot convert to BASIC-URL");
             e.printStackTrace();
         }
         return domain;
@@ -38,7 +40,7 @@ public class UrlUtils {
                 domain = domain.replace("m.", "");
             }
         } catch (MalformedURLException e) {
-            log.error("Url(" + url + ") Cannot convert to BASIC-URL");
+            logger.error("Url(" + url + ") Cannot convert to BASIC-URL");
             e.printStackTrace();
         }
         return domain;

@@ -1,9 +1,7 @@
 package cn.mailu.LushX.crawler;
 
-import cn.ictgu.bean.response.Video;
-import cn.ictgu.tools.JsoupUtils;
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.util.JsoupUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -18,8 +16,6 @@ import java.util.List;
  * Created by Silence on 2017/2/12.
  */
 @Component
-@Log4j2
-@AllArgsConstructor
 public class QqCrawler {
 
     private static final String HOME_PAGE_PC = "https://v.qq.com/";
@@ -30,6 +26,10 @@ public class QqCrawler {
     private static final String TAG = "QQ";
 
     private final RedisSourceManager redisSourceManager;
+
+    public QqCrawler(RedisSourceManager redisSourceManager) {
+        this.redisSourceManager = redisSourceManager;
+    }
 
     /**
      * 每隔1小时，爬腾讯视频官网信息

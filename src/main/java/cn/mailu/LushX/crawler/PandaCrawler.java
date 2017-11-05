@@ -3,11 +3,11 @@ package cn.mailu.LushX.crawler;
 
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.util.JsoupUtils;
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,14 +18,18 @@ import java.util.List;
  * 熊猫TV 爬虫
  */
 @Component
-@Log4j2
-@AllArgsConstructor
 public class PandaCrawler {
+
+    private static Logger logger= LoggerFactory.getLogger(PandaCrawler.class);
     private static final String PANDA = "http://www.panda.tv/";
     private static final String PANDA_ALL = "http://www.panda.tv/all";
     private static final String TAG = "PANDA";
 
     private final RedisSourceManager redisSourceManager;
+
+    public PandaCrawler(RedisSourceManager redisSourceManager) {
+        this.redisSourceManager = redisSourceManager;
+    }
 
     /**
      * 每隔20分钟，爬一次熊猫TV

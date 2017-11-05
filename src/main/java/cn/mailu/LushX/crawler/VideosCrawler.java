@@ -4,11 +4,11 @@ package cn.mailu.LushX.crawler;
 import cn.mailu.LushX.constant.VideoTypeEnum;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.util.JsoupUtils;
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Log4j2
-@AllArgsConstructor
+
 public class VideosCrawler {
 
+    private static Logger logger= LoggerFactory.getLogger(VideosCrawler.class);
     private final static String YK_TV_URL = "http://list.youku.com/category/show/c_97.html";
     private final static String YK_MOVIE_URL = "http://list.youku.com/category/show/c_96.html";
     private final static String YK_ZY_URL = "http://list.youku.com/category/show/c_85.html";
@@ -31,6 +31,10 @@ public class VideosCrawler {
     private final static String IQY_DM_URL = "http://list.iqiyi.com/www/4/----------------iqiyi--.html";
 
     private final RedisSourceManager redisSourceManager;
+
+    public VideosCrawler(RedisSourceManager redisSourceManager) {
+        this.redisSourceManager = redisSourceManager;
+    }
 
     /**
      * 每隔1小时，爬乐视官网信息
@@ -62,7 +66,7 @@ public class VideosCrawler {
     private void saveVideosToRedis(Document document, int videoType) {
         String key = redisSourceManager.VIDEOS_KEY + "_" + videoType;
         int sourceType = videoType / 10;
-        log.info("资源类型 ：" + sourceType);
+        logger.info("资源类型 ：" + sourceType);
         if (sourceType == 0){
             redisSourceManager.saveVideos(key, getYKVideosFromPcDocument(document));
         }else if (sourceType == 1){
@@ -81,7 +85,7 @@ public class VideosCrawler {
             video.setTitle(title);
             video.setImage(image);
             video.setValue(url);
-            log.info("YK:" + title);
+            logger.info("YK:" + title);
             videos.add(video);
         }
         return videos;
@@ -98,7 +102,7 @@ public class VideosCrawler {
             video.setTitle(title);
             video.setImage(image);
             video.setValue(url);
-            log.info("IQY:" + title);
+            logger.info("IQY:" + title);
             videos.add(video);
         }
         return videos;

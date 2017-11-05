@@ -1,7 +1,5 @@
 package cn.mailu.LushX.constant;
 
-import lombok.Getter;
-
 public enum VideoTypeEnum {
 
     YK_TV(1), // 优酷-电视剧
@@ -14,10 +12,13 @@ public enum VideoTypeEnum {
     IQY_ZY(13), // 爱奇艺-综艺
     IQY_DM(14); // 爱奇艺-动漫
 
-    @Getter
     private int code;
 
     VideoTypeEnum(int code){
         this.code = code;
+    }
+
+    public int getCode() {
+        return code;
     }
 }
