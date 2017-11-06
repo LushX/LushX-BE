@@ -47,3 +47,5 @@ Thumbs.db
 
 #kdiff3 ignore
 *.orig
+
+.vscode
