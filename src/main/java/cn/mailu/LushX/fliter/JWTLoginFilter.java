@@ -1,0 +1,79 @@
+package cn.mailu.LushX.fliter;
+
+import cn.mailu.LushX.common.ServerResponse;
+import cn.mailu.LushX.entity.User;
+import cn.mailu.LushX.util.JWTUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.annotation.Resource;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+
+/**
+ * @Author: NULL
+ * @Description:处理/login
+ * @Date: Create in 2017/11/6 11:28
+ */
+public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
+
+    private Logger logger= LoggerFactory.getLogger(JWTLoginFilter.class);
+
+    @Value("${jwt.header}")
+    private String token_header;
+
+    @Resource
+    private JWTUtils jwtUtils;
+
+    public JWTLoginFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager) {
+        super(new AntPathRequestMatcher(defaultFilterProcessesUrl));
+        setAuthenticationManager(authenticationManager);
+    }
+
+    // 接收并解析用户凭证
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+        try {
+            User user = new ObjectMapper()
+                    .readValue(request.getInputStream(), User.class);
+
+            return getAuthenticationManager().authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            user.getUsername(),
+                            user.getPassword(),
+                            new ArrayList<>())
+            );
+        } catch (IOException e) {
+            logger.error("登录验证异常");
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        String token=jwtUtils.generateAccessToken((UserDetails) authResult.getPrincipal());
+        response.addHeader(token_header,"Bearer "+token);
+        logger.info(((UserDetails) authResult.getPrincipal()).getUsername()+"验证成功，发出token");
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_OK);
+        ObjectMapper mapper=new ObjectMapper();
+        response.getOutputStream().print(mapper.writeValueAsString(ServerResponse.createByErrorMessage("用户名或密码错误")));
+    }
+}

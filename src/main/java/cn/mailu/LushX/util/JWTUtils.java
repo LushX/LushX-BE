@@ -2,7 +2,10 @@ package cn.mailu.LushX.util;
 
 import cn.mailu.LushX.security.JWTUserDetails;
 import cn.mailu.LushX.security.JWTUserFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.CompressionCodecs;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,10 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: NULL
@@ -35,13 +35,13 @@ public class JWTUtils {
     @Value("${jwt.access_token.expiration}")
     private Long access_token_expiration;
 
-    @Value("${jwt.refresh_token.expiration}")
-    private Long refresh_token_expiration;
+//    @Value("${jwt.refresh_token.expiration}")
+//    private Long refresh_token_expiration;
 
     private final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
     public JWTUserDetails getUserFromToken(String token){
-        JWTUserDetails user=null;
+        JWTUserDetails user;
         try {
             final Claims claims=getClaimsFromToken(token);
            String userId = getUserIdFromToken(token);
@@ -62,7 +62,7 @@ public class JWTUtils {
         JWTUserDetails user= (JWTUserDetails) userDetails;
         final String userId=getUserIdFromToken(token);
         final String username=getUsernameFromToken(token);
-        return (userId == user.getUserId()
+        return (userId.equals(user.getUserId())
                 && username.equals(user.getUsername())
                 && !isTokenExpired(token)
                 /* && !isCreatedBeforeLastPasswordReset(created, userDetails.getLastPasswordResetDate()) */
@@ -127,7 +127,50 @@ public class JWTUtils {
         }catch (Exception e){
             claims=null;
         }
-
         return claims;
     }
+
+    public String generateAccessToken(UserDetails userDetails) throws JsonProcessingException {
+        JWTUserDetails user = (JWTUserDetails) userDetails;
+        Map<String, Object> claims = generateClaims(user);
+        ObjectMapper mapper = new ObjectMapper();
+        claims.put(CLAIM_KEY_AUTHORITIES, mapper.writeValueAsString(authoritiesToArray(user.getAuthorities())));
+        return generateAccessToken(user.getUsername(), claims);
+    }
+
+    private String generateAccessToken(String subject, Map<String, Object> claims) {
+        return generateToken(subject, claims,access_token_expiration);
+    }
+
+    private String generateToken(String subject, Map<String, Object> claims, Long expiration) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setId(UUID.randomUUID().toString())
+                .setIssuedAt(new Date())
+                .setExpiration(generateExpirationDate(expiration))
+                .compressWith(CompressionCodecs.DEFLATE)
+                .signWith(SIGNATURE_ALGORITHM, secret)
+                .compact();
+    }
+
+    private Date generateExpirationDate(Long expiration) {
+        return new Date(System.currentTimeMillis()+expiration*1000);
+    }
+
+
+    private Map<String,Object> generateClaims(JWTUserDetails user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(CLAIM_KEY_USER_ID, user.getUserId());
+        return claims;
+    }
+
+    private List authoritiesToArray(Collection<? extends GrantedAuthority> authorities) {
+        List<String> list = new ArrayList<>();
+        for (GrantedAuthority ga : authorities) {
+            list.add(ga.getAuthority());
+        }
+        return list;
+    }
+
 }

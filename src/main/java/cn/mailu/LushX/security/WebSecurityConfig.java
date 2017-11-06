@@ -1,11 +1,14 @@
 package cn.mailu.LushX.security;
 
 import cn.mailu.LushX.fliter.JWTAuthenticationFilter;
+import cn.mailu.LushX.fliter.JWTLoginFilter;
 import cn.mailu.LushX.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -58,7 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 禁用缓存
         http.headers().cacheControl();
-
+        // 添加一个过滤器 所有访问 /login 的请求交给 JWTLoginFilter 来处理
+        http.addFilterBefore(jwtLoginFilterBean(),
+                UsernamePasswordAuthenticationFilter.class);
         // 添加JWT filter
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -67,6 +72,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public JWTAuthenticationFilter authenticationTokenFilterBean() throws Exception {
         return new JWTAuthenticationFilter();
     }
+
+    @Bean
+    public JWTLoginFilter jwtLoginFilterBean() throws Exception {
+        return new JWTLoginFilter("/login",authenticationManager());
+    }
+
+
 
     //使用MD5加密
     @Override
