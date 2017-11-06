@@ -134,7 +134,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "role", nullable = false, length = 1)
+    @Column(name = "role", nullable = false, length = 12)
     public String getRole() {
         return role;
     }
