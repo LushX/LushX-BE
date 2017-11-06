@@ -2,6 +2,7 @@ package cn.mailu.LushX.security;
 
 import cn.mailu.LushX.fliter.JWTAuthenticationFilter;
 import cn.mailu.LushX.fliter.JWTLoginFilter;
+import cn.mailu.LushX.util.JWTUtils;
 import cn.mailu.LushX.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,18 +20,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
+
 /**
  * @Author: NULL
  * @Description:sercurity配置类
  * @Date: Create in 2017/11/5 22:47
  */
-@Configuration
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Resource
+    private JWTUtils jwtUtils;
 
     //配置http的安全配置
     @Override
@@ -42,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/user/register").permitAll()
                 //.antMatchers("/manage/**").hasRole("ROLE_ADMIN") // 需要相应的角色才能访问
                 // 允许对于网站静态资源的无授权访问
 //                .antMatchers(
