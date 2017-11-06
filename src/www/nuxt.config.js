@@ -16,7 +16,14 @@ module.exports = {
   /*
   ** Customize the progress bar color
   */
-  loading: { color: '#3B8070' },
+  loading: { color: '#00FF99' },
+  /**
+   * Import plugins
+   */
+  plugins: [
+    '~plugins/iview.js',
+    '~plugins/axios.config.js'
+  ],
   /*
   ** Build configuration
   */
@@ -24,15 +31,15 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
-    extend (config, ctx) {
-      if (ctx.dev && ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
-    }
+    // extend (config, ctx) {
+    //   if (ctx.dev && ctx.isClient) {
+    //     config.module.rules.push({
+    //       enforce: 'pre',
+    //       test: /\.(js|vue)$/,
+    //       loader: 'eslint-loader',
+    //       exclude: /(node_modules)/
+    //     })
+    //   }
+    // }
   }
 }
