@@ -13,6 +13,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -39,6 +40,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private JWTUtils jwtUtils;
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        //放行swagger
+        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**");
+    }
+
     //配置http的安全配置
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -48,9 +55,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 基于token，所以不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // 所有 / 的所有请求 都放行
+                .antMatchers("/").permitAll()
+                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**")
+                .permitAll()
                 .antMatchers(HttpMethod.POST,"/user/register").permitAll()
-                //.antMatchers("/manage/**").hasRole("ROLE_ADMIN") // 需要相应的角色才能访问
+                .antMatchers("/manage/**").hasRole("ADMIN") // 需要相应的角色才能访问
                 // 允许对于网站静态资源的无授权访问
 //                .antMatchers(
 //                        HttpMethod.GET,

@@ -3,6 +3,9 @@ package cn.mailu.LushX.controller.backend;
 import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.entity.User;
 import cn.mailu.LushX.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,14 +24,18 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @RestController
 @RequestMapping("/manage/user")
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")   //管理员权限才能操作
 @EnableSwagger2
 public class UserManageController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("")
+    @ApiOperation(value="获取用户", notes="获取用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "第几页默认0", required = false),
+            @ApiImplicitParam(name = "pageSize", value = "页大小默认10", required = false)
+    })
+    @GetMapping("/")
     public ServerResponse<Page<User>> getUser(@RequestParam(value = "pageNum",defaultValue ="0") int pageNum,
                                               @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
         Pageable pageable=new PageRequest(pageNum,pageSize);
