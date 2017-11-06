@@ -11,14 +11,14 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user", schema = "LushX", catalog = "")
 public class User {
-    private String userId;
-    private String username;
-    private String password;
-    private String loginType;
-    private String headImg;
-    private String gender;
-    private String meta;
-    private String md5;
+    private String userId;  //用户Id
+    private String username;  //用户名
+    private String password;  //密码
+    private String loginType;  // 登录类型
+    private String headImg;  //用户头像
+    private String gender;  // 性别
+    private String meta;  //其他信息
+    private String md5;  //md5加密
 
     @Id
     @Column(name = "user_id", nullable = false, length = 20)
