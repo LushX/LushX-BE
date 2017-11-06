@@ -11,14 +11,14 @@ import java.util.Collection;
  * @Description:实现UserDetail接口
  * @Date: Create in 2017/11/5 23:24
  */
-public class JWTUser implements UserDetails {
+public class JWTUserDetails implements UserDetails {
 
     private String userId;
     private String username;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public JWTUser(String userId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public JWTUserDetails(String userId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         this.userId = userId;
         this.username = username;
         this.password = password;

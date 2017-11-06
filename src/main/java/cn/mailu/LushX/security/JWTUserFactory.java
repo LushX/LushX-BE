@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 /**
  * @Author: NULL
- * @Description:
+ * @Description:创建JWTUser工厂类
  * @Date: Create in 2017/11/5 23:40
  */
 public final class JWTUserFactory{
@@ -18,8 +18,8 @@ public final class JWTUserFactory{
 
     }
 
-   /* public static JWTUser creat(User user){
-        return new JWTUser(
+   /* public static JWTUserDetails creat(User user){
+        return new JWTUserDetails(
                 user.getUserId(),
                 user.getUsername(),
                 user.getPassword(),
