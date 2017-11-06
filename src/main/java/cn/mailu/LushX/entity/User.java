@@ -19,6 +19,7 @@ public class User {
     private String gender;  // 性别
     private String meta;  //其他信息
     private String md5;  //md5加密
+    private String role; //用户角色
 
     @Id
     @Column(name = "user_id", nullable = false, length = 20)
@@ -51,7 +52,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "loginType", nullable = true, length = 1)
+    @Column(name = "login_type", nullable = true, length = 1)
     public String getLoginType() {
         return loginType;
     }
@@ -61,7 +62,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "headImg", nullable = true, length = 30)
+    @Column(name = "head_img", nullable = true, length = 30)
     public String getHeadImg() {
         return headImg;
     }
@@ -130,5 +131,15 @@ public class User {
         result = 31 * result + (meta != null ? meta.hashCode() : 0);
         result = 31 * result + (md5 != null ? md5.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "role", nullable = false, length = 1)
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
