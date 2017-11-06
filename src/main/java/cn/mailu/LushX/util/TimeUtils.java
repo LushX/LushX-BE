@@ -1,6 +1,12 @@
 package cn.mailu.LushX.util;
 
 import java.util.Date;
+/**
+ * @Author:Drohe
+ * @Description:时间处理类
+ * @Date:Created in 10:17 2017/11/6
+ * @Modified By:
+ */
 
 public class TimeUtils {
 
@@ -10,9 +16,20 @@ public class TimeUtils {
     private final static long HOUR = 1000 * 60 * 60L;
     private final static long MINUTE = 1000 * 60L;
 
-
     public static String natureTime(Date date){
+        
+        /**
+         *@Author:Drohe
+         *
+         *@params: [date]
+         *          准确时间
+         *@return: java.lang.String
+         *          返回通俗时间
+         * @Date:Created in 10:44 2017/11/6
+         *
+         */
         Date now = new Date();
+
         long between = now.getTime() - date.getTime();
         if (between > YEAR){
             return ((between - YEAR) / YEAR + 1) + "年前，";
