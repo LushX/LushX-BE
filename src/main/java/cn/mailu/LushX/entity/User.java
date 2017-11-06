@@ -92,7 +92,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "md5", nullable = false, length = 20)
+    @Column(name = "md5", nullable = false, length = 100)
     public String getMd5() {
         return md5;
     }
