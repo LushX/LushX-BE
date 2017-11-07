@@ -31,8 +31,4 @@ public class UserController {
     public ServerResponse<String> register(@RequestBody  User user){
         return userService.register(user);
     }
-
-    
-
-
 }
