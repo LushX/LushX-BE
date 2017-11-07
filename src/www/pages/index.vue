@@ -1,56 +1,60 @@
 <template>
-  <section class="container">
-    <section v-for="title in sectionTitle" :key="title" class="type-section">
-      <Row>
-        <Col
-          :xs="24"
-          :sm="24"
-          :md="24"
-          :lg="24"
-          class="title"
-        >
-          <div
-            class="title-line"
-            :class="[
-              { green: title === 'movies' },
-              { yellow: title === 'tv'},
-              { red: title === 'lives'},
-              { blue: title === 'animation'}
-            ]">
-            {{ title | sectionTitle }}
-          </div>
-        </Col>
-        <Col
-          v-for="(item, idx) in vedioList[title]"
-          :key="idx"
-          :xs="12"
-          :sm="6"
-          :md="6"
-          :lg="6"
-          class="vedio-container"
-        >
-        <div>
-          <div class="vedio-item">
-            <div class="shadow-des">
-              <h3 class="shadow-des--content">{{ item.title }}</h3>
-              <p class="shadow-des--content">{{ item.other }}</p>
+  <div>
+    <section v-if="vedioList.movies" class="container">
+      <section v-for="title in sectionTitle" :key="title" class="type-section">
+        <Row>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="24"
+            :lg="24"
+            class="title"
+          >
+            <div
+              class="title-line"
+              :class="[
+                { green: title === 'movies' },
+                { yellow: title === 'tv'},
+                { red: title === 'lives'},
+                { blue: title === 'animation'}
+              ]">
+              {{ title | sectionTitle }}
             </div>
-            <img :src="item.image" alt="视频预览图">
+          </Col>
+          <Col
+            v-for="(item, idx) in vedioList[title]"
+            :key="idx"
+            :xs="12"
+            :sm="6"
+            :md="6"
+            :lg="6"
+            class="vedio-container"
+          >
+          <div>
+            <div class="vedio-item">
+              <div class="shadow-des">
+                <h3 class="shadow-des--content">{{ item.title }}</h3>
+                <p class="shadow-des--content">{{ item.other }}</p>
+              </div>
+              <img :src="item.image" alt="视频预览图">
+            </div>
           </div>
-        </div>
-        <div class="vedio-btn">
-          播放视频
-        </div>
-        </Col>
-      </Row>
+          <div class="vedio-btn">
+            播放视频
+          </div>
+          </Col>
+        </Row>
+      </section>
     </section>
-  </section>
+    <lushx-skeleton v-else></lushx-skeleton>
+  </div>
 </template>
 
 <script>
-  import ajax from '../server/axios.config'
-  import url from '../server/url'
-  import '../filters'
+  import LushxSkeleton from '~/components/Skeleton'
+  import ajax from '~/server/axios.config'
+  import url from '~/server/url'
+  import '~/filters/index'
   export default {
     name: "Auth",
     data() {
@@ -58,6 +62,9 @@
         sectionTitle: [],
         vedioList: {}
       }
+    },
+    components: {
+      LushxSkeleton
     },
     mounted () {
       ajax.get({
