@@ -10,7 +10,8 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'A website for providing conveniences and happiness' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      // { rel: 'stylesheet', href: '//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css' }
     ]
   },
   /*
@@ -21,13 +22,16 @@ module.exports = {
    * Import plugins
    */
   plugins: [
-    '~plugins/iview.js',
-    '~plugins/axios.config.js'
+    '~plugins/iview.js'
   ],
   /*
   ** Build configuration
   */
   build: {
+    /**
+     * Build one time
+     */
+    vendor: ['axios']
     /*
     ** Run ESLint on save
     */

@@ -12,8 +12,23 @@
 </template>
 
 <script>
-export default {
-}
+  import ajax from '../server/axios.config.js'
+  import url from '../server/url.js'
+  export default {
+    name: "Auth",
+    data() {
+      return {
+
+      }
+    },
+    mounted () {
+      ajax.get({
+        url: url.INDEX_VEDIO
+      }).then((data) => {
+        console.log(data)
+      })
+    }
+  }
 </script>
 
 <style>

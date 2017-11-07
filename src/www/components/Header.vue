@@ -1,14 +1,14 @@
 <template lang="html">
-  <Menu mode="horizontal" theme="primary" active-name="1" @on-select="onSelect">
+  <Menu mode="horizontal" class="header" theme="primary" active-name="1" @on-select="onSelect">
     <div class="lushx-logo">
-      <img src="~assets/logo.png" alt="logo">
+      <a href="/">LushX</a>
     </div>
-    <a class="lushx-btn login-btn">
-      登录
-    </a>
-    <a class="lushx-btn register-btn">
-      注册
-    </a>
+    <li class="nav-item">
+      <a class="lushx-link login-link">登录</a>
+    </li>
+    <li class="nav-item">    
+      <a class="lushx-link register-link">注册</a>
+    </li>    
   </Menu>
 </template>
 
@@ -30,46 +30,56 @@
 
 
 <style lang="less" scoped>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+  }
   .lushx-logo {
-    padding-top: 7px;
-    padding-bottom: 7px;
     padding-left: 28px;
     display: inline-block;
-    & > img {
-      width: 46px;
-      height: 46px;
+    & > a {
+      display: block;
+      line-height: 60px;
+      font-size: 30px;
+      font-weight: 900;
+      transition: .25s;
+      color: #1abc9c;
+      text-decoration: none;
+      cursor: pointer;
+      &:hover {
+        color: #fff;
+        background-color: transparent;
+        text-decoration: none;
+      }   
     }
   }
 
-  .lushx-btn {
-    margin-top: 14px;
-    margin-right: 10px;
+  .nav-item {
+    height: 100%;
     float: right;
-    padding: 4px 40px;
-    line-height: 20px;
-    border: 1px solid #EB5428;
-    border-radius: 4px;
-    background: #1D1C1F;
-    overflow: hidden;
-    color: #EB5428;
+  }
+
+  .lushx-link {  
+    padding-right: 18px;
+    display: inline-block;
+    line-height: 60px;
+    font-size: 18px;
+    font-weight: 700;
+    transition: .25s;
+    color: #fff;
     text-decoration: none;
-    text-indent: 0;
-    transition: all .2s ease-in-out;
     cursor: pointer;
     &:hover {
-      background: #0B0C0C;
+      color: #1abc9c;
+      background-color: transparent;
       text-decoration: none;
-      cursor: pointer;
     }
   }
 
   .ivu-menu-horizontal .ivu-menu-item, .ivu-menu-horizontal .ivu-menu-submenu {
     float: right;
-  }
-
-  @media (max-width: 600px) {
-    .lushx-btn {
-      padding: 4px 20px;
-    }
   }
 </style>
