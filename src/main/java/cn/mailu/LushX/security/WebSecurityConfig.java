@@ -19,6 +19,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
@@ -56,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 // 所有 / 的所有请求 都放行
-                .antMatchers("/").permitAll()
+                .antMatchers("/*").permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**")
                 .permitAll()
                 .antMatchers(HttpMethod.POST,"/user/register").permitAll()
@@ -84,6 +86,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 UsernamePasswordAuthenticationFilter.class);
         // 添加JWT filter
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        //添加未授权处理
+        http.exceptionHandling().authenticationEntryPoint(getAuthenticationEntryPoint());
+        //全新不足处理
+        http.exceptionHandling().accessDeniedHandler(getAccessDeniedHandler());
+
     }
 
     @Bean
@@ -96,7 +103,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JWTLoginFilter("/login",authenticationManager());
     }
 
+    @Bean
+    public AuthenticationEntryPoint getAuthenticationEntryPoint(){
+        return new RestAuthenticationEntryPoint();
+    }
 
+    @Bean
+    public AccessDeniedHandler getAccessDeniedHandler(){
+        return new RestAuthenticationAccessDeniedHandler();
+    }
 
     //使用MD5加密
     @Override
