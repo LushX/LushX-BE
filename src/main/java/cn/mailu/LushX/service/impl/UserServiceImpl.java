@@ -4,13 +4,11 @@ import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.entity.User;
 import cn.mailu.LushX.repository.UserRepository;
 import cn.mailu.LushX.service.UserService;
-import cn.mailu.LushX.util.MD5Util;
-import org.apache.commons.lang.StringUtils;
+import cn.mailu.LushX.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -61,9 +59,9 @@ public class UserServiceImpl implements UserService {
         }
         user.setRole("ROLE_USER");
         user.setUserId(UUID.randomUUID().toString());
-        user.setMd5(MD5Util.MD5EncodeUtf8(user.getUsername()));
+        user.setMd5(MD5Utils.MD5EncodeUtf8(user.getUsername()));
         //MD5加密
-        user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
+        user.setPassword(MD5Utils.MD5EncodeUtf8(user.getPassword()));
         if(userRepository.save(user)==null){
             return ServerResponse.createByErrorMessage("注册失败");
         }

@@ -1,6 +1,5 @@
 package cn.mailu.LushX.util;
 
-import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +14,12 @@ import java.util.List;
  * @Description:ftp工具类
  * @Date: Create in 2017/11/4 16:46
  */
-public class FTPUtil {
+public class FTPUtils {
 
-    private static Logger logger= LoggerFactory.getLogger(FTPUtil.class);
-    private static String ftpIp=PropertiesUtil.getProperty("ftp.server.ip");
-    private static String ftpUser=PropertiesUtil.getProperty("ftp.user");
-    private static String ftpPass=PropertiesUtil.getProperty("ftp.pass");
+    private static Logger logger= LoggerFactory.getLogger(FTPUtils.class);
+    private static String ftpIp= PropertiesUtils.getProperty("ftp.server.ip");
+    private static String ftpUser= PropertiesUtils.getProperty("ftp.user");
+    private static String ftpPass= PropertiesUtils.getProperty("ftp.pass");
 
     private String ip;
     private int port;
@@ -28,7 +27,7 @@ public class FTPUtil {
     private String pwd;
     private FTPClient ftpClient;
 
-    public FTPUtil(String ip,int port,String user,String pwd){
+    public FTPUtils(String ip, int port, String user, String pwd){
         this.ip=ip;
         this.port=port;
         this.user=user;
@@ -44,9 +43,9 @@ public class FTPUtil {
      */
     public static boolean uploadFile(List<File> fileList) throws IOException {
 
-        FTPUtil ftpUtil=new FTPUtil(ftpIp,21,ftpUser,ftpPass);
+        FTPUtils ftpUtils =new FTPUtils(ftpIp,21,ftpUser,ftpPass);
         logger.info("开始连接ftp服务器");
-        boolean result=ftpUtil.uploadFile("img",fileList);
+        boolean result= ftpUtils.uploadFile("img",fileList);
         logger.info("开始连接ftp服务器，结束上传，上传结果：{}",result);
         return result;
     }
@@ -93,7 +92,7 @@ public class FTPUtil {
     }
 
     public static void setFtpIp(String ftpIp) {
-        FTPUtil.ftpIp = ftpIp;
+        FTPUtils.ftpIp = ftpIp;
     }
 
     public static String getFtpUser() {
@@ -101,7 +100,7 @@ public class FTPUtil {
     }
 
     public static void setFtpUser(String ftpUser) {
-        FTPUtil.ftpUser = ftpUser;
+        FTPUtils.ftpUser = ftpUser;
     }
 
     public static String getFtpPass() {
@@ -109,7 +108,7 @@ public class FTPUtil {
     }
 
     public static void setFtpPass(String ftpPass) {
-        FTPUtil.ftpPass = ftpPass;
+        FTPUtils.ftpPass = ftpPass;
     }
 
     public String getIp() {

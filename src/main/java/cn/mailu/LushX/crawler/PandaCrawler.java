@@ -36,6 +36,7 @@ public class PandaCrawler {
      */
     @Scheduled(fixedRate = 20 * 60 * 1000)
     public void start() {
+        logger.info("=========================pandaCrawler===============");
         Document document = JsoupUtils.getDocWithPC(PANDA_ALL);
         savePandaLivesToRedis(document);
     }

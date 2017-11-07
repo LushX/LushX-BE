@@ -6,6 +6,8 @@ import cn.mailu.LushX.util.JsoupUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,8 @@ public class QqCrawler {
     private static final String HOME_PAGE_PHONE_RECOMMEND = "http://v.qq.com/x/list/variety";
     private static final String TAG = "QQ";
 
+    private static Logger logger= LoggerFactory.getLogger(QqCrawler.class);
+
     private final RedisSourceManager redisSourceManager;
 
     public QqCrawler(RedisSourceManager redisSourceManager) {
@@ -37,6 +41,7 @@ public class QqCrawler {
      */
     @Scheduled(fixedRate = 60 * 60 * 1000)
     public void start() {
+        logger.info("==================QqCrawlering===============");
         Document pcDocument = JsoupUtils.getDocWithPC(HOME_PAGE_PC);
         Document phoneTVDocument = JsoupUtils.getDocWithPC(HOME_PAGE_PHONE_TV);
         Document phoneMovieDocument = JsoupUtils.getDocWithPC(HOME_PAGE_PHONE_MOVIE);
@@ -47,6 +52,7 @@ public class QqCrawler {
         saveTVsToRedis(phoneTVDocument);
         saveMoviesToRedis(phoneMovieDocument);
         saveCartoonsToRedis(phoneCartoonDocument);
+        logger.info("==================QqCrawle stop===============");
     }
 
     /**

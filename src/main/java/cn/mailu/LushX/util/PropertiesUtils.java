@@ -13,9 +13,9 @@ import java.util.Properties;
  * @Description:读取配置文件
  * @Date: Create in 2017/11/4 16:49
  */
-public class PropertiesUtil {
+public class PropertiesUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
 
     private static Properties props;
 
@@ -24,7 +24,7 @@ public class PropertiesUtil {
         String fileName = "lushx.properties";
         props = new Properties();
         try {
-            props.load(new InputStreamReader(PropertiesUtil.class.getClassLoader().getResourceAsStream(fileName), "UTF-8"));
+            props.load(new InputStreamReader(PropertiesUtils.class.getClassLoader().getResourceAsStream(fileName), "UTF-8"));
         } catch (IOException e) {
             logger.error("读取配置文件异常", e);
         }

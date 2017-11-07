@@ -3,13 +3,10 @@ package cn.mailu.LushX.security;
 import cn.mailu.LushX.fliter.JWTAuthenticationFilter;
 import cn.mailu.LushX.fliter.JWTLoginFilter;
 import cn.mailu.LushX.util.JWTUtils;
-import cn.mailu.LushX.util.MD5Util;
+import cn.mailu.LushX.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,7 +21,6 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
-import javax.annotation.security.PermitAll;
 
 /**
  * @Author: NULL
@@ -119,12 +115,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(new PasswordEncoder() {
             @Override
             public String encode(CharSequence charSequence) {
-                return MD5Util.MD5EncodeUtf8((String)charSequence);
+                return MD5Utils.MD5EncodeUtf8((String)charSequence);
             }
 
             @Override
             public boolean matches(CharSequence charSequence, String encodedPassword) {
-                return encodedPassword.equals(MD5Util.MD5EncodeUtf8((String)charSequence));
+                return encodedPassword.equals(MD5Utils.MD5EncodeUtf8((String)charSequence));
             }
         });
     }
