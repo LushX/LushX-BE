@@ -6,9 +6,9 @@
     <li class="nav-item">
       <a class="lushx-link login-link">登录</a>
     </li>
-    <li class="nav-item">    
+    <li class="nav-item">
       <a class="lushx-link register-link">注册</a>
-    </li>    
+    </li>
   </Menu>
 </template>
 
@@ -53,7 +53,7 @@
         color: #fff;
         background-color: transparent;
         text-decoration: none;
-      }   
+      }
     }
   }
 
@@ -62,7 +62,7 @@
     float: right;
   }
 
-  .lushx-link {  
+  .lushx-link {
     padding-right: 18px;
     display: inline-block;
     line-height: 60px;
