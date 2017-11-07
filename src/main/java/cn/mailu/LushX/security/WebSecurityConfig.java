@@ -61,16 +61,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.POST,"/user/register").permitAll()
                 .antMatchers("/manage/**").hasRole("ADMIN") // 需要相应的角色才能访问
-                // 允许对于网站静态资源的无授权访问
-//                .antMatchers(
-//                        HttpMethod.GET,
-//                        "/",
-//                        "/*.html",
-//                        "/favicon.ico",
-//                        "/**/*.html",
-//                        "/**/*.css",
-//                        "/**/*.js"
-//                ).permitAll()
+                 //允许对于网站静态资源的无授权访问
+                .antMatchers(
+                        HttpMethod.GET,
+                        "/",
+                        "/*.html",
+                        "/favicon.ico",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js"
+                ).permitAll()
 
                 // 对于获取token的rest api要允许匿名访问
                 .antMatchers("/auth/**").permitAll()
