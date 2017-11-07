@@ -6,8 +6,6 @@ axios.defaults.headers.post['Content-Type'] = 'application/json' //通信格式
 axios.defaults.baseURL = '' //配置接口地址
 // axios.defaults.baseURL = '' //配置接口地址
 
-Vue.use(axios)
-
 export default {
   // POST请求
   post({...obj}) {
