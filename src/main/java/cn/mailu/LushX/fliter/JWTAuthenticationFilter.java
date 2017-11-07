@@ -40,6 +40,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        logger.info("=====请求地址==="+request.getRequestURL());
         String auth_token = request.getHeader(this.token_header);
         final String auth_token_start = "Bearer ";
         if (StringUtils.isNotEmpty(auth_token) && auth_token.startsWith(auth_token_start)) {
@@ -56,7 +57,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             // in the token and read it from it. It's up to you ;)
             // UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             UserDetails userDetails = jwtUtils.getUserFromToken(auth_token);
-
+            logger.info(userDetails.getUsername());
             // For simple validation it is completely sufficient to just check the token integrity. You don't have to call
             // the database compellingly. Again it's up to you ;)
             if (jwtUtils.validateToken(auth_token, userDetails)) {

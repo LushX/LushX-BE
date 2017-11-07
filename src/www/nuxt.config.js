@@ -1,0 +1,45 @@
+module.exports = {
+  /*
+  ** Headers of the page
+  */
+  head: {
+    title: 'lushx',
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'description', name: 'description', content: 'A website for providing conveniences and happiness' }
+    ],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ]
+  },
+  /*
+  ** Customize the progress bar color
+  */
+  loading: { color: '#00FF99' },
+  /**
+   * Import plugins
+   */
+  plugins: [
+    '~plugins/iview.js',
+    '~plugins/axios.config.js'
+  ],
+  /*
+  ** Build configuration
+  */
+  build: {
+    /*
+    ** Run ESLint on save
+    */
+    // extend (config, ctx) {
+    //   if (ctx.dev && ctx.isClient) {
+    //     config.module.rules.push({
+    //       enforce: 'pre',
+    //       test: /\.(js|vue)$/,
+    //       loader: 'eslint-loader',
+    //       exclude: /(node_modules)/
+    //     })
+    //   }
+    // }
+  }
+}

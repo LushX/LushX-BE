@@ -1,6 +1,9 @@
 package cn.mailu.LushX.service;
 
+import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @Ahtuor: xuzhenya
@@ -9,4 +12,8 @@ import cn.mailu.LushX.entity.User;
  * @Modified By:
  */
 public interface UserService extends BaseService<User> {
+
+    ServerResponse<String> register(User user);
+
+    Page<User> findAll(Pageable pageable);
 }

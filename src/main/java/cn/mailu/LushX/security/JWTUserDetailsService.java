@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
  * @Description:实现UserDetailsService接口
  * @Date: Create in 2017/11/5 23:33
  */
+
 @Service
 public class JWTUserDetailsService implements UserDetailsService {
 
@@ -25,8 +26,7 @@ public class JWTUserDetailsService implements UserDetailsService {
         if(user==null){
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         }else{
-            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
-            //return JWTUserFactory.creat(user);
+            return JWTUserFactory.create(user);
         }
     }
 }

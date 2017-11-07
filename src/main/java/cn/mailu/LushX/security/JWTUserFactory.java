@@ -4,6 +4,8 @@ import cn.mailu.LushX.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,19 +20,21 @@ public final class JWTUserFactory{
 
     }
 
-   /* public static JWTUserDetails creat(User user){
+    public static JWTUserDetails create(User user){
         return new JWTUserDetails(
                 user.getUserId(),
                 user.getUsername(),
                 user.getPassword(),
-               // mapToGrantedAuthorities(user.getRoles())
+                mapToGrantedAuthorities(user.getRole())
         );
-    }*/
+    }
 
-    private static List<GrantedAuthority> mapToGrantedAuthorities(List<String> authorities){
-        return authorities.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+    private static List<GrantedAuthority> mapToGrantedAuthorities(String role){
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        SimpleGrantedAuthority authority;
+        authority = new SimpleGrantedAuthority(role.toString());
+        authorities.add(authority);
+        return authorities;
     }
 
 }

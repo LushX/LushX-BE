@@ -4,6 +4,7 @@ import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.entity.User;
 import cn.mailu.LushX.util.JWTUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @Author: NULL
@@ -47,9 +49,11 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         try {
+            // 反序列化问题,前台需要post和JSON.strify
             User user = new ObjectMapper()
                     .readValue(request.getInputStream(), User.class);
-
+            logger.info(user.getPassword());
+            logger.info(user.getUsername());
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
                             user.getUsername(),
@@ -65,15 +69,19 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         String token=jwtUtils.generateAccessToken((UserDetails) authResult.getPrincipal());
-        response.addHeader(token_header,"Bearer "+token);
+        Map<String,String> map= Maps.newHashMap();
+        map.put(token_header,"Bearer "+token);
+        ObjectMapper mapper=new ObjectMapper();
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().print(mapper.writeValueAsString(ServerResponse.createBySuccess(map)));
         logger.info(((UserDetails) authResult.getPrincipal()).getUsername()+"验证成功，发出token");
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        response.setContentType("application/json");
+        response.setContentType("application/json;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         ObjectMapper mapper=new ObjectMapper();
-        response.getOutputStream().print(mapper.writeValueAsString(ServerResponse.createByErrorMessage("用户名或密码错误")));
+        response.getWriter().print(mapper.writeValueAsString(ServerResponse.createByErrorMessage("用户名或密码错误")));
     }
 }

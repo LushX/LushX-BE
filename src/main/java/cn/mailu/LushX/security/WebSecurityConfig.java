@@ -2,6 +2,7 @@ package cn.mailu.LushX.security;
 
 import cn.mailu.LushX.fliter.JWTAuthenticationFilter;
 import cn.mailu.LushX.fliter.JWTLoginFilter;
+import cn.mailu.LushX.util.JWTUtils;
 import cn.mailu.LushX.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,18 +21,30 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
+
 /**
  * @Author: NULL
  * @Description:sercurity配置类
  * @Date: Create in 2017/11/5 22:47
  */
-@Configuration
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Resource
+    private JWTUtils jwtUtils;
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        //放行swagger
+        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**");
+    }
 
     //配置http的安全配置
     @Override
@@ -41,18 +55,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 基于token，所以不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                //.antMatchers("/manage/**").hasRole("ROLE_ADMIN") // 需要相应的角色才能访问
-                // 允许对于网站静态资源的无授权访问
-//                .antMatchers(
-//                        HttpMethod.GET,
-//                        "/",
-//                        "/*.html",
-//                        "/favicon.ico",
-//                        "/**/*.html",
-//                        "/**/*.css",
-//                        "/**/*.js"
-//                ).permitAll()
+                // 所有 / 的所有请求 都放行
+                .antMatchers("/").permitAll()
+                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**")
+                .permitAll()
+                .antMatchers(HttpMethod.POST,"/user/register").permitAll()
+                .antMatchers("/manage/**").hasRole("ADMIN") // 需要相应的角色才能访问
+                 //允许对于网站静态资源的无授权访问
+                .antMatchers(
+                        HttpMethod.GET,
+                        "/",
+                        "/*.html",
+                        "/favicon.ico",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js"
+                ).permitAll()
 
                 // 对于获取token的rest api要允许匿名访问
                 .antMatchers("/auth/**").permitAll()

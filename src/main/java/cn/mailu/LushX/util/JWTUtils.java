@@ -8,10 +8,15 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.CompressionCodecs;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -20,6 +25,7 @@ import java.util.*;
  * @Description:jwt-token工具类
  * @Date: Create in 2017/11/6 9:33
  */
+@Component
 public class JWTUtils {
     public static final String ROLE_REFRESH_TOKEN = "ROLE_REFRESH_TOKEN";
 
@@ -39,6 +45,7 @@ public class JWTUtils {
 //    private Long refresh_token_expiration;
 
     private final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
+    private static Logger logger= LoggerFactory.getLogger(JWTUtils.class);
 
     public JWTUserDetails getUserFromToken(String token){
         JWTUserDetails user;
@@ -46,13 +53,14 @@ public class JWTUtils {
             final Claims claims=getClaimsFromToken(token);
            String userId = getUserIdFromToken(token);
             String username=claims.getSubject();
-            List roles = (List) claims.get(CLAIM_KEY_AUTHORITIES);
-            Collection<? extends GrantedAuthority> authorities = parseArrayToAuthorities(roles);
+            List<GrantedAuthority> authorities =AuthorityUtils.commaSeparatedStringToAuthorityList((String) claims.get(CLAIM_KEY_AUTHORITIES));
            /* boolean account_enabled = (Boolean) claims.get(CLAIM_KEY_ACCOUNT_ENABLED);
             boolean account_non_locked = (Boolean) claims.get(CLAIM_KEY_ACCOUNT_NON_LOCKED);
             boolean account_non_expired = (Boolean) claims.get(CLAIM_KEY_ACCOUNT_NON_EXPIRED);*/
+
             user = new JWTUserDetails(userId, username, "password",  authorities);
         }catch (Exception e){
+            logger.error("getUserFromToken error");
             user=null;
         }
         return user;
@@ -62,6 +70,8 @@ public class JWTUtils {
         JWTUserDetails user= (JWTUserDetails) userDetails;
         final String userId=getUserIdFromToken(token);
         final String username=getUsernameFromToken(token);
+        logger.info("validateToken"+userId);
+        logger.info("validateToken"+username);
         return (userId.equals(user.getUserId())
                 && username.equals(user.getUsername())
                 && !isTokenExpired(token)
@@ -172,5 +182,6 @@ public class JWTUtils {
         }
         return list;
     }
+
 
 }
