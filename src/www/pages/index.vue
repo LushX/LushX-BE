@@ -7,13 +7,7 @@
       <cam-section id="cam" :camList="camList"></cam-section>
       <tv-section id="tv" :tvList="tvList"></tv-section>
     </section>
-    <circle-menu type="middle" :number='4' animate="animated jello" mask='white' circle>
-      <button type="button" slot="item_btn"></button>
-      <a slot="item_1" class="fa fa-twitter fa-lg"></a>
-      <a slot="item_2" class="fa fa-weixin fa-lg"></a>
-      <a slot="item_3" class="fa fa-weibo fa-lg"></a>
-      <a slot="item_4" class="fa fa-github fa-lg"></a>
-    </circle-menu>
+    <circle-menu :circleMenuList="circleMenuList"></circle-menu>
     <lushx-skeleton v-if="!movieList[0]"></lushx-skeleton>
   </div>
 </template>
@@ -38,7 +32,25 @@
         animationList: [],
         camList: [],
         tvList: [],
-        carouselList: []
+        carouselList: [],
+        circleMenuList: [
+          {
+            id: '#movie',
+            value: '电影'
+          }, {
+            id: '#live',
+            value: '直播'
+          }, {
+            id: '#animation',
+            value: '动漫'
+          }, {
+            id: '#cam',
+            value: '综艺'
+          }, {
+            id: '#tv',
+            value: '电视'
+          }
+        ]
       }
     },
     components: {

@@ -16,10 +16,6 @@
 <script>
   export default {
     name: "Header",
-    data() {
-      return {
-      }
-    },
     methods: {
       onSelect(value) {
         console.log(value)
