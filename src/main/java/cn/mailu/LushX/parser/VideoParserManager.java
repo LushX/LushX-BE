@@ -37,7 +37,7 @@ public class VideoParserManager implements ParserManager {
      * 解析资源
      * todo 未进行解析异常处理
      */
-    public Object parse(String url) {
+    public Object parse(String url)throws IOException {
         String key = UrlUtils.getTopDomain(url);
         logger.info("Parser key: " + key);
         Parser parser = this.getParser(key);
