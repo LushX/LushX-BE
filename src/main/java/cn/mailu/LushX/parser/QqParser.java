@@ -39,6 +39,7 @@ public class QqParser implements Parser<Video> {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode=mapper.readValue(videoInfo(vid),JsonNode.class);
         initVideo(video, rootNode);
+        int a=1;
         return video;
     }
 
@@ -120,9 +121,7 @@ public class QqParser implements Parser<Video> {
      */
     private void initVideo(Video video, JsonNode json) {
         ObjectMapper mapper = new ObjectMapper();
-
-
-        JsonNode videoJson = json.findValue("v1").findValues("vi").get(0);
+        JsonNode videoJson = json.findValue("vl").findValues("vi").get(0);
         int random = RandomUtils.nextInt(3);
         String url = videoJson.findValue("ul").findValues("ui").get(random).findValue("url").toString();
         String vkey = videoJson.findValue("fvkey").toString();
