@@ -49,7 +49,6 @@ public class QqParser implements Parser<Video> {
             e.printStackTrace();
         }
         initVideo(video, rootNode);
-        int a=1;
         return video;
     }
 
