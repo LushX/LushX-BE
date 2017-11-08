@@ -22,7 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @RestController
 @RequestMapping("/user")
-@Api("用户相关接口")
+@Api(value ="UserController", description= "用户相关接口")
 public class UserController {
 
     private static Logger logger= LoggerFactory.getLogger(UserController.class);

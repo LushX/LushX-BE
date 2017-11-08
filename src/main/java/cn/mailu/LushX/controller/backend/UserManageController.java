@@ -3,10 +3,12 @@ package cn.mailu.LushX.controller.backend;
 import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.entity.User;
 import cn.mailu.LushX.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +26,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @RestController
 @RequestMapping("/manage/user")
-@EnableSwagger2
+@Api(value = "UserManageController",description = "后台用户管理接口")
 public class UserManageController {
 
     @Autowired

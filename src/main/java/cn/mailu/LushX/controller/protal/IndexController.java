@@ -5,12 +5,8 @@ import cn.mailu.LushX.crawler.RedisSourceManager;
 import cn.mailu.LushX.entity.User;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.service.UserService;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +23,7 @@ import java.util.Map;
  */
 
 @RestController
-@Api(value = "首页接口")
+@Api(value = "IndexController",description = "首页接口")
 public class IndexController {
 
     private static Logger logger= LoggerFactory.getLogger(IndexController.class);
@@ -61,7 +57,7 @@ public class IndexController {
     }
 
     @ApiOperation(value="注册用户", notes="根据User对象创建用户")
-    @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
+    @ApiImplicitParam(name = "user", value = "只需要username和password字段", required = true, dataType = "User")
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public ServerResponse<String> register(@RequestBody User user){
         logger.info(user.getGender());
@@ -70,11 +66,8 @@ public class IndexController {
     }
 
     @ApiOperation(value="用户登录")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "用户名", required = true),
-            @ApiImplicitParam(name = "password", value = "密码", required =  true)
-    })
+    @ApiImplicitParam(name = "user", value = "只需要username和password字段", required = true, dataType = "User")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public  void login(@RequestParam("username") String username,@RequestParam("password") String password){
+    public  void login(@RequestBody User user){
     }
 }
