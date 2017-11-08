@@ -33,7 +33,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("LushX's RESTful APIs")
-                .description("apply for HH")
+                .description("apply for HunagXiZhou")
                 .version("1.0")
                 .build();
     }

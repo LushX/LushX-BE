@@ -2,13 +2,19 @@ package cn.mailu.LushX.controller.protal;
 
 import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.crawler.RedisSourceManager;
+import cn.mailu.LushX.entity.User;
 import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.service.UserService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,12 +27,18 @@ import java.util.Map;
  */
 
 @RestController
+@Api(value = "首页接口")
 public class IndexController {
+
+    private static Logger logger= LoggerFactory.getLogger(IndexController.class);
 
     private final static String[] TAGS = {"QQ", "PANDA"};
 
     @Resource
     private  RedisSourceManager redisSourceManager ;
+
+    @Autowired
+    private UserService userService;
 
 
     @ApiOperation(value="video首页", notes="video首页")
@@ -46,5 +58,23 @@ public class IndexController {
         videoList.put("movies",movies);
         videoList.put("cams",cams);
         return ServerResponse.createBySuccess(videoList);
+    }
+
+    @ApiOperation(value="注册用户", notes="根据User对象创建用户")
+    @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    public ServerResponse<String> register(@RequestBody User user){
+        logger.info(user.getGender());
+        logger.info(user.getUsername());
+        return userService.register(user);
+    }
+
+    @ApiOperation(value="用户登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名", required = true),
+            @ApiImplicitParam(name = "password", value = "密码", required =  true)
+    })
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public  void login(@RequestParam("username") String username,@RequestParam("password") String password){
     }
 }
