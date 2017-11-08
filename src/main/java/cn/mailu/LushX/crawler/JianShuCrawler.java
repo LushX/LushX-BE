@@ -33,7 +33,7 @@ public class JianShuCrawler {
 
 
     /**
-     * 每隔1天，爬腾讯视频官网信息
+     * 每隔1天，爬简书7日热门
      */
     @Scheduled(fixedRate = 12 * 60 * 60 * 1000)
     public void start(){
