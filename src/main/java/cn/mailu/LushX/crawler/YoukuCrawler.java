@@ -21,8 +21,9 @@ public class YoukuCrawler {
 
     private static Logger logger= LoggerFactory.getLogger(YoukuCrawler.class);
 
-    private final static String YK_HOT_VIDEO_URL="http://list.youku.com/category/show/c_91.html";
+   // private final static String YK_HOT_VIDEO_URL="http://list.youku.com/category/show/c_91.html";
 
+    private final static String YK_HOT_VIDEO_URL="http://hotels.ctrip.com/hotel/441351.html";
 
 
     public void start(){
@@ -39,8 +40,23 @@ public class YoukuCrawler {
 
         Elements videoElement=document.select("li.yk-col4");
 
+        //Element typeElement=document.select("div.item.border ul li.current span").first();
+        Element typeElement=document.select("span.score").first();
+
+        String str=typeElement.toString();
+
         for(Element element:videoElement){
-          System.out.println(element.select("div.p-thumb a").get(0).attr("title"));
+
+            Video video=new Video();
+         String quickPicture =element.select("div.p-thumb img").get(0).attr("src");
+         String title=element.select("div.p-thumb a").get(0).attr("title");
+         String playUrl=element.select("div.p-thumb a").get(0).attr("href");
+         String type= typeElement.text();
+         video.setTitle(title);
+         video.setImage(quickPicture);
+         video.setPlayUrl(playUrl);
+         video.setType(type);
+         videos.add(video);
         }
         return null;
     }
