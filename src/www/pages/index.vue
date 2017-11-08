@@ -8,13 +8,13 @@
       <cam-section id="cam" :camList="camList"></cam-section>
       <tv-section id="tv" :tvList="tvList"></tv-section>
     </section>
-    <circle-menu :circleMenuList="circleMenuList"></circle-menu>
-    <lushx-skeleton v-if="!movieList[0]"></lushx-skeleton>
+    <circle-menu v-if="movieList[0]" :circleMenuList="circleMenuList"></circle-menu>
+    <lushx-loader v-if="!movieList[0]"></lushx-loader>
   </div>
 </template>
 
 <script>
-  import LushxSkeleton from '~/components/Skeleton'
+  import LushxLoader from '~/components/Loader.vue'
   import CarouselSection from '~/components/index/CarouselSection'  
   import MovieSection from '~/components/index/MovieSection'
   import LiveSection from '~/components/index/LiveSection'
@@ -56,7 +56,7 @@
       }
     },
     components: {
-      LushxSkeleton,
+      LushxLoader,
       CarouselSection,
       MovieSection,
       LiveSection,
