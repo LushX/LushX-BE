@@ -1,8 +1,8 @@
 package cn.mailu.LushX.parser;
 
+import cn.mailu.LushX.parser.site.QqParser;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 /**
  * @Author:Drohe
  * @Description:测试优酷视频解析器
@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  */
 public class YoukuParserTest {
 
-    YoukuParser youkuParser=new YoukuParser();
+    QqParser.YoukuParser youkuParser=new QqParser.YoukuParser();
 
 
     @Test

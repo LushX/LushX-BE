@@ -1,8 +1,9 @@
-package cn.mailu.LushX.parser;
+package cn.mailu.LushX.parser.site;
 
 import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.exception.LushXException;
+import cn.mailu.LushX.parser.Parser;
 import cn.mailu.LushX.util.JsoupUtils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
