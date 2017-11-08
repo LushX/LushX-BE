@@ -11,11 +11,15 @@ Vue.filter('sectionTitle', title => {
       break
 
     case 'lives':
-      return '综艺'
+      return '直播'
       break
 
     case 'animation':
       return '动漫'
+      break
+
+    case 'cams':
+      return '综艺'
       break
 
     default:

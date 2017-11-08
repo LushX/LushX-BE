@@ -22,7 +22,8 @@ module.exports = {
    * Import plugins
    */
   plugins: [
-    '~plugins/iview.js'
+    '~plugins/iview.js',
+    '~plugins/lazyload.js'
   ],
   /*
   ** Build configuration
@@ -31,7 +32,10 @@ module.exports = {
     /**
      * Build one time
      */
-    vendor: ['axios']
+    vendor: [
+      'axios',
+      'lodash'
+    ]
     /*
     ** Run ESLint on save
     */

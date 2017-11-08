@@ -4,12 +4,12 @@
     <div class="skeleton-title--line"></div>
       <Row>
         <Col
-          v-for="(item, idx) in 4"
+          v-for="(item, idx) in 12"
           :key="idx"
-          :xs="12"
-          :sm="6"
-          :md="6"
-          :lg="6"
+          :xs="12" 
+          :sm="6" 
+          :md="4" 
+          :lg="4"
         >
           <div class="skeleton-item"></div>
         </Col>
@@ -47,7 +47,7 @@
     margin-left: auto;
     margin-right: auto;
     width: 80%;
-    height: 300px;
+    height: 240px;
     background-color: #EFEFF2;
   }
 </style>

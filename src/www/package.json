@@ -15,7 +15,10 @@
   "dependencies": {
     "axios": "^0.17.0",
     "iview": "^2.6.0",
-    "nuxt": "^1.0.0-rc11"
+    "lodash": "^4.17.4",
+    "nuxt": "^1.0.0-rc11",
+    "vue-circle-menu": "^1.1.1",
+    "vue-lazyload": "^1.1.4"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

@@ -2,6 +2,7 @@
   <div>
     <lushx-header></lushx-header>
     <nuxt/>
+    <BackTop :bottom=6 :right=6></BackTop>
     <lushx-footer></lushx-footer>
   </div>
 </template>
