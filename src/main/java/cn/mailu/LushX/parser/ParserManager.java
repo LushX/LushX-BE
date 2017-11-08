@@ -2,6 +2,8 @@ package cn.mailu.LushX.parser;
 
 import cn.mailu.LushX.parser.Parser;
 
+import java.io.IOException;
+
 /**
  * 解析器管理器
  */
@@ -19,6 +21,6 @@ public interface ParserManager {
    * @param url 目标资源地址
    * @return 资源信息
    */
-  Object parse(String url);
+  Object parse(String url) throws IOException;
 
 }

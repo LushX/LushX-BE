@@ -23,7 +23,7 @@ public interface Parser<T> {
      *@Date: Created in 18:36 2017/11/7
      *
      */
-    T parse(String url);
+    T parse(String url) throws IOException;
 
     /**
      *
