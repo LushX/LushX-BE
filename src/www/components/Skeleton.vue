@@ -6,7 +6,7 @@
         <Col
           v-for="(item, idx) in 12"
           :key="idx"
-          :xs="12" 
+          :xs="8" 
           :sm="6" 
           :md="4" 
           :lg="4"
@@ -28,14 +28,14 @@
   }
 
   .skeleton-title {
-    margin-left: 28px;
+    margin-left: 16px;
     width: 200px;
     height: 40px;
     background-color: #EFEFF2;
   }
 
   .skeleton-title--line {
-    margin-left: 28px;
+    margin-left: 16px;
     margin-top: 20px;
     width: 200px;
     height: 4px;
@@ -47,7 +47,7 @@
     margin-left: auto;
     margin-right: auto;
     width: 80%;
-    height: 240px;
+    height: 160px;
     background-color: #EFEFF2;
   }
 </style>

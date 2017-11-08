@@ -174,7 +174,32 @@
     }
   }
 
+  @media (min-width: 560px) and (max-width: 768px) {
+    .title-container {
+      padding-left: 3px;
+      .refresh {
+        padding-right: 3px;
+      }
+    }
+    .live-item {
+      margin-left: 3px;
+      margin-right: 3px;
+
+    }
+  }
+
   @media (min-width: 460px) and (max-width: 560px) {
+    .title-container {
+      padding-left: 3px;
+      .refresh {
+        padding-right: 3px;
+      }
+    }
+    .live-item {
+      margin-left: 3px;
+      margin-right: 3px;
+
+    }
     .live-item {
       & > img {
         height: 7rem;
@@ -183,36 +208,69 @@
   }
 
   @media (min-width: 400px) and (max-width: 460px) {
+    .title-container {
+      padding-left: 3px;
+      .refresh {
+        padding-right: 3px;
+      }
+    }
+    .live-item {
+      margin-left: 3px;
+      margin-right: 3px;
+
+    }
     .live-btn {
       display: none;
     }
 
     .live-item {
       & > img {
-        height: 5.5rem;
+        height: 6.5rem;
       }
     }
   }
 
   @media (min-width: 375px) and (max-width: 400px) {
-      .live-btn {
-        display: none;
+    .title-container {
+      padding-left: 3px;
+      .refresh {
+        padding-right: 3px;
       }
+    }
+    .live-item {
+      margin-left: 3px;
+      margin-right: 3px;
+
+    }
+    .live-btn {
+      display: none;
+    }
 
     .live-item {
       & > img {
-        height: 4.8rem;
+        height: 6rem;
       }
     }
   }
 
   @media (max-width: 375px) {
+    .title-container {
+      padding-left: 3px;
+      .refresh {
+        padding-right: 3px;
+      }
+    }
+    .live-item {
+      margin-left: 3px;
+      margin-right: 3px;
+
+    }
     .live-btn {
       display: none;
     }
     .live-item {
       & > img {
-        height: 3.8rem;
+        height: 6rem;
       }
     }
   }

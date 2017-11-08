@@ -1,11 +1,11 @@
 <template>
   <div>
     <section v-if="movieList[0]" class="container">
-      <movie-section :movieList="movieList"></movie-section>
-      <live-section :liveList="liveList"></live-section>
-      <animation-section :animationList="animationList"></animation-section>
-      <cam-section :camList="camList"></cam-section>
-      <tv-section :tvList="tvList"></tv-section>
+      <movie-section id="movie" :movieList="movieList"></movie-section>
+      <live-section id="live" :liveList="liveList"></live-section>
+      <animation-section id="animation" :animationList="animationList"></animation-section>
+      <cam-section id="cam" :camList="camList"></cam-section>
+      <tv-section id="tv" :tvList="tvList"></tv-section>
     </section>
     <circle-menu type="middle" :number='4' animate="animated jello" mask='white' circle>
       <button type="button" slot="item_btn"></button>
@@ -56,9 +56,9 @@
       }).then((data) => {
         this.carouselList = data.carousel
         this.movieList = data.movies
-        this.liveList = data.lives
+        this.liveList = data.cams
         this.animationList = data.animation
-        this.camList = data.cams
+        this.camList = data.lives
         this.tvList = data.tv
       })
     }

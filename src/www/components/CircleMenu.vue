@@ -5,11 +5,11 @@
     </button>
     <transition name="move">
       <div class="menu" v-show="showMenu">
-        <div class="inner inner-1">电影</div>
-        <div class="inner inner-2">直播</div>
-        <div class="inner inner-3">动漫</div>
-        <div class="inner inner-4">综艺</div>
-        <div class="inner inner-5">电视</div>
+        <div class="inner inner-1" @click="goAnchor('#movie')">电影</div>
+        <div class="inner inner-2" @click="goAnchor('#live')">直播</div>
+        <div class="inner inner-3" @click="goAnchor('#animation')">动漫</div>
+        <div class="inner inner-4" @click="goAnchor('#cam')">综艺</div>
+        <div class="inner inner-5" @click="goAnchor('#tv')">电视</div>
       </div>
     </transition>
   </div>
@@ -27,6 +27,23 @@
     methods: {
       openMenu() {
         this.showMenu = !this.showMenu;
+      },
+      goAnchor(selector) {
+        let anchor = document.querySelector(selector)
+        // console.log(anchor)
+        // console.log(window.pageYOffset)
+        // document.documentElement.scrollTop = anchor.offsetTop - 60
+        // document.body.scrollTop = anchor.offsetTop
+        // document.body.scrollTop
+        // let anchor = document.querySelector(selector)
+        // let scrollStep = -window.scrollY / (600 / 15),
+        //   let scrollInterval = setInterval(() => {
+        //   if ( window.pageYOffset != selector.pageYOffset ) {
+        //     document.documentElement.scrollTop = anchor.offsetTop - 65
+        //   }
+        //   else clearInterval(scrollInterval)
+        // }, 15)
+        document.documentElement.scrollTop = anchor.offsetTop - 65
       }
     }
   }

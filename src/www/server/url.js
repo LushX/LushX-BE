@@ -1,3 +1,3 @@
 export default {
-  INDEX_VEDIO: '/vedio'
+  INDEX_VEDIO: '/video'
 }

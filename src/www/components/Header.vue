@@ -82,4 +82,13 @@
   .ivu-menu-horizontal .ivu-menu-item, .ivu-menu-horizontal .ivu-menu-submenu {
     float: right;
   }
+
+  @media (max-width: 768px) {
+    .lushx-logo {
+      padding-left: 3px;
+    }
+    .lushx-link {
+      padding-right: 3px;
+    }
+  }
 </style>
