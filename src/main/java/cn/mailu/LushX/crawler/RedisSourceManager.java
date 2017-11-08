@@ -25,7 +25,7 @@ public class RedisSourceManager {
     public final String VIDEO_PREFIx_HOME_LIVE_KEY = "HOME_LIVE";
     public final String JIANSHU_TRENDING_KEY = "JIANSHU_TRENDING";
     public final String VIDEOS_KEY = "VIDEOS";
-
+    public final String[] TAGS = {"QQ", "PANDA","Jianshu"};
     private final StringRedisTemplate stringRedisTemplate;
 
     public RedisSourceManager(StringRedisTemplate stringRedisTemplate) {
