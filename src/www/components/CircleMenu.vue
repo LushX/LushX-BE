@@ -5,12 +5,7 @@
     </button>
     <transition name="move">
       <div class="menu" v-show="showMenu">
-        <div v-for="(item, idx) in circleMenuList" :key="idx" :class="`inner inner-${ idx + 1 }`" @click="goAnchor(item.id)">{{ item.value }}</div>        
-        <!-- <div class="inner inner-1" @click="goAnchor('#movie')">电影</div>
-        <div class="inner inner-2" @click="goAnchor('#live')">直播</div>
-        <div class="inner inner-3" @click="goAnchor('#animation')">动漫</div>
-        <div class="inner inner-4" @click="goAnchor('#cam')">综艺</div>
-        <div class="inner inner-5" @click="goAnchor('#tv')">电视</div> -->
+        <div v-for="(item, idx) in circleMenuList" :key="idx" :class="`inner inner-${ idx + 1 }`" @click="goAnchor(item.id)">{{ item.value }}</div>
       </div>
     </transition>
   </div>

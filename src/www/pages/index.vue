@@ -1,6 +1,7 @@
 <template>
   <div>
     <section v-if="movieList[0]" class="container">
+      <carousel-section :carouselList="carouselList"></carousel-section>
       <movie-section id="movie" :movieList="movieList"></movie-section>
       <live-section id="live" :liveList="liveList"></live-section>
       <animation-section id="animation" :animationList="animationList"></animation-section>
@@ -14,6 +15,7 @@
 
 <script>
   import LushxSkeleton from '~/components/Skeleton'
+  import CarouselSection from '~/components/index/CarouselSection'  
   import MovieSection from '~/components/index/MovieSection'
   import LiveSection from '~/components/index/LiveSection'
   import AnimationSection from '~/components/index/AnimationSection'
@@ -55,6 +57,7 @@
     },
     components: {
       LushxSkeleton,
+      CarouselSection,
       MovieSection,
       LiveSection,
       AnimationSection,
