@@ -5,6 +5,7 @@ import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.exception.LushXException;
 import cn.mailu.LushX.parser.Parser;
 import cn.mailu.LushX.util.JsoupUtils;
+import cn.mailu.LushX.util.UrlUtils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +43,7 @@ public class YoukuParser implements Parser<Video> {
         video.setValue(url);
         String vid = matchVid(url);
         String api = createPlayRequestApi(vid);
-        String result = getResponse(api);
+        String result = UrlUtils.getResponse(api);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode=mapper.readValue(result,JsonNode.class);
         JsonNode videoNode=rootNode.path("data").path("video");
@@ -99,31 +100,5 @@ public class YoukuParser implements Parser<Video> {
         return "http://ups.youku.com/ups/get.json?vid=" + vid + "&ccode=0509&client_ip=0.0.0.0&utid=ajEdEgkDCSQCAXBBq2KFutND&r=TJXNtWdcb6ky/owezfVSubVck3Aq6AsioO5j8WcrPPc%3D&client_ts=" + client_ts;
     }
 
-    /**
-     * 获取 HTTP 请求返回的结果
-     */
-    private String getResponse(String api) {
-        try {
-            URL url = new URL(api);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.addRequestProperty("user-agent", JsoupUtils.getUaPad());
-            connection.connect();
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                // 得到响应信息
-                InputStream is = connection.getInputStream();
-                byte[] bs = new byte[1024];
-                int len;
-                StringBuilder sb = new StringBuilder();
-                while ((len = is.read(bs)) != -1) {
-                    String str = new String(bs, 0, len);
-                    sb.append(str);
-                }
-                return sb.toString();
-            }
-            throw new LushXException("HTTP 请求错误");
-        } catch (IOException exception) {
-            throw new LushXException("youku api request error: " + api);
-        }
-    }
+
 }
