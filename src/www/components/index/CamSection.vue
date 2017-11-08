@@ -170,7 +170,7 @@
     margin-right: 28px;
     height: 45px;
     border-radius: 0 0 5px 5px;
-    background-color: #F39C12;
+    background-color: #C0392B;
     color: #fff;
     text-align: center;
     line-height: 45px;
