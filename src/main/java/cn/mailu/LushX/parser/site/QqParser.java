@@ -37,12 +37,17 @@ public class QqParser implements Parser<Video> {
     private final static String GUID = "fb74ffcc7b14377db9cb5308e598d6e5";
 
     @Override
-    public Video parse(String url)throws IOException {
+    public Video parse(String url)throws RuntimeException {
         Video video = new Video();
         video.setValue(url);
         String vid = getVid(url);
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode=mapper.readValue(videoInfo(vid),JsonNode.class);
+        JsonNode rootNode= null;
+        try {
+            rootNode = mapper.readValue(videoInfo(vid),JsonNode.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         initVideo(video, rootNode);
         int a=1;
         return video;
@@ -190,14 +195,19 @@ public class QqParser implements Parser<Video> {
          *
          */
         @Override
-        public Video parse(String url) throws IOException {
+        public Video parse(String url) throws RuntimeException {
             final Video video = new Video();
             video.setValue(url);
             String vid = matchVid(url);
             String api = createPlayRequestApi(vid);
             String result = getResponse(api);
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode rootNode=mapper.readValue(result,JsonNode.class);
+            JsonNode rootNode= null;
+            try {
+                rootNode = mapper.readValue(result,JsonNode.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             JsonNode videoNode=rootNode.path("data").path("video");
     //        JSONObject json = JSONObject.parseObject(result);
     //        JSONObject videoInfo = json.getJSONObject("data").getJSONObject("video");
