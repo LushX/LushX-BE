@@ -23,7 +23,7 @@ public class Article {
     private String provider;
 
     @Id
-    @Column(name = "article_id", nullable = false, length = 20)
+    @Column(name = "article_id", nullable = false, length = 40)
     public String getArticleId() {
         return articleId;
     }

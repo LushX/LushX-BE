@@ -22,7 +22,7 @@ public class User {
     private String role; //用户角色
 
     @Id
-    @Column(name = "user_id", nullable = false, length = 20)
+    @Column(name = "user_id", nullable = false, length = 40)
     public String getUserId() {
         return userId;
     }
@@ -72,7 +72,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "gender", nullable = false, length = 1)
+    @Column(name = "gender", nullable = true, length = 1)
     public String getGender() {
         return gender;
     }
@@ -134,7 +134,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "role", nullable = false, length = 12)
+    @Column(name = "role", nullable = false, length = 30)
     public String getRole() {
         return role;
     }

@@ -24,7 +24,7 @@ public class HotelInfo {
     private Integer comments;
 
     @Id
-    @Column(name = "hotel_id", nullable = false, length = 20)
+    @Column(name = "hotel_id", nullable = false, length = 40)
     public String getHotelId() {
         return hotelId;
     }

@@ -17,7 +17,7 @@ public class Episode {
     private String value;
 
     @Id
-    @Column(name = "episode_id", nullable = false, length = 20)
+    @Column(name = "episode_id", nullable = false, length = 40)
     public String getEpisodeId() {
         return episodeId;
     }

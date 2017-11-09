@@ -17,7 +17,7 @@ public class HotelComment {
     private Integer level;
 
     @Id
-    @Column(name = "comment_id", nullable = false, length = 20)
+    @Column(name = "comment_id", nullable = false, length = 40)
     public String getCommentId() {
         return commentId;
     }

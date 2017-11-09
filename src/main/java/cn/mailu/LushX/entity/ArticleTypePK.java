@@ -14,7 +14,7 @@ public class ArticleTypePK implements Serializable {
     private String articleId;
     private String typeId;
 
-    @Column(name = "article_id", nullable = false, length = 20)
+    @Column(name = "article_id", nullable = false, length = 40)
     @Id
     public String getArticleId() {
         return articleId;

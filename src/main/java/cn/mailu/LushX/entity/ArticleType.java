@@ -16,7 +16,7 @@ public class ArticleType {
     private String typeId;
 
     @Id
-    @Column(name = "article_id", nullable = false, length = 20)
+    @Column(name = "article_id", nullable = false, length = 40)
     public String getArticleId() {
         return articleId;
     }

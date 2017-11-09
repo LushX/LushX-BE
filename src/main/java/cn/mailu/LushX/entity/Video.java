@@ -20,7 +20,7 @@ public class Video {
     private String other;
 
     @Id
-    @Column(name = "video_id", nullable = false, length = 20)
+    @Column(name = "video_id", nullable = false, length = 40)
     public String getVideoId() {
         return videoId;
     }
