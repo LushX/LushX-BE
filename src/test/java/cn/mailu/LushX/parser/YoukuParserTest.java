@@ -1,6 +1,7 @@
 package cn.mailu.LushX.parser;
 
 import cn.mailu.LushX.parser.site.QqParser;
+import cn.mailu.LushX.parser.site.YoukuParser;
 import org.junit.Test;
 
 /**
@@ -11,7 +12,7 @@ import org.junit.Test;
  */
 public class YoukuParserTest {
 
-    QqParser.YoukuParser youkuParser=new QqParser.YoukuParser();
+    YoukuParser youkuParser=new YoukuParser();
 
 
     @Test

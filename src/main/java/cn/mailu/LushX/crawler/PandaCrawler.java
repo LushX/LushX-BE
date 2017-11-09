@@ -46,13 +46,15 @@ public class PandaCrawler {
         Elements elements = document.select("li.video-list-item.video-no-tag");
         for (Element element : elements) {
             Video videoDTO = new Video();
-            String title = element.select("div.video-info span.video-nickname").text();
+            String  other= element.select("div.video-info span.video-title").text();
+            String  title= element.select("div.video-info span.video-nickname").text();
             String image = element.select("img.video-img").attr("data-original");
             image = image.replace("http:", "");
             String url = PANDA + element.attr("data-id");
             videoDTO.setTitle(title);
             videoDTO.setImage(image);
             videoDTO.setValue(url);
+            videoDTO.setOther(other);
             lives.add(videoDTO);
             if (lives.size() > 48) {
                 break;
