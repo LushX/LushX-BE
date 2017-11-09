@@ -40,10 +40,12 @@ public class JianShuCrawler {
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void start(){
         logger.info("==================JianshuCrawler start===============");
+        List<Document> documents = new ArrayList<>();
         for (int i = 1; i < 10; i++){
-            Document document = JsoupUtils.getDocWithPC(JIANSHU_TRENDING_URL + String.valueOf(i)); // 拼接文章列表url
-            saveArticleToRedis(document);
+            Document document = JsoupUtils.getDocWithPC(JIANSHU_TRENDING_URL + String.valueOf(1)); // 拼接文章列表url
+            documents.add(document);
         }
+        saveArticleToRedis(documents);
         logger.info("==================JianshuCrawler stop===============");
     }
 
@@ -51,15 +53,18 @@ public class JianShuCrawler {
     /**
      * 爬简书 将对象存入redis
      */
-    private void saveArticleToRedis(Document document) {
-        Elements videoElement = document.select(".wrap-img");
+    private void saveArticleToRedis(List<Document> documents) {
         List<Article> articleList = new ArrayList();
+        for (Document document : documents) {
+            Elements videoElement = document.select(".wrap-img");
 
-        for(Element element:videoElement){
-            String realUrl = JIANSHU_URL + element.attr("href");   // 拼接文章详情url
-            Article article = getJianhuFromPcDocument(realUrl);
-            articleList.add(article);
+            for(Element element:videoElement){
+                String realUrl = JIANSHU_URL + element.attr("href");   // 拼接文章详情url
+                Article article = getJianhuFromPcDocument(realUrl);
+                articleList.add(article);
+            }
         }
+
         String key = redisSourceManager.JIANSHU_TRENDING_KEY + "_" + TAG;
         redisSourceManager.saveArticle(key, articleList);
     }
@@ -73,17 +78,19 @@ public class JianShuCrawler {
     private Article getJianhuFromPcDocument(String url) {
 
         Document document= JsoupUtils.getDocWithPC(url);
+
         Article article = new Article();
 
         // 设置article属性
         article.setTitle(document.select("h1.title").text());
         article.setAuthor(document.select("span.name a").text());
-        article.setTime(document.select("span.publish-time").text());
+        article.setTime(document.select("span.publish-time").text().replace("*",""));
         article.setContent(document.select("div.show-content").toString());
         article.setImage(document.select("a.avatar img").attr("src").toString());
+        article.setCss(document.getElementsByTag("meta").toString() + "\n"
+                        + document.getElementsByTag("link"));
 
         return article;
     }
-
 
 }
