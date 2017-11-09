@@ -55,7 +55,7 @@ public class VideoAPI {
     /**
      * 解析腾讯视频片段
      */
-    @GetMapping("/api/video/qq/{file}/{index}")
+    @GetMapping("/qq/{file}/{index}")
     @ApiOperation(value = "获取腾讯视频片段")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "fileName", value = "文件名",required = true),
@@ -66,7 +66,7 @@ public class VideoAPI {
     }
 
 
-    @GetMapping("/api/video/{type}")
+    @GetMapping("/{type}")
     public List<Video> videos(@PathVariable("type") String type){
         return redisSourceManager.getVideosByKeyAndTag(redisSourceManager.VIDEOS_KEY, type);
     }
