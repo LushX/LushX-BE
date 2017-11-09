@@ -18,6 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.annotation.Resource;
 import javax.servlet.FilterChain;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,9 +69,11 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        String token=jwtUtils.generateAccessToken((UserDetails) authResult.getPrincipal());
-        Map<String,String> map= Maps.newHashMap();
+        UserDetails user=(UserDetails) authResult.getPrincipal();
+        String token=jwtUtils.generateAccessToken(user);
+        Map<String,Object> map= Maps.newHashMap();
         map.put(token_header,"Bearer "+token);
+        map.put("info",user);
         ObjectMapper mapper=new ObjectMapper();
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().print(mapper.writeValueAsString(ServerResponse.createBySuccess(map)));

@@ -25,6 +25,7 @@ public final class JWTUserFactory{
                 user.getUserId(),
                 user.getUsername(),
                 user.getPassword(),
+                user.getHeadImg(),
                 mapToGrantedAuthorities(user.getRole())
         );
     }

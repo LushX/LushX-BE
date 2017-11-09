@@ -30,6 +30,7 @@ public class JWTUtils {
     public static final String ROLE_REFRESH_TOKEN = "ROLE_REFRESH_TOKEN";
 
     private static final String CLAIM_KEY_USER_ID = "user_id";
+    private static final String CLAIM_KEY_HEAD_IMG = "head_image";
     private static final String CLAIM_KEY_AUTHORITIES = "scope";
 /*    private static final String CLAIM_KEY_ACCOUNT_ENABLED = "enabled";
     private static final String CLAIM_KEY_ACCOUNT_NON_LOCKED = "non_locked";
@@ -51,14 +52,15 @@ public class JWTUtils {
         JWTUserDetails user;
         try {
             final Claims claims=getClaimsFromToken(token);
-           String userId = getUserIdFromToken(token);
+            String userId = getUserIdFromToken(token);
+            String headImg=getHeadImgFromToken(token);
             String username=claims.getSubject();
             List<GrantedAuthority> authorities =AuthorityUtils.commaSeparatedStringToAuthorityList((String) claims.get(CLAIM_KEY_AUTHORITIES));
            /* boolean account_enabled = (Boolean) claims.get(CLAIM_KEY_ACCOUNT_ENABLED);
             boolean account_non_locked = (Boolean) claims.get(CLAIM_KEY_ACCOUNT_NON_LOCKED);
             boolean account_non_expired = (Boolean) claims.get(CLAIM_KEY_ACCOUNT_NON_EXPIRED);*/
 
-            user = new JWTUserDetails(userId, username, "password",  authorities);
+            user = new JWTUserDetails(userId, username,headImg, "password",  authorities);
         }catch (Exception e){
             logger.error("getUserFromToken error");
             user=null;
@@ -127,6 +129,17 @@ public class JWTUtils {
         return userId;
     }
 
+    private String getHeadImgFromToken(String token) {
+        String headImg;
+        try {
+            final Claims clamis=getClaimsFromToken(token);
+            headImg= (String) clamis.get(CLAIM_KEY_HEAD_IMG);
+        }catch (Exception e){
+            headImg=null;
+        }
+        return headImg;
+    }
+
     private Claims getClaimsFromToken(String token){
         Claims claims;
         try {
@@ -172,6 +185,7 @@ public class JWTUtils {
     private Map<String,Object> generateClaims(JWTUserDetails user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USER_ID, user.getUserId());
+        claims.put(CLAIM_KEY_HEAD_IMG, user.getHeadImg());
         return claims;
     }
 

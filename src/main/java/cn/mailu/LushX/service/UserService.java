@@ -16,4 +16,6 @@ public interface UserService extends BaseService<User> {
     ServerResponse<String> register(User user);
 
     Page<User> findAll(Pageable pageable);
+
+    User findByUsername(String username);
 }

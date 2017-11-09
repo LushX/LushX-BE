@@ -16,9 +16,10 @@ public class JWTUserDetails implements UserDetails {
     private String userId;
     private String username;
     private String password;
+    private String headImg;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public JWTUserDetails(String userId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public JWTUserDetails(String userId, String username, String password,String headImg, Collection<? extends GrantedAuthority> authorities) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -65,9 +66,14 @@ public class JWTUserDetails implements UserDetails {
         return true;
     }
 
-    @JsonIgnore
+
     public String getUserId() {
         return userId;
+    }
+
+
+    public String getHeadImg() {
+        return headImg;
     }
 }
 

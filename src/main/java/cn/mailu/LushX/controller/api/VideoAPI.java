@@ -67,6 +67,8 @@ public class VideoAPI {
 
 
     @GetMapping("/{type}")
+    @ApiOperation(value = "获取分类排行榜视频")
+    @ApiImplicitParam(name = "type",value = "视频分类",required = true)
     public List<Video> videos(@PathVariable("type") String type){
         return redisSourceManager.getVideosByKeyAndTag(redisSourceManager.VIDEOS_KEY, type);
     }

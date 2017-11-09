@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -29,14 +30,8 @@ public class IndexController {
 
     private static Logger logger= LoggerFactory.getLogger(IndexController.class);
 
-
-
     @Resource
     private  RedisSourceManager redisSourceManager ;
-
-    @Autowired
-    private UserService userService;
-
 
     @ApiOperation(value="video首页", notes="video首页")
     @GetMapping("/video")
@@ -64,18 +59,5 @@ public class IndexController {
         return ServerResponse.createBySuccess(articleList);
     }
 
-    @ApiOperation(value="注册用户", notes="根据User对象创建用户")
-    @ApiImplicitParam(name = "user", value = "只需要username和password字段", required = true, dataType = "User")
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public ServerResponse<String> register(@RequestBody User user){
-        logger.info(user.getGender());
-        logger.info(user.getUsername());
-        return userService.register(user);
-    }
 
-    @ApiOperation(value="用户登录")
-    @ApiImplicitParam(name = "user", value = "只需要username和password字段", required = true, dataType = "User")
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public  void login(@RequestBody User user){
-    }
 }
