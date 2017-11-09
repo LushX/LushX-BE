@@ -34,8 +34,8 @@ public class UserManageController {
 
     @ApiOperation(value="获取用户", notes="获取用户")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum", value = "第几页默认0", required = false),
-            @ApiImplicitParam(name = "pageSize", value = "页大小默认10", required = false)
+            @ApiImplicitParam(name = "pageNum", value = "第几页",defaultValue = "0",required = false),
+            @ApiImplicitParam(name = "pageSize", value = "页大小",defaultValue = "10",required = false)
     })
     @GetMapping("/")
     public ServerResponse<Page<User>> getUser(@RequestParam(value = "pageNum",defaultValue ="0") int pageNum,

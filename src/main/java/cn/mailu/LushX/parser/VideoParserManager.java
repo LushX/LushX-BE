@@ -42,7 +42,7 @@ public class VideoParserManager implements ParserManager {
         logger.info("Parser key: " + key);
         Parser parser = this.getParser(key);
         if (parser == null) {
-            throw new RuntimeException();
+            throw new LushXException("asd");
         }
         return parser.parse(url);
     }

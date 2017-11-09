@@ -10,7 +10,7 @@
           <Icon class="icon-refresh" type="android-refresh"></Icon>
         </button>
       </Col>
-      <Col v-for="(item, idx) in randomAnimationList" :key="idx" :xs="12" :sm="6" :md="4" :lg="4" class="animation-container">
+      <Col v-for="(item, idx) in randomAnimationList" :key="idx" :xs="8" :sm="6" :md="4" :lg="4" class="animation-container">
         <div>
           <div class="animation-item">
             <div class="shadow-des">
@@ -183,7 +183,38 @@
     }
   }
 
+  @media (min-width: 445px) and (max-width: 768px) {
+    .title-container {
+      padding-left: 3px;
+      .refresh {
+        padding-right: 3px;
+      }
+    }
+    .animation-item {
+      margin-left: 3px;
+      margin-right: 3px;
+    }
+    .animation-btn {
+      margin-left: 3px;
+      margin-right: 3px;
+    }
+  }
+
   @media (max-width: 445px) {
+    .title-container {
+      padding-left: 3px;
+      .refresh {
+        padding-right: 3px;
+      }
+    }
+    .animation-item {
+      margin-left: 3px;
+      margin-right: 3px;
+    }
+    .animation-btn {
+      margin-left: 3px;
+      margin-right: 3px;
+    }
     .container {
       padding-top: 50px;
     }

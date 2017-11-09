@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Message } from 'iview'
 axios.defaults.timeout = 1000000; //响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/json' //通信格式
-axios.defaults.baseURL = 'https://easy-mock.com/mock/5a0103fca6bee23c9c2a4a7b/api/v1' //配置接口地址
+axios.defaults.baseURL = 'http://139.224.135.245:8080/lushx' //配置接口地址
 // axios.defaults.baseURL = '' //配置接口地址
 
 export default {
