@@ -1,24 +1,36 @@
 <template lang="html">
-  <Menu mode="horizontal" class="header" theme="primary" active-name="1" @on-select="onSelect">
-    <div class="lushx-logo">
-      <a href="/">LushX</a>
-    </div>
-    <li class="nav-item">
-      <a class="lushx-link login-link">登录</a>
-    </li>
-    <li class="nav-item">
-      <a class="lushx-link register-link">注册</a>
-    </li>
-  </Menu>
+  <div>
+    <Menu mode="horizontal" class="header" theme="primary" active-name="1" @on-select="onSelect">
+      <div class="lushx-logo">
+        <a href="/">LushX</a>
+      </div>
+      <li class="nav-item" @click="auth()">
+        <a class="lushx-link login-link">登录</a>
+      </li>
+    </Menu>
+    <auth-modal v-model="showAuthModal"></auth-modal>
+  </div>
 </template>
 
 
 <script>
+  import AuthModal from '~/components/AuthModal'
   export default {
     name: "Header",
+    data() {
+      return {
+        showAuthModal: false
+      }
+    },
+    components: {
+      AuthModal
+    },
     methods: {
       onSelect(value) {
         console.log(value)
+      },
+      auth() {
+        this.showAuthModal = !this.showAuthModal
       }
     }
   }

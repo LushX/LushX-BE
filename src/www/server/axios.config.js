@@ -15,6 +15,7 @@ export default {
           resolve(data.data.data)
         } else {
           Message.error(data.data.msg)
+          resolve(data.data.data)          
         }
       }).catch((data) => {
         reject(data)

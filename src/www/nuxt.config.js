@@ -34,7 +34,8 @@ module.exports = {
      */
     vendor: [
       'axios',
-      'lodash'
+      'lodash',
+      'iview'
     ]
     /*
     ** Run ESLint on save
