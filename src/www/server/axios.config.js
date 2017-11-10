@@ -10,16 +10,27 @@ export default {
   // POST请求
   post({...obj}) {
     return new Promise((resolve,reject) => {
-      axios.post(obj.url, obj.data).then((data) => {
-        if(data.data.status === 0){
-          resolve(data.data.data)
-        } else {
-          Message.error(data.data.msg)
-          resolve(data.data.data)          
-        }
-      }).catch((data) => {
-        reject(data)
-      })
+      if(obj.url === '/login' || obj.url === '/register') {
+        axios.post(obj.url, obj.data).then((data) => {
+          if(data.data.status > 10) {
+            Message.error(data.data.msg)
+          } else {
+            resolve(data.data)
+          }
+        }).catch((data) => {
+          reject(data)
+        })
+      } else {
+        axios.post(obj.url, obj.data).then((data) => {
+          if(data.data.status === 0) {
+            resolve(data.data)
+          } else {
+            Message.error(data.data.msg)
+          }
+        }).catch((data) => {
+          reject(data)
+        })
+      }
     })
   },
 
@@ -27,7 +38,7 @@ export default {
   get({...obj}) {
     return new Promise((resolve,reject) => {
       axios.get(obj.url, obj.data).then((data) => {
-        if(data.data.status === 0){
+        if(data.data.status === 0) {
           resolve(data.data.data)
         } else {
           Message.error(data.data.msg)
