@@ -1,13 +1,16 @@
 package cn.mailu.LushX.crawler;
 
+import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.constant.VideoTypeEnum;
 import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.JsoupUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.ArrayList;
@@ -27,14 +30,13 @@ public class YoukuCrawler {
     private final static String YK_DM_URL = "http://list.youku.com/category/show/c_100.html";
     private static final String TAG = "YOUKU";
 
-    private final RedisSourceManager redisSourceManager;
+    @Autowired
+    private RedisService redisService;
+
 
     private static Logger logger= LoggerFactory.getLogger(YoukuCrawler.class);
 
 
-    public YoukuCrawler(RedisSourceManager redisSourceManager) {
-        this.redisSourceManager = redisSourceManager;
-    }
 
 
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
@@ -69,8 +71,8 @@ public class YoukuCrawler {
     }
 
     private void saveVideosToRedis(Document document, int videoType) {
-        String key = redisSourceManager.VIDEOS_KEY + "_" + videoType;
+        String key = RedisKey.VIDEOS_KEY + "_" + videoType;
         logger.info("资源类型 ：" + videoType);
-        redisSourceManager.saveVideos(key, getYKVideosFromPcDocument(document));
+        redisService.saveByKey(key, getYKVideosFromPcDocument(document));
     }
 }
