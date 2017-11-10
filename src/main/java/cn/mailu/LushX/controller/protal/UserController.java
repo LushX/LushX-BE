@@ -92,9 +92,12 @@ public class UserController {
     @ApiOperation(value="用户首页", notes="用户首页")
     @GetMapping("/u")
     public ServerResponse<UserVO> userspace(@AuthenticationPrincipal JWTUserDetails jwtuser){
-        User user=userService.selectById(jwtuser.getUserId());
-        UserVO userVo=toUserVO(user);
-        return ServerResponse.createBySuccess(userVo);
+        if(jwtuser!=null){
+            User user=userService.selectById(jwtuser.getUserId());
+            UserVO userVo=toUserVO(user);
+            return ServerResponse.createBySuccess(userVo);
+        }
+        return ServerResponse.createByErrorMessage("未登录");
     }
 
     @ApiOperation(value="更新用户头像", notes="更新用户头像")
