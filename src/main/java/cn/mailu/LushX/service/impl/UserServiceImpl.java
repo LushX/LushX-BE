@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByErrorMessage("用户名已存在");
         }
         user.setRole("ROLE_USER");
+        //todo 用户默认头像
         user.setUserId(UUID.randomUUID().toString());
         user.setMd5(MD5Utils.MD5EncodeUtf8(user.getUsername()));
         //MD5加密
@@ -76,6 +77,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public User save(User user) {
+       return userRepository.save(user);
     }
 
 }

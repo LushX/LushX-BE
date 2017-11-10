@@ -18,4 +18,6 @@ public interface UserService extends BaseService<User> {
     Page<User> findAll(Pageable pageable);
 
     User findByUsername(String username);
+
+    User save(User user);
 }

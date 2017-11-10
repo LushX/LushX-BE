@@ -4,6 +4,7 @@ import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.entity.Article;
 import cn.mailu.LushX.entity.User;
 import cn.mailu.LushX.security.JWTUserDetails;
+import cn.mailu.LushX.service.FileService;
 import cn.mailu.LushX.service.UserService;
 import cn.mailu.LushX.vo.UserVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +39,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private FileService fileService;
+
     @ApiOperation(value="注册用户", notes="根据User对象创建用户")
     @ApiImplicitParam(name = "user", value = "只需要username和password字段", required = true, dataType = "User")
     @RequestMapping(value = "/register",method = RequestMethod.POST)
@@ -54,10 +59,29 @@ public class UserController {
 
     @ApiOperation(value="用户首页", notes="用户首页")
     @GetMapping("/u")
-    public ServerResponse<UserVO> articleIndex(@AuthenticationPrincipal JWTUserDetails jwtuser){
+    public ServerResponse<UserVO> userspace(@AuthenticationPrincipal JWTUserDetails jwtuser){
         User user=userService.selectById(jwtuser.getUserId());
         UserVO userVo=toUserVO(user);
         return ServerResponse.createBySuccess(userVo);
+    }
+
+    @ApiOperation(value="更新用户头像", notes="更新用户头像")
+    @ApiImplicitParam(name = "imgStr", value = "base64", required = true)
+    @PutMapping("/u/avatar")
+    public ServerResponse updateAvatar(@AuthenticationPrincipal JWTUserDetails jwtuser,@RequestBody String imgStr ){
+        logger.info(imgStr);
+        Map map=fileService.uploadImage(imgStr);
+        if(((int)map.get("status")==0)){
+            String headImg= (String) map.get("message");
+            logger.info("图片地址{}",headImg);
+            User user=userService.selectById(jwtuser.getUserId());
+            user.setHeadImg(headImg);
+            if(userService.save(user)==null){
+                return ServerResponse.createByErrorMessage("更新用户头像错误");
+            }
+            return ServerResponse.createBySuccess(headImg);
+        }
+        return ServerResponse.createByErrorMessage("图片上传错误");
     }
 
     //生成UserVO

@@ -2,6 +2,8 @@ package cn.mailu.LushX.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 /**
  * @Author: NULL
  * @Description:
@@ -10,4 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface FileService {
 
     String upload(MultipartFile file, String path);
+
+    public Map uploadImage(String imgStr);
 }
