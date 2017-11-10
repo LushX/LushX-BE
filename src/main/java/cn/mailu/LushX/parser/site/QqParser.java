@@ -9,7 +9,6 @@ import cn.mailu.LushX.parser.Parser;
 import cn.mailu.LushX.util.JsoupUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.xml.internal.ws.api.model.ExceptionType;
 import org.apache.commons.lang.math.RandomUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
