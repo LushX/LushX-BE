@@ -22,7 +22,9 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -51,8 +53,14 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         try {
             // 反序列化问题,前台需要post和JSON.strify
-            User user = new ObjectMapper()
-                    .readValue(request.getInputStream(), User.class);
+            /*User user = new ObjectMapper()
+                    .readValue(request.getInputStream(), User.class);*/
+            //登录ajax失效
+            BufferedReader streamReader = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+            StringBuilder responseStrBuilder = new StringBuilder();
+            String inputStr;
+            while ((inputStr = streamReader.readLine()) != null) responseStrBuilder.append(inputStr);
+            User user = new ObjectMapper().readValue(responseStrBuilder.toString(),User.class);
             logger.info(user.getPassword());
             logger.info(user.getUsername());
             return getAuthenticationManager().authenticate(
