@@ -68,8 +68,12 @@ public class UserController {
     @ApiImplicitParam(name = "user", value = "只需要username和password字段", required = true, dataType = "User")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ServerResponse login( @RequestBody User user){
-        User userNew=new User();
-        if((userNew=userService.findByUsernameAndPassword(user.getUsername(), MD5Utils.MD5EncodeUtf8(user.getPassword())))!=null){
+        User userNew=null;
+        logger.info("username:{}",user.getUsername());
+        logger.info("password:{}",user.getPassword());
+        logger.info("password:{}",MD5Utils.MD5EncodeUtf8(user.getPassword()));
+        userNew=userService.findByUsernameAndPassword(user.getUsername(), MD5Utils.MD5EncodeUtf8(user.getPassword()));
+        if(userNew!=null){
             String token= null;
             try {
                 token = jwtUtils.generateAccessToken(JWTUserFactory.create(userNew));
@@ -110,6 +114,20 @@ public class UserController {
             return ServerResponse.createBySuccess(headImg);
         }
         return ServerResponse.createByErrorMessage("图片上传错误");
+    }
+
+    @ApiOperation(value="更新密码", notes="更新密码")
+    @ApiImplicitParam(name = "password", value = "password", required = true)
+    @PutMapping("/u/password")
+    public ServerResponse updateUser(@AuthenticationPrincipal JWTUserDetails jwtuser,@RequestBody String password ){
+        User user=userService.selectById(jwtuser.getUserId());
+        logger.info(user.getUsername());
+        logger.info("password:{}",password);
+        user.setPassword(MD5Utils.MD5EncodeUtf8(password));
+        if(userService.save(user)!=null){
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByErrorMessage("更新密码失败");
     }
 
     //生成UserVO
