@@ -1,7 +1,6 @@
 package cn.mailu.LushX.security;
 
 import cn.mailu.LushX.fliter.JWTAuthenticationFilter;
-import cn.mailu.LushX.fliter.JWTLoginFilter;
 import cn.mailu.LushX.util.JWTUtils;
 import cn.mailu.LushX.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +57,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/*").permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**")
                 .permitAll()
-                .antMatchers(HttpMethod.POST,"/user/register").permitAll()
                 .antMatchers("/manage/**").hasRole("ADMIN") // 需要相应的角色才能访问
                  //允许对于网站静态资源的无授权访问
                 .antMatchers(
@@ -78,9 +76,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 禁用缓存
         http.headers().cacheControl();
-        // 添加一个过滤器 所有访问 /login 的请求交给 JWTLoginFilter 来处理
-        http.addFilterBefore(jwtLoginFilterBean(),
-                UsernamePasswordAuthenticationFilter.class);
         // 添加JWT filter
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
         //添加未授权处理
@@ -95,10 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JWTAuthenticationFilter();
     }
 
-    @Bean
-    public JWTLoginFilter jwtLoginFilterBean() throws Exception {
-        return new JWTLoginFilter("/login",authenticationManager());
-    }
+
 
     @Bean
     public AuthenticationEntryPoint getAuthenticationEntryPoint(){

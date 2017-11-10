@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Map;
 import java.util.UUID;
 
@@ -76,6 +74,11 @@ public class FileServiceImpl implements FileService {
                     b[i] += 256;
                 }
             }
+            String imgFilePath = "E:\\222.jpg";// 新生成的图片
+            OutputStream out = new FileOutputStream(imgFilePath);
+            out.write(b);
+            out.flush();
+            out.close();
             //默认不指定key的情况下，以文件内容的hash值作为文件名
             String key = null;
             //构造一个带指定Zone对象的配置类

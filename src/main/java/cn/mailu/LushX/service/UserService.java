@@ -20,4 +20,6 @@ public interface UserService extends BaseService<User> {
     User findByUsername(String username);
 
     User save(User user);
+
+    User findByUsernameAndPassword(String username, String password);
 }
