@@ -37,7 +37,7 @@ public class UserManageController {
             @ApiImplicitParam(name = "pageNum", value = "第几页",defaultValue = "0",required = false),
             @ApiImplicitParam(name = "pageSize", value = "页大小",defaultValue = "10",required = false)
     })
-    @GetMapping()
+    @GetMapping
     public ServerResponse<Page<User>> getUser(@RequestParam(value = "pageNum",defaultValue ="0") int pageNum,
                                               @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
         Pageable pageable=new PageRequest(pageNum,pageSize);

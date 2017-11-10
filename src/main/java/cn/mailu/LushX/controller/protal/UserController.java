@@ -98,15 +98,15 @@ public class UserController {
     }
 
     @ApiOperation(value="更新用户头像", notes="更新用户头像")
-    @ApiImplicitParam(name = "imgStr", value = "base64", required = true)
+    @ApiImplicitParam(name = "headImg", value = "base64", required = true)
     @PutMapping("/u/avatar")
-    public ServerResponse updateAvatar(@AuthenticationPrincipal JWTUserDetails jwtuser,@RequestBody String imgStr ){
-        logger.info(imgStr);
-        Map map=fileService.uploadImage(imgStr);
+    public ServerResponse updateAvatar(@AuthenticationPrincipal JWTUserDetails jwtuser,@RequestBody User user ){
+
+        Map map=fileService.uploadImage(user.getHeadImg());
         if(((int)map.get("status")==0)){
             String headImg= (String) map.get("message");
             logger.info("图片地址{}",headImg);
-            User user=userService.selectById(jwtuser.getUserId());
+            user.setUserId(jwtuser.getUserId());
             user.setHeadImg(headImg);
             if(userService.save(user)==null){
                 return ServerResponse.createByErrorMessage("更新用户头像错误");
@@ -119,11 +119,9 @@ public class UserController {
     @ApiOperation(value="更新密码", notes="更新密码")
     @ApiImplicitParam(name = "password", value = "password", required = true)
     @PutMapping("/u/password")
-    public ServerResponse updateUser(@AuthenticationPrincipal JWTUserDetails jwtuser,@RequestBody String password ){
-        User user=userService.selectById(jwtuser.getUserId());
-        logger.info(user.getUsername());
-        logger.info("password:{}",password);
-        user.setPassword(MD5Utils.MD5EncodeUtf8(password));
+    public ServerResponse updateUser(@AuthenticationPrincipal JWTUserDetails jwtuser,@RequestBody User user ){
+        user.setUserId(jwtuser.getUserId());
+        user.setPassword(MD5Utils.MD5EncodeUtf8(user.getPassword()));
         if(userService.save(user)!=null){
             return ServerResponse.createBySuccess();
         }
