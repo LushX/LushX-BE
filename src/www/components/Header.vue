@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <Menu mode="horizontal" class="header" theme="primary" active-name="1" @on-select="onSelect">
+    <Menu mode="horizontal" class="header" theme="primary" active-name="1">
       <div class="lushx-logo">
         <a href="/">LushX</a>
       </div>
@@ -26,9 +26,6 @@
       AuthModal
     },
     methods: {
-      onSelect(value) {
-        console.log(value)
-      },
       auth() {
         this.showAuthModal = !this.showAuthModal
       }
