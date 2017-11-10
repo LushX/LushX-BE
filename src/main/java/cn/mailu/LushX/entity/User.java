@@ -1,6 +1,7 @@
 package cn.mailu.LushX.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @Ahtuor: xuzhenya
@@ -10,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "user", schema = "LushX", catalog = "")
-public class User {
+public class User implements Serializable{
     private String userId;  //用户Id
     private String username;  //用户名
     private String password;  //密码

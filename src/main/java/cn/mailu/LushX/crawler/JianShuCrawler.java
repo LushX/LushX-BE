@@ -1,12 +1,15 @@
 package cn.mailu.LushX.crawler;
 
+import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Article;
+import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.JsoupUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -27,12 +30,8 @@ public class JianShuCrawler {
     private final static String JIANSHU_TRENDING_URL="http://www.jianshu.com/trending/weekly?page=";
     private static final String TAG = "Jianshu";
 
-    private final RedisSourceManager redisSourceManager;
-
-    public JianShuCrawler(RedisSourceManager redisSourceManager) {
-        this.redisSourceManager = redisSourceManager;
-    }
-
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 每隔1天，爬简书7日热门
@@ -65,8 +64,8 @@ public class JianShuCrawler {
             }
         }
 
-        String key = redisSourceManager.JIANSHU_TRENDING_KEY + "_" + TAG;
-        redisSourceManager.saveArticle(key, articleList);
+        String key = RedisKey.JIANSHU_TRENDING_KEY + "_" + TAG;
+        redisService.saveByKey(key, articleList);
     }
 
 

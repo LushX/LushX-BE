@@ -1,4 +1,4 @@
-package cn.mailu.LushX;
+package cn.mailu.LushX.config;
 
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Configuration;

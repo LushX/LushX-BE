@@ -1,6 +1,8 @@
-package cn.mailu.LushX.security;
+package cn.mailu.LushX.config;
 
 import cn.mailu.LushX.fliter.JWTAuthenticationFilter;
+import cn.mailu.LushX.security.RestAuthenticationAccessDeniedHandler;
+import cn.mailu.LushX.security.RestAuthenticationEntryPoint;
 import cn.mailu.LushX.util.JWTUtils;
 import cn.mailu.LushX.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;

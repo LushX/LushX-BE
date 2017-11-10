@@ -1,6 +1,7 @@
 package cn.mailu.LushX.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @Ahtuor: xuzhenya
@@ -10,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "episode", schema = "LushX", catalog = "")
-public class Episode {
+public class Episode implements Serializable {
     private String episodeId;
     private String videoId;
     private Integer index;

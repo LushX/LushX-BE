@@ -1,15 +1,19 @@
 package cn.mailu.LushX.crawler;
 
 
+import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.JsoupUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +29,8 @@ public class PandaCrawler {
     private static final String PANDA_ALL = "http://www.panda.tv/all";
     private static final String TAG = "PANDA";
 
-    private final RedisSourceManager redisSourceManager;
-
-    public PandaCrawler(RedisSourceManager redisSourceManager) {
-        this.redisSourceManager = redisSourceManager;
-    }
-
+    @Autowired
+    private RedisService redisService;
     /**
      * 每隔20分钟，爬一次熊猫TV
      */
@@ -60,7 +60,7 @@ public class PandaCrawler {
                 break;
             }
         }
-        String key = redisSourceManager.VIDEO_PREFIx_HOME_LIVE_KEY + "_" + TAG;
-        redisSourceManager.saveVideos(key, lives);
+        String key = RedisKey.VIDEO_PREFIx_HOME_LIVE_KEY + "_" + TAG;
+        redisService.saveByKey(key, lives);
     }
 }

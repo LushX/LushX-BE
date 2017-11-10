@@ -1,11 +1,12 @@
 package cn.mailu.LushX.controller.api;
 
-import cn.mailu.LushX.crawler.RedisSourceManager;
+import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.parser.Parser;
 import cn.mailu.LushX.parser.ParserManager;
 import cn.mailu.LushX.parser.site.QqParser;
+import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.UrlUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,7 +15,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,8 +31,8 @@ public class VideoAPI {
     @Autowired
     private ParserManager parserManager;
 
-    @Resource
-    private RedisSourceManager redisSourceManager;
+    @Autowired
+    private RedisService redisService;
 
     @GetMapping
     @ApiOperation(value = "获取真实播放地址")
@@ -70,6 +70,6 @@ public class VideoAPI {
     @ApiOperation(value = "获取分类排行榜视频")
     @ApiImplicitParam(name = "type",value = "视频分类",required = true)
     public List<Video> videos(@PathVariable("type") String type){
-        return redisSourceManager.getVideosByKeyAndTag(redisSourceManager.VIDEOS_KEY, type);
+        return (List<Video>) redisService.getListByKey(RedisKey.VIDEOS_KEY+"_"+type,Video.class);
     }
 }

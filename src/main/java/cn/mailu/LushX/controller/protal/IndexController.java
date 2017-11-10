@@ -1,10 +1,11 @@
 package cn.mailu.LushX.controller.protal;
 
 import cn.mailu.LushX.common.ServerResponse;
-import cn.mailu.LushX.crawler.RedisSourceManager;
+import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Article;
 import cn.mailu.LushX.entity.User;
 import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.service.UserService;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.*;
@@ -29,19 +30,20 @@ import java.util.Map;
 public class IndexController {
 
     private static Logger logger= LoggerFactory.getLogger(IndexController.class);
+    
+    @Autowired
+    private RedisService redisService;
 
-    @Resource
-    private  RedisSourceManager redisSourceManager ;
 
     @ApiOperation(value="video首页", notes="video首页")
     @GetMapping("/video")
     public ServerResponse<Map<String,List<Video>>> videoIndex(){
-        List<Video> carouselPics = redisSourceManager.getVideosByKeyAndTag(redisSourceManager.VIDEO_PREFIX_HOME_CAROUSEL_KEY, redisSourceManager.TAGS[0]);
-        List<Video> lives = redisSourceManager.getVideosByKeyAndTag(redisSourceManager.VIDEO_PREFIX_HOME_RECOMMEND_KEY, redisSourceManager.TAGS[0]);
-        List<Video> tvs = redisSourceManager.getVideosByKeyAndTag(redisSourceManager.VIDEO_PREFIX_HOME_TV_KEY, redisSourceManager.TAGS[0]);
-        List<Video> animations = redisSourceManager.getVideosByKeyAndTag(redisSourceManager.VIDEO_PREFIX_HOME_CARTOON_KEY, redisSourceManager.TAGS[0]);
-        List<Video> movies = redisSourceManager.getVideosByKeyAndTag(redisSourceManager.VIDEO_PREFIX_HOME_MOVIE_KEY, redisSourceManager.TAGS[0]);
-        List<Video> cams = redisSourceManager.getVideosByKeyAndTag(redisSourceManager.VIDEO_PREFIx_HOME_LIVE_KEY, redisSourceManager.TAGS[1]);
+        List<Video> carouselPics = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_CAROUSEL_KEY+"_"+ RedisKey.TAGS[0],Video.class);
+        List<Video> lives = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_RECOMMEND_KEY+"_"+ RedisKey.TAGS[0],Video.class);
+        List<Video> tvs = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_TV_KEY+"_"+ RedisKey.TAGS[0],Video.class);
+        List<Video> animations = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_CARTOON_KEY+"_"+ RedisKey.TAGS[0],Video.class);
+        List<Video> movies = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_MOVIE_KEY+"_"+ RedisKey.TAGS[0],Video.class);
+        List<Video> cams = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIx_HOME_LIVE_KEY+"_"+ RedisKey.TAGS[1],Video.class);
         Map<String,List<Video>> videoList= Maps.newHashMap();
         videoList.put("carousel",carouselPics);
         videoList.put("tv",tvs);
@@ -55,7 +57,7 @@ public class IndexController {
     @ApiOperation(value="article首页", notes="article首页")
     @GetMapping("/article")
     public ServerResponse<List<Article>> articleIndex(){
-        List<Article> articleList = redisSourceManager.getArticlesByKeyAndTag(redisSourceManager.JIANSHU_TRENDING_KEY,redisSourceManager.TAGS[2]);
+        List<Article> articleList = (List<Article>) redisService.getListByKey(RedisKey.JIANSHU_TRENDING_KEY+"_"+RedisKey.TAGS[2],Article.class);
         return ServerResponse.createBySuccess(articleList);
     }
 

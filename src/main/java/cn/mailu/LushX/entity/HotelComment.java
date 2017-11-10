@@ -1,6 +1,7 @@
 package cn.mailu.LushX.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @Ahtuor: xuzhenya
@@ -10,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "hotel_comment", schema = "LushX", catalog = "")
-public class HotelComment {
+public class HotelComment implements Serializable {
     private String commentId;
     private String content;
     private Double avgScore;

@@ -1,13 +1,16 @@
 package cn.mailu.LushX.crawler;
 
 
+import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.JsoupUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -30,11 +33,8 @@ public class QqCrawler {
 
     private static Logger logger= LoggerFactory.getLogger(QqCrawler.class);
 
-    private final RedisSourceManager redisSourceManager;
-
-    public QqCrawler(RedisSourceManager redisSourceManager) {
-        this.redisSourceManager = redisSourceManager;
-    }
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 每隔1小时，爬腾讯视频官网信息
@@ -71,40 +71,40 @@ public class QqCrawler {
             video.setImage(image);
             carouselVideos.add(video);
         }
-        String key = redisSourceManager.VIDEO_PREFIX_HOME_CAROUSEL_KEY + "_" + TAG;
-        redisSourceManager.saveVideos(key, carouselVideos);
+        String key = RedisKey.VIDEO_PREFIX_HOME_CAROUSEL_KEY + "_" + TAG;
+        redisService.saveByKey(key, carouselVideos);
     }
 
     /**
      * 爬腾讯PC站-综艺
      */
     private void saveRecommendsToRedis(Document document) {
-        String key = redisSourceManager.VIDEO_PREFIX_HOME_RECOMMEND_KEY + "_" + TAG;
-        redisSourceManager.saveVideos(key, getVideosFromPhoneDocument(document));
+        String key = RedisKey.VIDEO_PREFIX_HOME_RECOMMEND_KEY + "_" + TAG;
+        redisService.saveByKey(key, getVideosFromPhoneDocument(document));
     }
 
     /**
      * 爬腾讯PC站-电视剧
      */
     private void saveTVsToRedis(Document document) {
-        String key = redisSourceManager.VIDEO_PREFIX_HOME_TV_KEY + "_" + TAG;
-        redisSourceManager.saveVideos(key, getVideosFromPhoneDocument(document));
+        String key = RedisKey.VIDEO_PREFIX_HOME_TV_KEY + "_" + TAG;
+        redisService.saveByKey(key, getVideosFromPhoneDocument(document));
     }
 
     /**
      * 爬腾讯PC站-电影
      */
     private void saveMoviesToRedis(Document document) {
-        String key = redisSourceManager.VIDEO_PREFIX_HOME_MOVIE_KEY + "_" + TAG;
-        redisSourceManager.saveVideos(key, getVideosFromPhoneDocument(document));
+        String key = RedisKey.VIDEO_PREFIX_HOME_MOVIE_KEY + "_" + TAG;
+        redisService.saveByKey(key, getVideosFromPhoneDocument(document));
     }
 
     /**
      * 爬腾讯PC站-动漫
      */
     private void saveCartoonsToRedis(Document document) {
-        String key = redisSourceManager.VIDEO_PREFIX_HOME_CARTOON_KEY + "_" + TAG;
-        redisSourceManager.saveVideos(key, getVideosFromPhoneDocument(document));
+        String key = RedisKey.VIDEO_PREFIX_HOME_CARTOON_KEY + "_" + TAG;
+        redisService.saveByKey(key, getVideosFromPhoneDocument(document));
     }
 
     private List<Video> getVideosFromPhoneDocument(Document document) {
