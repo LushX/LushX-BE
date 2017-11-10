@@ -1,5 +1,6 @@
 package cn.mailu.LushX.crawler;
 
+import cn.mailu.LushX.constant.VideoTypeEnum;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.util.JsoupUtils;
 import org.jsoup.nodes.Document;
@@ -7,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,55 +21,56 @@ import java.util.List;
  */
 public class YoukuCrawler {
 
+    private final static String YK_TV_URL = "http://list.youku.com/category/show/c_97.html";
+    private final static String YK_MOVIE_URL = "http://list.youku.com/category/show/c_96.html";
+    private final static String YK_ZY_URL = "http://list.youku.com/category/show/c_85.html";
+    private final static String YK_DM_URL = "http://list.youku.com/category/show/c_100.html";
+    private static final String TAG = "YOUKU";
+
+    private final RedisSourceManager redisSourceManager;
+
     private static Logger logger= LoggerFactory.getLogger(YoukuCrawler.class);
 
-   // private final static String YK_HOT_VIDEO_URL="http://list.youku.com/category/show/c_91.html";
 
-    private final static String YK_HOT_VIDEO_URL="http://hotels.ctrip.com/hotel/441351.html";
+    public YoukuCrawler(RedisSourceManager redisSourceManager) {
+        this.redisSourceManager = redisSourceManager;
+    }
 
 
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void start(){
 
-        Document ykHot= JsoupUtils.getDocWithPC(YK_HOT_VIDEO_URL);
-
-        getYKVideosFromPcDocument(ykHot);
+        Document ykTv = JsoupUtils.getDocWithPC(YK_TV_URL);
+        Document ykMovie = JsoupUtils.getDocWithPC(YK_MOVIE_URL);
+        Document ykZy = JsoupUtils.getDocWithPC(YK_ZY_URL);
+        Document ykDm = JsoupUtils.getDocWithPC(YK_DM_URL);
+        saveVideosToRedis(ykTv, VideoTypeEnum.YK_TV.getCode());
+        saveVideosToRedis(ykMovie, VideoTypeEnum.YK_MOVIE.getCode());
+        saveVideosToRedis(ykZy, VideoTypeEnum.YK_ZY.getCode());
+        saveVideosToRedis(ykDm, VideoTypeEnum.YK_DM.getCode());
 
     }
 
     private List<Video> getYKVideosFromPcDocument(Document document) {
-
         List<Video> videos = new ArrayList<>();
-
-        Elements videoElement=document.select("li.yk-col4");
-
-        //Element typeElement=document.select("div.item.border ul li.current span").first();
-        Element typeElement=document.select("span.score").first();
-
-        String str=typeElement.toString();
-
-        for(Element element:videoElement){
-
-            Video video=new Video();
-         String quickPicture =element.select("div.p-thumb img").get(0).attr("src");
-         String title=element.select("div.p-thumb a").get(0).attr("title");
-         String playUrl=element.select("div.p-thumb a").get(0).attr("href");
-         String type= typeElement.text();
-         video.setTitle(title);
-         video.setImage(quickPicture);
-         video.setPlayUrl(playUrl);
-         video.setType(type);
-         videos.add(video);
+        Elements videoElements = document.select("li.yk-col4");
+        for (Element element : videoElements) {
+            Video video = new Video();
+            String title = element.select("div.p-thumb a").get(0).attr("title");
+            String image = element.select("img.quic").attr("src").replace("http:", "");
+            String url = "http:" + element.select("div.p-thumb a").get(0).attr("href");
+            video.setTitle(title);
+            video.setImage(image);
+            video.setValue(url);
+            logger.info("YK:" + title);
+            videos.add(video);
         }
-        return null;
+        return videos;
     }
 
-    public static void main(String[] args){
-
-        YoukuCrawler youkuCrawler=new YoukuCrawler();
-
-        youkuCrawler.start();
-
+    private void saveVideosToRedis(Document document, int videoType) {
+        String key = redisSourceManager.VIDEOS_KEY + "_" + videoType;
+        logger.info("资源类型 ：" + videoType);
+        redisSourceManager.saveVideos(key, getYKVideosFromPcDocument(document));
     }
-
-
 }

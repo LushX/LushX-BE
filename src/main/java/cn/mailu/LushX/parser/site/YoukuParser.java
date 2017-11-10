@@ -47,8 +47,6 @@ public class YoukuParser implements Parser<Video> {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode=mapper.readValue(result,JsonNode.class);
         JsonNode videoNode=rootNode.path("data").path("video");
-//        JSONObject json = JSONObject.parseObject(result);
-//        JSONObject videoInfo = json.getJSONObject("data").getJSONObject("video");
         String title = videoNode.findValues("title").toString();
         video.setTitle(title);
         String image = videoNode.findValues("logo").toString();

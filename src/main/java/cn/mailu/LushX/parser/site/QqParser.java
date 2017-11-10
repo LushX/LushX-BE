@@ -1,14 +1,15 @@
 package cn.mailu.LushX.parser.site;
 
+import cn.mailu.LushX.constant.ExceptionTypeEnum;
 import cn.mailu.LushX.crawler.YoukuCrawler;
 import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.exception.LushXException;
 import cn.mailu.LushX.parser.Parser;
 import cn.mailu.LushX.util.JsoupUtils;
-import cn.mailu.LushX.util.UrlUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.xml.internal.ws.api.model.ExceptionType;
 import org.apache.commons.lang.math.RandomUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,11 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -105,7 +102,7 @@ public class QqParser implements Parser<Video> {
         if (matcher.find()) {
             return matcher.group(1);
         }
-        throw new LushXException("Cannot match VID");
+        throw new LushXException(ExceptionTypeEnum.VID_CANNOT_MATCH);
     }
 
     /**
@@ -145,7 +142,6 @@ public class QqParser implements Parser<Video> {
         video.setType("qq");
         video.setOther(size);
     }
-
     /**
      * 片段播放地址
      */

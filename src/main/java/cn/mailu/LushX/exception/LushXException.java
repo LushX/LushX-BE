@@ -1,5 +1,7 @@
 package cn.mailu.LushX.exception;
 
+import cn.mailu.LushX.constant.ExceptionTypeEnum;
+
 /**
  * @Author:Drohe
  * @Description:自定义异常类（继承运行异常类）
@@ -16,6 +18,9 @@ public class LushXException extends RuntimeException {
 
     private LushXException(){
 
+    }
+    public LushXException(ExceptionTypeEnum exceptionEnum){
+        super(exceptionEnum.getMessage());
     }
 
     public String getErrorCode() {
