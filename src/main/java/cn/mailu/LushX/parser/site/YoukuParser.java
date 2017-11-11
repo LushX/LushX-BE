@@ -78,7 +78,7 @@ public class YoukuParser implements Parser<Video> {
     private String getPlayUrl(JsonNode rootNode) {
         List<JsonNode> playList= rootNode.findValue("data").findValues("stream");
         JsonNode bestStream = playList.get(playList.size() - 1);
-        return bestStream.findValue("m3u8_url").textValue();
+        return bestStream.findValue("cdn_url").textValue();
     }
 
 
@@ -95,7 +95,7 @@ public class YoukuParser implements Parser<Video> {
     private String createPlayRequestApi(String vid) {
         Date now = new Date();
         String client_ts = String.valueOf(now.getTime() / 1000);
-        return "http://ups.youku.com/ups/get.json?vid=" + vid + "&ccode=0509&client_ip=0.0.0.0&utid=ajEdEgkDCSQCAXBBq2KFutND&r=TJXNtWdcb6ky/owezfVSubVck3Aq6AsioO5j8WcrPPc%3D&client_ts=" + client_ts;
+        return "http://ups.youku.com/ups/get.json?vid=" + vid + "&ccode=0590&client_ip=0.0.0.0&utid=ajEdEgkDCSQCAXBBq2KFutND&r=TJXNtWdcb6ky/owezfVSubVck3Aq6AsioO5j8WcrPPc%3D&client_ts=" + client_ts;
     }
 
 

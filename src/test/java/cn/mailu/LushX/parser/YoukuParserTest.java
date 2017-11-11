@@ -18,7 +18,7 @@ public class YoukuParserTest {
     @Test
     public void parse() throws Exception {
 
-        youkuParser.parse("http://v.youku.com/v_show/id_XMzExODU5ODU5Mg==.html");
+        youkuParser.parse("m.youku.com/video/id_XMzE0ODcyNDA5Mg==.html");
 
     }
 

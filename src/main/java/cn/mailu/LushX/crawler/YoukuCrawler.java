@@ -41,7 +41,6 @@ public class YoukuCrawler {
 
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void start(){
-
         Document ykTv = JsoupUtils.getDocWithPC(YK_TV_URL);
         Document ykMovie = JsoupUtils.getDocWithPC(YK_MOVIE_URL);
         Document ykZy = JsoupUtils.getDocWithPC(YK_ZY_URL);
