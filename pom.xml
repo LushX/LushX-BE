@@ -149,6 +149,13 @@
 			<version>7.2.0</version>
 		</dependency>
 
+		<!-- 导入pinyin4j -->
+		<dependency>
+			<groupId>com.belerweb</groupId>
+			<artifactId>pinyin4j</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
