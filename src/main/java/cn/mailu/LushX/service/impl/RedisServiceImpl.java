@@ -26,12 +26,6 @@ public class RedisServiceImpl implements RedisService{
     public Object getListByKey(String key,Class<?> clazz){
         ObjectMapper mapper = new ObjectMapper();
         return  redisTemplate.opsForValue().get(key);
-//        try {
-//            return mapper.readValue(cacheValue, mapper.getTypeFactory().constructParametricType(List.class, clazz));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
     }
 
     public void saveByKey(String key,Object object){

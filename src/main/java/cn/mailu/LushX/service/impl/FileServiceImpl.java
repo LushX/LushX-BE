@@ -74,11 +74,6 @@ public class FileServiceImpl implements FileService {
                     b[i] += 256;
                 }
             }
-            String imgFilePath = "E:\\222.jpg";// 新生成的图片
-            OutputStream out = new FileOutputStream(imgFilePath);
-            out.write(b);
-            out.flush();
-            out.close();
             //默认不指定key的情况下，以文件内容的hash值作为文件名
             String key = null;
             //构造一个带指定Zone对象的配置类
@@ -98,7 +93,7 @@ public class FileServiceImpl implements FileService {
             DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
             key=putRet.key;
             map.put("status", 0);
-            map.put("message", "http://oz6lquw8v.bkt.clouddn.com" + key);
+            map.put("message", "http://oz6lquw8v.bkt.clouddn.com/" + key);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("status", 1);
