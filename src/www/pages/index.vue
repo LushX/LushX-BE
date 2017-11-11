@@ -1,5 +1,6 @@
 <template>
   <div>
+    <lushx-header :navText="navText"></lushx-header>
     <section v-if="movieList[0]" class="container">
       <carousel-section :carouselList="carouselList"></carousel-section>
       <movie-section id="movie" :movieList="movieList"></movie-section>
@@ -14,8 +15,11 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+  import storage from 'store'
+  import LushxHeader from '~/components/Header'
   import LushxLoader from '~/components/Loader.vue'
-  import CarouselSection from '~/components/index/CarouselSection'  
+  import CarouselSection from '~/components/index/CarouselSection'
   import MovieSection from '~/components/index/MovieSection'
   import LiveSection from '~/components/index/LiveSection'
   import AnimationSection from '~/components/index/AnimationSection'
@@ -56,6 +60,7 @@
       }
     },
     components: {
+      LushxHeader,
       LushxLoader,
       CarouselSection,
       MovieSection,
@@ -64,6 +69,15 @@
       CamSection,
       TvSection,
       CircleMenu
+    },
+    computed: {
+      ...mapState({
+        authorization: state => state.user.userInfo.Authorization || storage.get('Authorization'),
+        countAlias: 'authorization'
+      }),
+      navText() {
+        return this.authorization ? '个人中心' : '登录'
+      }
     },
     mounted () {
       ajax.get({

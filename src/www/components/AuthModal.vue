@@ -20,6 +20,7 @@
 
 <script>
   import LushxLoader from '~/components/Loader.vue'
+  import { mapActions } from 'vuex'
   import storage from 'store'
   import ajax from '~/server/axios.config'
   import url from '~/server/url'
@@ -54,6 +55,9 @@
       }
     },
     methods: {
+      ...mapActions({
+        initUser: 'initUser'
+      }),
       login() {
         if(!this.model.username.trim().length || this.model.username.length > 20) {
           this.$Message.warning('请输入有效用户名')
@@ -66,9 +70,12 @@
             data: this.model
           }).then((data) => {
             if(data.status === 0) {
+              this.showModal = !this.showModal
               this.showLoader = !this.showLoader
               storage.set('userInfo', data.data.info)
               storage.set('Authorization', data.data.Authorization)
+              this.initUser(data.data)
+              this.$Message.success('登录成功')
             }
             if(data.status === 1) {
               ajax.post({
@@ -80,9 +87,12 @@
                   data: this.model
                 }).then((data) => {
                   if(data.status === 0) {
+                    this.showModal = !this.showModal
                     this.showLoader = !this.showLoader
                     storage.set('userInfo', data.data.info)
                     storage.set('Authorization', data.data.Authorization)
+                    this.initUser(data.data)
+                    this.$Message.success('登录成功')
                   } else {
                     this.$Message.error(data.msg)
                     this.showLoader = !this.showLoader

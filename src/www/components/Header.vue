@@ -5,7 +5,7 @@
         <a href="/">LushX</a>
       </div>
       <li class="nav-item" @click="auth()">
-        <a class="lushx-link login-link">登录</a>
+        <a class="lushx-link login-link">{{ navText }}</a>
       </li>
     </Menu>
     <auth-modal v-model="showAuthModal"></auth-modal>
@@ -15,19 +15,70 @@
 
 <script>
   import AuthModal from '~/components/AuthModal'
+
   export default {
     name: "Header",
+    props: {
+      navText: {
+        type: String,
+        default: '登录'
+      }
+    },
     data() {
       return {
-        showAuthModal: false
+        showAuthModal: false,
+        statusText: '登录'
       }
     },
     components: {
       AuthModal
     },
+    computed: {
+
+      // navText: {
+      //   get() {
+      //     return this.statusText
+      //   },
+      //   set() {
+      //     if(this.authorization && this.$route.path !== '/user') {
+      //       this.statusText = '个人中心'
+      //     } else if(this.authorization && this.$route.path === '/user') {
+      //       this.statusText = '首页'
+      //     } else {
+      //       this.statusText = '登录'
+      //     }
+      //   }
+      // }
+    },
+    // watch: {
+    //   authorization(a) {
+    //     if(this.authorization && this.$route.path !== '/user') {
+    //       this.statusText = '个人中心'
+    //     } else if(this.authorization && this.$route.path === '/user') {
+    //       this.statusText = '首页'
+    //     } else {
+    //       this.statusText = '登录'
+    //     }
+    //   }
+    // },
     methods: {
       auth() {
-        this.showAuthModal = !this.showAuthModal
+        switch (this.navText) {
+          case '登录':
+            this.showAuthModal = !this.showAuthModal
+            break
+
+          case '首页':
+            this.$router.push({ name: 'index' })
+            break
+
+          case '个人中心':
+            this.$router.push({ name: 'user' })
+            break
+
+          default:
+            break
+        }
       }
     }
   }
