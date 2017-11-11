@@ -63,7 +63,7 @@ public class User implements Serializable{
     }
 
     @Basic
-    @Column(name = "head_img", nullable = true, length = 30)
+    @Column(name = "head_img", nullable = true, length = 50)
     public String getHeadImg() {
         return headImg;
     }
