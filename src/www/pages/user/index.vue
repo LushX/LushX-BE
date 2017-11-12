@@ -7,7 +7,7 @@
           <img src="http://image.huangxizhou.com/Wallions277908.jpg" alt="用户头像">
         </div>
         <h1>Trevor</h1>
-        <button class="setting-btn">设置</button>        
+        <button class="setting-btn">设置</button>
       </div>
     </div>
     <div class="collection-container"></div>
@@ -56,7 +56,7 @@
       cursor: pointer;
       transition: .25s;
       &:hover {
-        color: #1abc9c;        
+        color: #1abc9c;
       }
     }
     .user-des {
