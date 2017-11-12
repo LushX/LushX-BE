@@ -33,34 +33,6 @@
     components: {
       AuthModal
     },
-    computed: {
-
-      // navText: {
-      //   get() {
-      //     return this.statusText
-      //   },
-      //   set() {
-      //     if(this.authorization && this.$route.path !== '/user') {
-      //       this.statusText = '个人中心'
-      //     } else if(this.authorization && this.$route.path === '/user') {
-      //       this.statusText = '首页'
-      //     } else {
-      //       this.statusText = '登录'
-      //     }
-      //   }
-      // }
-    },
-    // watch: {
-    //   authorization(a) {
-    //     if(this.authorization && this.$route.path !== '/user') {
-    //       this.statusText = '个人中心'
-    //     } else if(this.authorization && this.$route.path === '/user') {
-    //       this.statusText = '首页'
-    //     } else {
-    //       this.statusText = '登录'
-    //     }
-    //   }
-    // },
     methods: {
       auth() {
         switch (this.navText) {
