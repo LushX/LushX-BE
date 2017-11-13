@@ -51,7 +51,7 @@ module.exports = {
     /**
      * Public path
      */
-    publicPath: './_nuxt/',
+    // publicPath: './_nuxt/',
     /**
      * Build one time
      */

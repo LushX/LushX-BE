@@ -4,6 +4,11 @@
   "description": "A website for providing conveniences and happiness",
   "author": "黄溪舟 <xizhouh@gmail.com>",
   "private": true,
+  "config": {
+    "nuxt": {
+      "host": "159.203.143.73"
+    }
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
