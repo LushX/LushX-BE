@@ -91,17 +91,8 @@
         font-size: 22px;
       }
     }
-    .red {
-      border-bottom: 4px solid #D55745;
-    }
-    .blue {
-      border-bottom: 4px solid #5195D6;
-    }
     .yellow {
       border-bottom: 4px solid #EAC644;
-    }
-    .green {
-      border-bottom: 4px solid #64C87A;
     }
   }
 

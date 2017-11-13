@@ -2,7 +2,7 @@
   <section class="type-section">
     <Row>
       <Col :xs="24" :sm="24" :md="24" :lg="24" class="title-container">
-        <div class="title-line green">
+        <div class="title-line gray">
           <span class="title">电视</span>
         </div>
         <button class="refresh" @click="refresh()">
@@ -93,17 +93,8 @@
         font-size: 22px;
       }
     }
-    .red {
-      border-bottom: 4px solid #D55745;
-    }
-    .blue {
-      border-bottom: 4px solid #5195D6;
-    }
-    .yellow {
-      border-bottom: 4px solid #EAC644;
-    }
-    .green {
-      border-bottom: 4px solid #64C87A;
+    .gray {
+      border-bottom: 4px solid #E4E7EE; 
     }
   }
 

@@ -23,9 +23,7 @@
     "iview": "^2.6.0",
     "lodash": "^4.17.4",
     "nuxt": "^1.0.0-rc11",
-    "push-dir": "^0.4.1",
     "store": "^2.0.12",
-    "vue-circle-menu": "^1.1.1",
     "vue-lazyload": "^1.1.4"
   },
   "devDependencies": {
@@ -39,6 +37,10 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "less": "^2.7.3",
-    "less-loader": "^4.0.5"
+    "less-loader": "^4.0.5",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "github-webhook-handler": "^0.7.0",
+    "push-dir": "^0.4.1"    
   }
 }

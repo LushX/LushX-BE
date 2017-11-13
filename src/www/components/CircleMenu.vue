@@ -1,11 +1,11 @@
 <template lang="html">
   <div>
-    <button @click.native="openMenu" class="btn">
+    <button @click="openMenu" class="btn">
       <Icon type="android-more-vertical"></Icon>
     </button>
     <transition name="move">
       <div class="menu" v-show="showMenu">
-        <button v-for="(item, idx) in circleMenuList" :key="idx" :class="`inner inner-${ idx + 1 }`" @click.native="goAnchor(item.id)">{{ item.value }}</button>
+        <div v-for="(item, idx) in circleMenuList" :key="idx" :class="`inner inner-${ idx + 1 }`" @click="goAnchor(item.id)">{{ item.value }}</div>
       </div>
     </transition>
   </div>
@@ -31,19 +31,6 @@
       },
       goAnchor(selector) {
         let anchor = document.querySelector(selector)
-        // console.log(anchor)
-        // console.log(window.pageYOffset)
-        // document.documentElement.scrollTop = anchor.offsetTop - 60
-        // document.body.scrollTop = anchor.offsetTop
-        // document.body.scrollTop
-        // let anchor = document.querySelector(selector)
-        // let scrollStep = -window.scrollY / (600 / 15),
-        //   let scrollInterval = setInterval(() => {
-        //   if ( window.pageYOffset != selector.pageYOffset ) {
-        //     document.documentElement.scrollTop = anchor.offsetTop - 65
-        //   }
-        //   else clearInterval(scrollInterval)
-        // }, 15)
         document.documentElement.scrollTop = anchor.offsetTop - 65
       }
     }
@@ -133,8 +120,6 @@
     line-height: 30px;
     border-radius: 50%;
     text-align: center;
-    border: none;
-    outline: none;
     color: #fff;
     cursor: pointer;
     transition: all 0.4s;
