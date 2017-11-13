@@ -101,9 +101,9 @@ public class UserController {
     }
 
     @ApiOperation(value="更新用户头像", notes="更新用户头像")
-    @ApiImplicitParam(name = "headImg", value = "base64", required = true)
+    @ApiImplicitParam(name = "user", value = "headImg传base64字符串", required = true,dataType ="User")
     @PutMapping("/u/avatar")
-    public ServerResponse updateAvatar(@AuthenticationPrincipal JWTUserDetails jwtuser,@RequestBody User user ){
+    public ServerResponse updateAvatar(@AuthenticationPrincipal @ApiParam(hidden = true) JWTUserDetails jwtuser,@RequestBody User user ){
 
         Map map=fileService.uploadImage(user.getHeadImg());
         if(((int)map.get("status")==0)){
@@ -119,10 +119,10 @@ public class UserController {
         return ServerResponse.createByErrorMessage("图片上传错误");
     }
 
-    @ApiOperation(value="更新密码", notes="更新密码")
-    @ApiImplicitParam(name = "password", value = "password", required = true)
-    @PutMapping("/u/password")
-    public ServerResponse updateUser(@AuthenticationPrincipal JWTUserDetails jwtuser,@RequestBody User user ){
+    @ApiOperation(value="更新用户信息", notes="更新用户信息")
+    @ApiImplicitParam(name = "user", value = "user",required = true,dataType ="User")
+    @PutMapping("/u")
+    public ServerResponse updateUser(@AuthenticationPrincipal @ApiParam(hidden = true)  JWTUserDetails jwtuser,@RequestBody User user ){
         user.setUserId(jwtuser.getUserId());
         user.setPassword(MD5Utils.MD5EncodeUtf8(user.getPassword()));
         if(userService.save(user)!=null){
