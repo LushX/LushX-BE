@@ -4,11 +4,21 @@
     <section v-if="movieList[0]" class="container">
       <carousel-section :carouselList="carouselList"></carousel-section>
       <section class="tag-mobile">
-        <Tag type="dot" color="green"><span @click="goAnchor('#movie')">电影</span></Tag>
-        <Tag type="dot" color="yellow"><span @click="goAnchor('#live')">直播</span></Tag>
-        <Tag type="dot" color="red"><span @click="goAnchor('#animation')">动漫</span></Tag>
-        <Tag type="dot" color="blue"><span @click="goAnchor('#cam')">综艺</span></Tag>
-        <Tag type="dot"><span @click="goAnchor('#tv')">电视</span></Tag>        
+        <Tag class="tag-item" type="dot" color="green">
+          <a href="#movie">电影</a>
+        </Tag>
+        <Tag class="tag-item" type="dot" color="yellow">
+          <a href="#live">直播</a>
+        </Tag>
+        <Tag class="tag-item" type="dot" color="red">
+          <a href="#animation">动漫</a>
+        </Tag>
+        <Tag class="tag-item" type="dot" color="blue">
+          <a href="#cam">综艺</a>
+        </Tag>
+        <Tag class="tag-item" type="dot">
+          <a href="#tv">电视</a>
+        </Tag>     
       </section>
       <movie-section id="movie" :movieList="movieList"></movie-section>
       <live-section id="live" :liveList="liveList"></live-section>
@@ -88,7 +98,7 @@
     },
     methods: {
       goAnchor(selector) {
-        console.log(11111)
+        alert(111)
         let anchor = document.querySelector(selector)
         document.documentElement.scrollTop = anchor.offsetTop - 65
       }
@@ -133,6 +143,11 @@
       margin-top: 20px;
       text-align: left;
       display: block;
+      .tag-item {
+        a {
+          color: #3D495C;
+        }
+      }
     }
   }
 </style>
