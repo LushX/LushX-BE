@@ -5,7 +5,7 @@
     </button>
     <transition name="move">
       <div class="menu" v-show="showMenu">
-        <div v-for="(item, idx) in circleMenuList" :key="idx" :class="`inner inner-${ idx + 1 }`" @click.native="goAnchor(item.id)">{{ item.value }}</div>
+        <button v-for="(item, idx) in circleMenuList" :key="idx" :class="`inner inner-${ idx + 1 }`" @click.native="goAnchor(item.id)">{{ item.value }}</button>
       </div>
     </transition>
   </div>
@@ -124,6 +124,7 @@
       transition-delay: 0.1s;
     }
   }
+
   .inner {
     display: inline-block;
     position: absolute;
@@ -132,6 +133,8 @@
     line-height: 30px;
     border-radius: 50%;
     text-align: center;
+    border: none;
+    outline: none;
     color: #fff;
     cursor: pointer;
     transition: all 0.4s;
