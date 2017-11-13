@@ -1,11 +1,11 @@
 <template lang="html">
   <div>
-    <button @click="openMenu" class="btn">
+    <button @click.native="openMenu" class="btn">
       <Icon type="android-more-vertical"></Icon>
     </button>
     <transition name="move">
       <div class="menu" v-show="showMenu">
-        <div v-for="(item, idx) in circleMenuList" :key="idx" :class="`inner inner-${ idx + 1 }`" @click="goAnchor(item.id)">{{ item.value }}</div>
+        <div v-for="(item, idx) in circleMenuList" :key="idx" :class="`inner inner-${ idx + 1 }`" @click.native="goAnchor(item.id)">{{ item.value }}</div>
       </div>
     </transition>
   </div>
