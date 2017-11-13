@@ -1,11 +1,27 @@
 # dependencies
 node_modules
 
+# assets
+# components
+# filters
+# layouts
+# middleware
+# pages
+# plugins
+# server
+# static
+# store
+# theme
+# .editorconfig
+# .eslintrc
+# nuxt.config.js
+# yarn.lock
+
 # logs
 npm-debug.log
 
 # Nuxt build
-.nuxt
+# .nuxt
 
 # Nuxt generate
-dist
+# dist

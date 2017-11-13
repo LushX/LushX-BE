@@ -25,6 +25,15 @@ module.exports = {
     '~plugins/iview.js',
     '~plugins/lazyload.js'
   ],
+  /**
+   *  Router Middleware
+   */
+  router: {
+    middleware: 'auth',
+    scrollBehavior: (to, from, savedPosition) => {
+      return { x: 0, y: 0 }
+    }
+  },
   /*
   ** Build configuration
   */
