@@ -13,10 +13,7 @@ import cn.mailu.LushX.vo.UserVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,10 +97,12 @@ public class UserController {
         return ServerResponse.createByErrorMessage("未登录");
     }
 
+
+
     @ApiOperation(value="更新用户头像", notes="更新用户头像")
-    @ApiImplicitParam(name = "user", value = "headImg传base64字符串", required = true,dataType ="User")
+    @ApiImplicitParam(name = "headImg", value = "headImg传base64字符串", required = true,dataType ="String")
     @PutMapping("/u/avatar")
-    public ServerResponse updateAvatar(@AuthenticationPrincipal @ApiParam(hidden = true) JWTUserDetails jwtuser,@RequestBody User user ){
+    public ServerResponse updateAvatar(@AuthenticationPrincipal JWTUserDetails jwtuser, @ApiParam(hidden = true)@RequestBody User user ){
 
         Map map=fileService.uploadImage(user.getHeadImg());
         if(((int)map.get("status")==0)){
@@ -120,9 +119,9 @@ public class UserController {
     }
 
     @ApiOperation(value="更新用户信息", notes="更新用户信息")
-    @ApiImplicitParam(name = "user", value = "user",required = true,dataType ="User")
+   // @ApiImplicitParam(name = "user", value = "user",required = true,dataType ="User")
     @PutMapping("/u")
-    public ServerResponse updateUser(@AuthenticationPrincipal @ApiParam(hidden = true)  JWTUserDetails jwtuser,@RequestBody User user ){
+    public ServerResponse updateUser(@AuthenticationPrincipal @ApiParam(hidden = true)  JWTUserDetails jwtuser,@ApiParam(required = true) @RequestBody User user ){
         user.setUserId(jwtuser.getUserId());
         user.setPassword(MD5Utils.MD5EncodeUtf8(user.getPassword()));
         if(userService.save(user)!=null){

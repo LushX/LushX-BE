@@ -1,5 +1,8 @@
 package cn.mailu.LushX.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,15 +14,21 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "user", schema = "LushX", catalog = "")
+@ApiModel
 public class User implements Serializable{
     private String userId;  //用户Id
     private String username;  //用户名
     private String password;  //密码
+    @ApiModelProperty(hidden = true)
     private String loginType;  // 登录类型
     private String headImg;  //用户头像
+    @ApiModelProperty(hidden = true)
     private String gender;  // 性别
+    @ApiModelProperty(hidden = true)
     private String meta;  //其他信息
+    @ApiModelProperty(hidden = true)
     private String md5;  //md5加密
+    @ApiModelProperty(hidden = true)
     private String role; //用户角色
 
     @Id

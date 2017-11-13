@@ -36,7 +36,7 @@ public class VideoAPI {
 
     @GetMapping
     @ApiOperation(value = "获取真实播放地址")
-    @ApiImplicitParam(name = "url",value = "视频源地址",required = true)
+    @ApiImplicitParam(name = "url",value = "视频源地址",required = true,paramType = "query")
     public Video getRealPlayUrl(@RequestParam(value = "url") String url) throws IOException {
         url = url.replaceAll("\\?(spm|from).*", "");
         return (Video) parserManager.parse(url);
@@ -44,7 +44,7 @@ public class VideoAPI {
 
     @GetMapping("/episode")
     @ApiOperation(value = "获取视频相关集数")
-    @ApiImplicitParam(name = "url",value = "视频源地址",required = true)
+    @ApiImplicitParam(name = "url",value = "视频源地址",required = true,paramType = "query")
     public List<Episode> getEpisodes(@RequestParam(value = "url") String url) throws IOException {
         url = url.replaceAll("\\?(spm|from).*", "");
         String key = UrlUtils.getTopDomain(url);
@@ -58,8 +58,8 @@ public class VideoAPI {
     @GetMapping("/qq/{file}/{index}")
     @ApiOperation(value = "获取腾讯视频片段")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "fileName", value = "文件名",required = true),
-            @ApiImplicitParam(name = "fileIndex", value = "文件索引",required = true)
+            @ApiImplicitParam(name = "fileName", value = "文件名",required = true,paramType = "path"),
+            @ApiImplicitParam(name = "fileIndex", value = "文件索引",required = true,paramType = "path")
     })
     public Episode qqVideo(@PathVariable("fileName") String fileName, @PathVariable("fileIndex") Integer fileIndex) {
         return ((QqParser) parserManager.getParser("v.qq.com")).parsePart(fileName, fileIndex);
@@ -68,7 +68,7 @@ public class VideoAPI {
 
     @GetMapping("/{type}")
     @ApiOperation(value = "获取分类排行榜视频")
-    @ApiImplicitParam(name = "type",value = "视频分类",required = true)
+    @ApiImplicitParam(name = "type",value = "视频分类",required = true,paramType = "path")
     public List<Video> videos(@PathVariable("type") String type){
         return (List<Video>) redisService.getListByKey(RedisKey.VIDEOS_KEY+"_"+type,Video.class);
     }
