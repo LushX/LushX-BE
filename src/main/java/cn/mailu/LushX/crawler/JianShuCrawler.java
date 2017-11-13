@@ -40,7 +40,7 @@ public class JianShuCrawler {
     public void start(){
         logger.info("==================JianshuCrawler start===============");
         List<Document> documents = new ArrayList<>();
-        for (int i = 1; i < 10; i++){
+        for (int i = 1; i < 3; i++){
             Document document = JsoupUtils.getDocWithPC(JIANSHU_TRENDING_URL + String.valueOf(1)); // 拼接文章列表url
             documents.add(document);
         }
