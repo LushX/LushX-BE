@@ -1,4 +1,14 @@
 module.exports = {
+  /**
+   * 生成动态路由
+   */
+  // generate: {
+  //   routes(callback) {
+  //     const posts = require('./posts.json')
+  //     let routes = posts.map(post => `/post/${post.id}`)
+  //     callback(null, routes)
+  //   }
+  // },
   /*
   ** Headers of the page
   */
