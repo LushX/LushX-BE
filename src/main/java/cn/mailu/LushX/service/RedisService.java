@@ -7,7 +7,7 @@ package cn.mailu.LushX.service;
  */
 public interface RedisService {
 
-    public Object getListByKey(String key,Class<?> clazz);
+    public Object getListByKey(String key);
 
     public void saveByKey(String key,Object object);
 

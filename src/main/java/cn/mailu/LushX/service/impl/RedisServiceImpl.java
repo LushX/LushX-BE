@@ -23,7 +23,7 @@ public class RedisServiceImpl implements RedisService{
     @Autowired
     private RedisTemplate redisTemplate;
 
-    public Object getListByKey(String key,Class<?> clazz){
+    public Object getListByKey(String key){
         ObjectMapper mapper = new ObjectMapper();
         return  redisTemplate.opsForValue().get(key);
     }

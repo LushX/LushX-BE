@@ -38,12 +38,12 @@ public class IndexController {
     @ApiOperation(value="video首页", notes="video首页")
     @GetMapping("/video")
     public ServerResponse<Map<String,List<Video>>> videoIndex(){
-        List<Video> carouselPics = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_CAROUSEL_KEY+"_"+ RedisKey.TAGS[0],Video.class);
-        List<Video> lives = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_RECOMMEND_KEY+"_"+ RedisKey.TAGS[0],Video.class);
-        List<Video> tvs = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_TV_KEY+"_"+ RedisKey.TAGS[0],Video.class);
-        List<Video> animations = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_CARTOON_KEY+"_"+ RedisKey.TAGS[0],Video.class);
-        List<Video> movies = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_MOVIE_KEY+"_"+ RedisKey.TAGS[0],Video.class);
-        List<Video> cams = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIx_HOME_LIVE_KEY+"_"+ RedisKey.TAGS[1],Video.class);
+        List<Video> carouselPics = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_CAROUSEL_KEY+"_"+ RedisKey.TAGS[0]);
+        List<Video> lives = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_RECOMMEND_KEY+"_"+ RedisKey.TAGS[0]);
+        List<Video> tvs = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_TV_KEY+"_"+ RedisKey.TAGS[0]);
+        List<Video> animations = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_CARTOON_KEY+"_"+ RedisKey.TAGS[0]);
+        List<Video> movies = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIX_HOME_MOVIE_KEY+"_"+ RedisKey.TAGS[0]);
+        List<Video> cams = (List<Video>) redisService.getListByKey(RedisKey.VIDEO_PREFIx_HOME_LIVE_KEY+"_"+ RedisKey.TAGS[1]);
         Map<String,List<Video>> videoList= Maps.newHashMap();
         videoList.put("carousel",carouselPics);
         videoList.put("tv",tvs);
@@ -57,7 +57,7 @@ public class IndexController {
     @ApiOperation(value="article首页", notes="article首页")
     @GetMapping("/article")
     public ServerResponse<List<Article>> articleIndex(){
-        List<Article> articleList = (List<Article>) redisService.getListByKey(RedisKey.JIANSHU_TRENDING_KEY+"_"+RedisKey.TAGS[2],Article.class);
+        List<Article> articleList = (List<Article>) redisService.getListByKey(RedisKey.JIANSHU_TRENDING_KEY+"_"+RedisKey.TAGS[2]);
         return ServerResponse.createBySuccess(articleList);
     }
 
