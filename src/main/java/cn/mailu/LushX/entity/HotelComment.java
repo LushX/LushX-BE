@@ -58,6 +58,16 @@ public class HotelComment implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "HotelComment{" +
+                "commentId='" + commentId + '\'' +
+                ", content='" + content + '\'' +
+                ", avgScore=" + avgScore +
+                ", level=" + level +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
