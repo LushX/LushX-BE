@@ -1,17 +1,17 @@
 package cn.mailu.LushX.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 上午 11:35 2017-11-07
+ * @Date: Created in 下午 9:33 2017-11-16
  * @Modified By:
  */
 @Entity
 @Table(name = "hotel_info", schema = "LushX", catalog = "")
-public class HotelInfo implements Serializable {
+public class HotelInfo {
     private String hotelId;
     private String name;
     private String position;
@@ -23,6 +23,7 @@ public class HotelInfo implements Serializable {
     private String sourceWeb;
     private String facility;
     private Integer comments;
+    private Collection<HotelComment> hotelCommentsByHotelId;
 
     @Id
     @Column(name = "hotel_id", nullable = false, length = 40)
@@ -171,5 +172,14 @@ public class HotelInfo implements Serializable {
         result = 31 * result + (facility != null ? facility.hashCode() : 0);
         result = 31 * result + (comments != null ? comments.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "hotelInfoByHotelId")
+    public Collection<HotelComment> getHotelCommentsByHotelId() {
+        return hotelCommentsByHotelId;
+    }
+
+    public void setHotelCommentsByHotelId(Collection<HotelComment> hotelCommentsByHotelId) {
+        this.hotelCommentsByHotelId = hotelCommentsByHotelId;
     }
 }

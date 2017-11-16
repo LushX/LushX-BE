@@ -1,23 +1,24 @@
 package cn.mailu.LushX.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 4:21 2017-11-04
+ * @Date: Created in 下午 9:33 2017-11-16
  * @Modified By:
  */
 @Entity
-@Table(name = "type", schema = "LushX", catalog = "")
-public class Type implements Serializable {
+public class Type {
     private String typeId;
     private String icon;
     private String name;
+    private Collection<ArticleType> articleTypesByTypeId;
+    private Collection<VideoInfoType> videoInfoTypesByTypeId;
 
     @Id
-    @Column(name = "type_id", nullable = false, length = 1)
+    @Column(name = "type_id", nullable = false, length = 2)
     public String getTypeId() {
         return typeId;
     }
@@ -66,5 +67,23 @@ public class Type implements Serializable {
         result = 31 * result + (icon != null ? icon.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "typeByTypeId")
+    public Collection<ArticleType> getArticleTypesByTypeId() {
+        return articleTypesByTypeId;
+    }
+
+    public void setArticleTypesByTypeId(Collection<ArticleType> articleTypesByTypeId) {
+        this.articleTypesByTypeId = articleTypesByTypeId;
+    }
+
+    @OneToMany(mappedBy = "typeByTypeId")
+    public Collection<VideoInfoType> getVideoInfoTypesByTypeId() {
+        return videoInfoTypesByTypeId;
+    }
+
+    public void setVideoInfoTypesByTypeId(Collection<VideoInfoType> videoInfoTypesByTypeId) {
+        this.videoInfoTypesByTypeId = videoInfoTypesByTypeId;
     }
 }

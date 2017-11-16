@@ -8,18 +8,18 @@ import javax.persistence.Id;
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 3:40 2017-11-13
+ * @Date: Created in 下午 9:33 2017-11-16
  * @Modified By:
  */
 @Entity
 public class Resource {
-    private String hubId;     // 仓库ID
-    private String name;      // 名称
-    private String image;     // 图片
-    private String url;       // 资源地址
-    private String md5;       // 仓库Md5
-    private Integer recommend;      // 是否推荐
-    private String description;     // 描述
+    private String hubId;
+    private String name;
+    private String image;
+    private String url;
+    private String md5;
+    private Integer recommend;
+    private String description;
 
     @Id
     @Column(name = "hubId", nullable = false, length = 40)

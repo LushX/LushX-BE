@@ -7,22 +7,12 @@ import java.io.Serializable;
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 4:21 2017-11-04
+ * @Date: Created in 下午 9:33 2017-11-16
  * @Modified By:
  */
 public class ArticleTypePK implements Serializable {
-    private String articleId;
     private String typeId;
-
-    @Column(name = "article_id", nullable = false, length = 40)
-    @Id
-    public String getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(String articleId) {
-        this.articleId = articleId;
-    }
+    private String articleId;
 
     @Column(name = "type_id", nullable = false, length = 1)
     @Id
@@ -34,6 +24,16 @@ public class ArticleTypePK implements Serializable {
         this.typeId = typeId;
     }
 
+    @Column(name = "article_id", nullable = false, length = 40)
+    @Id
+    public String getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -41,16 +41,16 @@ public class ArticleTypePK implements Serializable {
 
         ArticleTypePK that = (ArticleTypePK) o;
 
-        if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null) return false;
         if (typeId != null ? !typeId.equals(that.typeId) : that.typeId != null) return false;
+        if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = articleId != null ? articleId.hashCode() : 0;
-        result = 31 * result + (typeId != null ? typeId.hashCode() : 0);
+        int result = typeId != null ? typeId.hashCode() : 0;
+        result = 31 * result + (articleId != null ? articleId.hashCode() : 0);
         return result;
     }
 }

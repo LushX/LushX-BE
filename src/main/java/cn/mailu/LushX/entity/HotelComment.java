@@ -1,21 +1,21 @@
 package cn.mailu.LushX.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 上午 11:35 2017-11-07
+ * @Date: Created in 下午 9:33 2017-11-16
  * @Modified By:
  */
 @Entity
 @Table(name = "hotel_comment", schema = "LushX", catalog = "")
-public class HotelComment implements Serializable {
+public class HotelComment {
     private String commentId;
     private String content;
     private Double avgScore;
     private Integer level;
+    private HotelInfo hotelInfoByHotelId;
 
     @Id
     @Column(name = "comment_id", nullable = false, length = 40)
@@ -58,16 +58,6 @@ public class HotelComment implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "HotelComment{" +
-                "commentId='" + commentId + '\'' +
-                ", content='" + content + '\'' +
-                ", avgScore=" + avgScore +
-                ", level=" + level +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -89,5 +79,15 @@ public class HotelComment implements Serializable {
         result = 31 * result + (avgScore != null ? avgScore.hashCode() : 0);
         result = 31 * result + (level != null ? level.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_id", referencedColumnName = "hotel_id", nullable = false)
+    public HotelInfo getHotelInfoByHotelId() {
+        return hotelInfoByHotelId;
+    }
+
+    public void setHotelInfoByHotelId(HotelInfo hotelInfoByHotelId) {
+        this.hotelInfoByHotelId = hotelInfoByHotelId;
     }
 }

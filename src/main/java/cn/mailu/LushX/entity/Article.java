@@ -1,17 +1,16 @@
 package cn.mailu.LushX.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 4:20 2017-11-04
+ * @Date: Created in 下午 9:33 2017-11-16
  * @Modified By:
  */
 @Entity
-@Table(name = "article", schema = "LushX", catalog = "")
-public class Article implements Serializable {
+public class Article {
     private String articleId;
     private String title;
     private String image;
@@ -22,6 +21,7 @@ public class Article implements Serializable {
     private String value;
     private String other;
     private String provider;
+    private Collection<ArticleType> articleTypesByArticleId;
 
     @Id
     @Column(name = "article_id", nullable = false, length = 40)
@@ -157,5 +157,14 @@ public class Article implements Serializable {
         result = 31 * result + (other != null ? other.hashCode() : 0);
         result = 31 * result + (provider != null ? provider.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "articleByArticleId")
+    public Collection<ArticleType> getArticleTypesByArticleId() {
+        return articleTypesByArticleId;
+    }
+
+    public void setArticleTypesByArticleId(Collection<ArticleType> articleTypesByArticleId) {
+        this.articleTypesByArticleId = articleTypesByArticleId;
     }
 }
