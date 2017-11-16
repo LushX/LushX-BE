@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,13 +35,11 @@ public class UserManageController {
 
     @ApiOperation(value="获取用户", notes="获取用户")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小",defaultValue = "10",required = false,paramType ="query")
+            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
+            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
     })
     @GetMapping
-    public ServerResponse<Page<User>> getUser(@RequestParam(value = "pageNum",defaultValue ="0") int pageNum,
-                                              @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
-        Pageable pageable=new PageRequest(pageNum,pageSize);
+    public ServerResponse<Page<User>> getUser(@PageableDefault(value = 20,size = 20) Pageable pageable){
         Page<User> page=userService.findAll(pageable);
         return ServerResponse.createBySuccess(page);
     }

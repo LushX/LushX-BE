@@ -1,5 +1,7 @@
 package cn.mailu.LushX.service;
 
+import java.util.List;
+
 /**
  * @Author: NULL
  * @Description:
@@ -7,8 +9,10 @@ package cn.mailu.LushX.service;
  */
 public interface RedisService {
 
-    public Object getListByKey(String key);
+    public Object getValueByKey(String key);
 
     public void saveByKey(String key,Object object);
+
+    public List getListByKey(String key, long start , long end);
 
 }

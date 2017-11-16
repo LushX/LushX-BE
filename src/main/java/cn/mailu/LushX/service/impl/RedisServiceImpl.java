@@ -23,12 +23,19 @@ public class RedisServiceImpl implements RedisService{
     @Autowired
     private RedisTemplate redisTemplate;
 
-    public Object getListByKey(String key){
-        ObjectMapper mapper = new ObjectMapper();
+    public Object getValueByKey(String key){
         return  redisTemplate.opsForValue().get(key);
     }
 
     public void saveByKey(String key,Object object){
         redisTemplate.opsForValue().set(key,object);
+    }
+
+    public List getListByKey(String key,long start ,long end){
+        return redisTemplate.opsForList().range(key,start,end);
+    }
+
+    public void saveListByKey(String key,List list){
+        redisTemplate.opsForList().leftPushAll(key,list);
     }
 }

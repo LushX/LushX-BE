@@ -56,6 +56,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 所有 / 的所有请求 都放行
                 .antMatchers("/*").permitAll()
+                .antMatchers("/article/**").permitAll()
+                .antMatchers("/video/**").permitAll()
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**")
                 .permitAll()

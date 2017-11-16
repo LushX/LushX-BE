@@ -70,6 +70,6 @@ public class VideoAPI {
     @ApiOperation(value = "获取分类排行榜视频")
     @ApiImplicitParam(name = "type",value = "视频分类",required = true,paramType = "path")
     public List<Video> videos(@PathVariable("type") String type){
-        return (List<Video>) redisService.getListByKey(RedisKey.VIDEOS_KEY+"_"+type,Video.class);
+        return (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY+"_"+type);
     }
 }
