@@ -2,6 +2,7 @@ package cn.mailu.LushX.parser;
 
 import cn.mailu.LushX.exception.LushXException;
 import cn.mailu.LushX.parser.site.QqParser;
+import cn.mailu.LushX.parser.site.YoukuParser;
 import cn.mailu.LushX.util.UrlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ public class VideoParserManager implements ParserManager {
         //parserMap.put("youku.com", new Youku());
         //parserMap.put("iqiyi.com", new Iqiyi());
         parserMap.put("v.qq.com", new QqParser());
-        //parserMap.put("v.youku.com", new Youku());
+        parserMap.put("v.youku.com", new YoukuParser());
     }
 
     /**

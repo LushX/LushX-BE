@@ -1,6 +1,11 @@
 package cn.mailu.LushX.util;
 
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import static cn.mailu.LushX.util.DateUtils.format;
+
 /**
  * @Author:Drohe
  * @Description:时间处理类
@@ -15,6 +20,38 @@ public class TimeUtils {
     private final static long DAY = 1000 * 60 * 60 * 24L;
     private final static long HOUR = 1000 * 60 * 60L;
     private final static long MINUTE = 1000 * 60L;
+    public final static String DATE_PATTERN = "yyyy-MM-dd";
+    public final static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
+
+
+    /**
+ *
+ *获取当前时间
+ *
+ *
+ *@Date: Created in 15:28 2017/11/12
+ *
+ */
+    public static String getCurrentTime(){
+
+return DateUtils.format(new Date(),DATE_TIME_PATTERN);
+
+
+    }
+
+    public static Date stringToDate(String strDate) {
+
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        try {
+
+            return  sdf.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public static String natureTime(Date date){
         

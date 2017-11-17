@@ -92,7 +92,6 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.10.2</version>
 		</dependency>
-
 		<!-- jna依赖 ES所需 -->
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
@@ -160,7 +159,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.2</version>
+			<version>4.5.3</version>
 		</dependency>
 		<!-- httpclient缓存 -->
 		<dependency>

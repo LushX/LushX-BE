@@ -9,7 +9,7 @@ public class QqParserTest {
     @Test
     public void parse() throws Exception {
 
-        qqParser.parse("https://v.qq.com/x/cover/jeyls66fxnp5ssp.html");
+        qqParser.parse("https://v.qq.com/x/page/a05328p5lva.html");
 
     }
 

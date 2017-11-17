@@ -1,19 +1,29 @@
 package cn.mailu.LushX.parser.site;
 
+import cn.mailu.LushX.crawler.YoukuCrawler;
 import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.entity.VideoInfo;
 import cn.mailu.LushX.exception.LushXException;
 import cn.mailu.LushX.parser.Parser;
 import cn.mailu.LushX.util.JsoupUtils;
+import cn.mailu.LushX.util.TimeUtils;
 import cn.mailu.LushX.util.UrlUtils;
+import com.alibaba.druid.support.json.JSONUtils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -26,6 +36,10 @@ import java.util.regex.Pattern;
  * @Modified By:
  */
 public class YoukuParser implements Parser<Video> {
+
+    private static Logger logger= LoggerFactory.getLogger(YoukuCrawler.class);
+
+
     
     /**
      *@Author:Drohe
@@ -48,6 +62,7 @@ public class YoukuParser implements Parser<Video> {
         JsonNode rootNode=mapper.readValue(result,JsonNode.class);
         JsonNode videoNode=rootNode.path("data").path("video");
         String title = videoNode.findValues("title").toString();
+        video.setVideoId(vid);//添加优酷vid为video的id
         video.setTitle(title);
         String image = videoNode.findValues("logo").toString();
         video.setImage(image);
@@ -97,6 +112,8 @@ public class YoukuParser implements Parser<Video> {
         String client_ts = String.valueOf(now.getTime() / 1000);
         return "http://ups.youku.com/ups/get.json?vid=" + vid + "&ccode=0590&client_ip=0.0.0.0&utid=ajEdEgkDCSQCAXBBq2KFutND&r=TJXNtWdcb6ky/owezfVSubVck3Aq6AsioO5j8WcrPPc%3D&client_ts=" + client_ts;
     }
+
+
 
 
 }
