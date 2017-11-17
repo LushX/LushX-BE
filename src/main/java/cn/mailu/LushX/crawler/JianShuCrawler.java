@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Ahtuor: xuzhenya
@@ -81,6 +82,7 @@ public class JianShuCrawler {
         Article article = new Article();
 
         // 设置article属性
+        article.setArticleId(UUID.randomUUID().toString());
         article.setTitle(document.select("h1.title").text());
         article.setAuthor(document.select("span.name a").text());
         article.setTime(document.select("span.publish-time").text().replace("*",""));
