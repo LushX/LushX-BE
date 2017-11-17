@@ -33,7 +33,7 @@ public class PandaCrawler {
     /**
      * 每隔20分钟，爬一次熊猫TV
      */
-    @Scheduled(fixedRate = 20 * 60 * 1000)
+    //@Scheduled(fixedRate = 20 * 60 * 1000)
     public void start() {
         logger.info("=========================pandaCrawler===============");
         Document document = JsoupUtils.getDocWithPC(PANDA_ALL);

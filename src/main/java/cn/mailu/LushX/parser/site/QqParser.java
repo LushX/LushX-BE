@@ -111,7 +111,7 @@ public class QqParser implements Parser<Video> {
         try {
             Document document = Jsoup.connect(VIDEO_API).header("Cookie", COOKIE)
                     .data("vids", vid).data("platform", "10901")
-                    .data("otype", "json").data("defn", "fhd")
+                    .data("otype", "json").data("defn", "sd")
                     .data("defaultfmt", "auto").data("guid", GUID).ignoreContentType(true).get();
             String result = document.text().replace("QZOutputJson=", "");
             return result.substring(0, result.length() - 1);
@@ -128,12 +128,12 @@ public class QqParser implements Parser<Video> {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode videoJson = json.findValue("vl").findValues("vi").get(0);
         int random = RandomUtils.nextInt(3);
-        String url = videoJson.findValue("ul").findValues("ui").get(random).findValue("url").toString();
+        String url = videoJson.findValue("ul").findValues("ui").get(0).findValue("url").toString();
         String vkey = videoJson.findValue("fvkey").toString();
         String fn = videoJson.findValue("fn").toString();
         String file = fn.replace("mp4", "1.mp4");
         String title = videoJson.findValue("ti").toString();
-        String firstPlayUrl = playUrl(url, file, vkey);
+        String firstPlayUrl = playUrl(url, file, vkey).replace("\"","");
         String size = videoJson.findValue("cl").findValue("fc").toString();
         video.setPlayUrl(firstPlayUrl);
         video.setImage("");

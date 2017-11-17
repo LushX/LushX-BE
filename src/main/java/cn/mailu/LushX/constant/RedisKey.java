@@ -15,6 +15,6 @@ public class RedisKey {
     public static final String VIDEO_PREFIx_HOME_LIVE_KEY = "HOME_LIVE";
     public static final String JIANSHU_TRENDING_KEY = "JIANSHU_TRENDING";
     public static final String VIDEOS_KEY = "VIDEOS";
-    public static final String[] TAGS = {"QQ", "PANDA","Jianshu"};
+    public static final String[] TAGS = {"QQ", "PANDA","Jianshu","YOUKU","IQIYI"};
 
 }
