@@ -4,21 +4,22 @@ import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.service.RedisService;
-import com.google.common.collect.Maps;
-import io.swagger.annotations.*;
+import cn.mailu.LushX.util.CommonUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: NULL
@@ -44,12 +45,7 @@ public class VideoController {
     })
     public ServerResponse<Page<Video>> getHotTv(@PageableDefault(value = 20,size = 20)Pageable pageable){
         List<Video> tvs = (List<Video>) redisService.getValueByKey(RedisKey.VIDEO_PREFIX_HOME_TV_KEY+"_"+ RedisKey.TAGS[0]);
-        int fromIndex=pageable.getPageNumber()*pageable.getPageSize();
-        int length=tvs.size();
-        int end=(pageable.getPageNumber()+1)*pageable.getPageSize();
-        int endIndex=end>=length?length:end;
-        Page<Video> page=new PageImpl<Video>(tvs.subList(fromIndex,endIndex),pageable,length);
-        return ServerResponse.createBySuccess(page);
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,tvs));
     }
 
     @ApiOperation(value="最新tv", notes="最新tv")
@@ -60,11 +56,7 @@ public class VideoController {
     })
     public ServerResponse<Page<Video>> getNewTv(@PageableDefault(value = 20,size = 20)Pageable pageable){
         List<Video> tvs = (List<Video>) redisService.getValueByKey(RedisKey.VIDEO_PREFIX_HOME_TV_KEY+"_"+ RedisKey.TAGS[0]);
-        int fromIndex=pageable.getPageNumber()*pageable.getPageSize();
-        int length=tvs.size();
-        int end=(pageable.getPageNumber()+1)*pageable.getPageSize();
-        int endIndex=end>=length?length:end;
-        Page<Video> page=new PageImpl<Video>(tvs.subList(fromIndex,endIndex),pageable,length);
-        return ServerResponse.createBySuccess(page);
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,tvs));
     }
+
 }

@@ -4,6 +4,7 @@ import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Article;
 import cn.mailu.LushX.service.RedisService;
+import cn.mailu.LushX.util.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,11 +44,6 @@ public class ArticleController {
     @GetMapping("/hot")
     public ServerResponse<Page<Article>> getHotArticle(@PageableDefault(value = 20,size = 20)Pageable pageable){
         List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY+"_"+RedisKey.TAGS[2]);
-        int fromIndex=pageable.getPageNumber()*pageable.getPageSize();
-        int length=articles.size();
-        int end=(pageable.getPageNumber()+1)*pageable.getPageSize();
-        int endIndex=end>=length?length:end;
-        Page<Article> page=new PageImpl<Article>(articles.subList(fromIndex,endIndex),pageable,length);
-        return ServerResponse.createBySuccess(page);
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,articles));
     }
 }
