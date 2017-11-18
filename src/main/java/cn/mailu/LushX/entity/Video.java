@@ -1,6 +1,9 @@
 package cn.mailu.LushX.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.Collection;
 
 /**
@@ -19,6 +22,12 @@ public class Video {
     private String value;
     private String other;
     private Collection<Episode> episodesByVideoId;
+    private String alias;
+    private String director;
+    private String actor;
+    private String area;
+    private String score;
+    private Date time;
 
     @Id
     @Column(name = "video_id", nullable = false, length = 40)
@@ -61,7 +70,7 @@ public class Video {
     }
 
     @Basic
-    @Column(name = "type", nullable = true, length = 1)
+    @Column(name = "type", nullable = true, length = 2)
     public String getType() {
         return type;
     }
@@ -127,5 +136,65 @@ public class Video {
 
     public void setEpisodesByVideoId(Collection<Episode> episodesByVideoId) {
         this.episodesByVideoId = episodesByVideoId;
+    }
+
+    @Basic
+    @Column(name = "alias", nullable = true, length = 50)
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    @Basic
+    @Column(name = "director", nullable = true, length = 15)
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    @Basic
+    @Column(name = "actor", nullable = true, length = 50)
+    public String getActor() {
+        return actor;
+    }
+
+    public void setActor(String actor) {
+        this.actor = actor;
+    }
+
+    @Basic
+    @Column(name = "area", nullable = true, length = 15)
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    @Basic
+    @Column(name = "score", nullable = true, length = 2)
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    @Basic
+    @Column(name = "time", nullable = true)
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 }

@@ -14,6 +14,7 @@ public class Episode {
     private Integer index;
     private String value;
     private Video videoByVideoId;
+    private String videoId;
 
     @Id
     @Column(name = "episode_id", nullable = false, length = 40)
@@ -75,5 +76,15 @@ public class Episode {
 
     public void setVideoByVideoId(Video videoByVideoId) {
         this.videoByVideoId = videoByVideoId;
+    }
+
+    @Basic
+    @Column(name = "video_id", nullable = false, length = 20)
+    public String getVideoId() {
+        return videoId;
+    }
+
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
     }
 }

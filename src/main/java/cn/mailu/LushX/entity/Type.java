@@ -15,7 +15,6 @@ public class Type {
     private String icon;
     private String name;
     private Collection<ArticleType> articleTypesByTypeId;
-    private Collection<VideoInfoType> videoInfoTypesByTypeId;
 
     @Id
     @Column(name = "type_id", nullable = false, length = 2)
@@ -76,14 +75,5 @@ public class Type {
 
     public void setArticleTypesByTypeId(Collection<ArticleType> articleTypesByTypeId) {
         this.articleTypesByTypeId = articleTypesByTypeId;
-    }
-
-    @OneToMany(mappedBy = "typeByTypeId")
-    public Collection<VideoInfoType> getVideoInfoTypesByTypeId() {
-        return videoInfoTypesByTypeId;
-    }
-
-    public void setVideoInfoTypesByTypeId(Collection<VideoInfoType> videoInfoTypesByTypeId) {
-        this.videoInfoTypesByTypeId = videoInfoTypesByTypeId;
     }
 }
