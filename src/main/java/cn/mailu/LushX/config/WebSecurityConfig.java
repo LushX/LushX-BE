@@ -36,9 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Resource
-    private JWTUtils jwtUtils;
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         //放行swagger
