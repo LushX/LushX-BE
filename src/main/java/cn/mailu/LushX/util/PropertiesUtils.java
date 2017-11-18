@@ -41,11 +41,13 @@ public class PropertiesUtils {
     /**
      * @Title: getProperty
      * @Description: 读取配置值，没有赋默认值
-     * @param [key, defaultValue]    设定文件
+     * @param [key,defaultValue]    设定文件
      * @return java.lang.String    返回类型
      * @throws
      */
+
     public static String getProperty(String key,String defaultValue){
+
 
         String value = props.getProperty(key.trim());
         if(StringUtils.isBlank(value)){
