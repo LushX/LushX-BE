@@ -47,6 +47,7 @@ public class YoukuCrawler {
     @Autowired
     private RedisService redisService;
 
+    // todo 开多线程
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void start() {
         logger.info("================youkucrawler start=============");
@@ -58,14 +59,15 @@ public class YoukuCrawler {
         Document ykMovieNew = JsoupUtils.getDocWithPC(YK_MOVIE_URL_NEW);
         Document ykZyNew = JsoupUtils.getDocWithPC(YK_ZY_URL_NEW);
         Document ykDmNew = JsoupUtils.getDocWithPC(YK_DM_URL_NEW);
-        saveVideosToRedis(ykTvHot, VideoTypeEnum.YK_TV_HOT.getCode());
+        //todo 暂时关闭日期和电影以外的爬取
+        //saveVideosToRedis(ykTvHot, VideoTypeEnum.YK_TV_HOT.getCode());
         saveVideosToRedis(ykMovieHot, VideoTypeEnum.YK_MOVIE_HOT.getCode());
-        saveVideosToRedis(ykZyHot, VideoTypeEnum.YK_ZY_HOT.getCode());
-        saveVideosToRedis(ykDmHot, VideoTypeEnum.YK_DM_HOT.getCode());
-        saveVideosToRedis(ykTvNew, VideoTypeEnum.YK_TV_NEW.getCode());
+        //saveVideosToRedis(ykZyHot, VideoTypeEnum.YK_ZY_HOT.getCode());
+        //saveVideosToRedis(ykDmHot, VideoTypeEnum.YK_DM_HOT.getCode());
+        //saveVideosToRedis(ykTvNew, VideoTypeEnum.YK_TV_NEW.getCode());
         saveVideosToRedis(ykMovieNew, VideoTypeEnum.YK_MOVIE_NEW.getCode());
-        saveVideosToRedis(ykZyNew, VideoTypeEnum.YK_ZY_NEW.getCode());
-        saveVideosToRedis(ykDmNew, VideoTypeEnum.YK_DM_NEW.getCode());
+        //saveVideosToRedis(ykZyNew, VideoTypeEnum.YK_ZY_NEW.getCode());
+        //saveVideosToRedis(ykDmNew, VideoTypeEnum.YK_DM_NEW.getCode());
         logger.info("================youkucrawler stop=============");
     }
 
@@ -90,13 +92,15 @@ public class YoukuCrawler {
             String area = videoInfoElement.select("li.p-performer+li+li").text().replace("地区：","");
             String director = videoInfoElement.select("li.p-performer+li").text().replace("导演：","");
             String score = videoInfoElement.select("li.p-score span.star-num").text();
-            String time = videoInfoElement.select("span.pub").get(0).text().replace("上映：", "").replace("优酷开播：","").replace("优酷上映：","").replace("优酷","");
+            // todo 会出现结果为空 get（0）不存在
+            //String time = videoInfoElement.select("span.pub").get(0).text().replace("上映：", "").replace("优酷开播：","").replace("优酷上映：","");
             video.setActor(actor);
             video.setAlias(alias);
             video.setArea(area);
             video.setDirector(director);
             video.setScore(score);
-            video.setTime(new java.sql.Date(TimeUtils.stringToDate(time.replace(" ","")).getTime()));
+            // todo 时间处理很多细节需处理
+            //video.setTime(new java.sql.Date(TimeUtils.stringToDate(time.replace(" ","")).getTime()));
             logger.info("YK:" + title);
             videos.add(video);
         }
