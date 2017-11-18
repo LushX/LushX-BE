@@ -37,9 +37,9 @@ public class QqCrawler {
     private RedisService redisService;
 
     /**
-     * 每隔1小时，爬腾讯视频官网信息
+     * 每隔24小时，爬腾讯视频官网信息
      */
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    //@Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void start() {
         logger.info("==================QqCrawlering===============");
         Document pcDocument = JsoupUtils.getDocWithPC(HOME_PAGE_PC);

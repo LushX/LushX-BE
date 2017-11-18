@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.UUID;
  * @Modified By:
  */
 
-
+@Component
 public class YoukuCrawler {
 
     private static Logger logger = LoggerFactory.getLogger(YoukuCrawler.class);
@@ -34,7 +35,7 @@ public class YoukuCrawler {
     private final static String YK_MOVIE_URL_HOT= "http://list.youku.com/category/show/c_96.html";
     private final static String YK_ZY_URL_HOT = "http://list.youku.com/category/show/c_85.html";
     private final static String YK_DM_URL_HOT = "http://list.youku.com/category/show/c_100.html";
-    private final static String YK_TV_URL_NEW = "list.youku.com/category/show/c_97_s_6_d_1.html";
+    private final static String YK_TV_URL_NEW = "http://list.youku.com/category/show/c_97_s_6_d_1.html";
     private final static String YK_MOVIE_URL_NEW= "http://list.youku.com/category/show/c_96_s_6_d_1.html";
     private final static String YK_ZY_URL_NEW= "http://list.youku.com/category/show/c_85_s_6_d_1.html";
     private final static String YK_DM_URL_NEW= "http://list.youku.com/category/show/c_100_s_6_d_1.html";
@@ -46,8 +47,9 @@ public class YoukuCrawler {
     @Autowired
     private RedisService redisService;
 
-    @Scheduled(fixedRate = 5 * 60 * 60 * 1000)
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void start() {
+        logger.info("================youkucrawler start=============");
         Document ykTvHot = JsoupUtils.getDocWithPC(YK_TV_URL_HOT);
         Document ykMovieHot = JsoupUtils.getDocWithPC(YK_MOVIE_URL_HOT);
         Document ykZyHot = JsoupUtils.getDocWithPC(YK_ZY_URL_HOT);
@@ -64,6 +66,7 @@ public class YoukuCrawler {
         saveVideosToRedis(ykMovieNew, VideoTypeEnum.YK_MOVIE_NEW.getCode());
         saveVideosToRedis(ykZyNew, VideoTypeEnum.YK_ZY_NEW.getCode());
         saveVideosToRedis(ykDmNew, VideoTypeEnum.YK_DM_NEW.getCode());
+        logger.info("================youkucrawler stop=============");
     }
 
     private List<Video> getYKVideosFromPcDocument(Document document) {
@@ -87,7 +90,7 @@ public class YoukuCrawler {
             String area = videoInfoElement.select("li.p-performer+li+li").text().replace("地区：","");
             String director = videoInfoElement.select("li.p-performer+li").text().replace("导演：","");
             String score = videoInfoElement.select("li.p-score span.star-num").text();
-            String time = videoInfoElement.select("span.pub").get(0).text().replace("上映：", "").replace("优酷开播：","").replace("优酷上映：","");
+            String time = videoInfoElement.select("span.pub").get(0).text().replace("上映：", "").replace("优酷开播：","").replace("优酷上映：","").replace("优酷","");
             video.setActor(actor);
             video.setAlias(alias);
             video.setArea(area);
@@ -102,7 +105,6 @@ public class YoukuCrawler {
 
     private void saveVideosToRedis(Document document, int videoType) {
         String videoKey = RedisKey.VIDEOS_KEY + "_" + videoType;
-        logger.info("资源类型 ：" + videoType);
         redisService.saveByKey(videoKey, getYKVideosFromPcDocument(document));
     }
 }

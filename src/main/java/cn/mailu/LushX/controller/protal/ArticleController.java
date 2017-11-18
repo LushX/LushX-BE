@@ -46,4 +46,14 @@ public class ArticleController {
         List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY+"_"+RedisKey.TAGS[2]);
         return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,articles));
     }
+    @ApiOperation(value="最热文章", notes="最热文章")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
+            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
+    })
+    @GetMapping("/new")
+    public ServerResponse<Page<Article>> getNewArticle(@PageableDefault(value = 20,size = 20)Pageable pageable){
+        List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY+"_"+RedisKey.TAGS[2]);
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,articles));
+    }
 }

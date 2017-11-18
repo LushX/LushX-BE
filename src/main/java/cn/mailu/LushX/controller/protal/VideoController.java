@@ -2,6 +2,7 @@ package cn.mailu.LushX.controller.protal;
 
 import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.constant.RedisKey;
+import cn.mailu.LushX.constant.VideoTypeEnum;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.CommonUtils;
@@ -44,8 +45,8 @@ public class VideoController {
             @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
     })
     public ServerResponse<Page<Video>> getHotTv(@PageableDefault(value = 20,size = 20)Pageable pageable){
-        List<Video> tvs = (List<Video>) redisService.getValueByKey(RedisKey.VIDEO_PREFIX_HOME_TV_KEY+"_"+ RedisKey.TAGS[0]);
-        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,tvs));
+        List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY+ VideoTypeEnum.YK_TV_HOT.getCode());
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,videos));
     }
 
     @ApiOperation(value="最新tv", notes="最新tv")
@@ -55,8 +56,73 @@ public class VideoController {
             @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
     })
     public ServerResponse<Page<Video>> getNewTv(@PageableDefault(value = 20,size = 20)Pageable pageable){
-        List<Video> tvs = (List<Video>) redisService.getValueByKey(RedisKey.VIDEO_PREFIX_HOME_TV_KEY+"_"+ RedisKey.TAGS[0]);
-        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,tvs));
+        List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY+ VideoTypeEnum.YK_TV_NEW.getCode());
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,videos));
     }
 
+    @ApiOperation(value="最热综艺", notes="最热综艺")
+    @GetMapping("/zy/hot")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
+            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
+    })
+    public ServerResponse<Page<Video>> getHotZy(@PageableDefault(value = 20,size = 20)Pageable pageable){
+        List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY+ VideoTypeEnum.YK_ZY_HOT.getCode());
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,videos));
+    }
+
+    @ApiOperation(value="最新综艺", notes="最新综艺")
+    @GetMapping("/zy/new")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
+            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
+    })
+    public ServerResponse<Page<Video>> getNewZy(@PageableDefault(value = 20,size = 20)Pageable pageable){
+        List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY+ VideoTypeEnum.YK_ZY_NEW.getCode());
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,videos));
+    }
+
+    @ApiOperation(value="最热movie", notes="最热movie")
+    @GetMapping("/movie/hot")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
+            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
+    })
+    public ServerResponse<Page<Video>> getHotMovie(@PageableDefault(value = 20,size = 20)Pageable pageable){
+        List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY+ VideoTypeEnum.YK_MOVIE_HOT.getCode());
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,videos));
+    }
+
+    @ApiOperation(value="最新movie", notes="最新movie")
+    @GetMapping("/movie/new")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
+            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
+    })
+    public ServerResponse<Page<Video>> getNewMovie(@PageableDefault(value = 20,size = 20)Pageable pageable){
+        List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY+ VideoTypeEnum.YK_MOVIE_NEW.getCode());
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,videos));
+    }
+
+    @ApiOperation(value="最热动漫", notes="最热动漫")
+    @GetMapping("/cartoon/hot")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
+            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
+    })
+    public ServerResponse<Page<Video>> getHotDM(@PageableDefault(value = 20,size = 20)Pageable pageable){
+        List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY+ VideoTypeEnum.YK_DM_HOT.getCode());
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,videos));
+    }
+
+    @ApiOperation(value="最新动漫", notes="最新动漫")
+    @GetMapping("/cartoon/new")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
+            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
+    })
+    public ServerResponse<Page<Video>> getNewDM(@PageableDefault(value = 20,size = 20)Pageable pageable){
+        List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY+ VideoTypeEnum.YK_DM_NEW.getCode());
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,videos));
+    }
 }
