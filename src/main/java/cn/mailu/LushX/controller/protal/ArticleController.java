@@ -45,8 +45,10 @@ public class ArticleController {
     public ServerResponse<Page<Article>> getHotArticle(@PageableDefault(value = 20,size = 20)Pageable pageable){
         List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY+"_"+RedisKey.TAGS[2]);
         int fromIndex=pageable.getPageNumber()*pageable.getPageSize();
-        int endIndex=(pageable.getPageNumber()+1)*pageable.getPageSize();
-        Page<Article> page=new PageImpl<Article>(articles.subList(fromIndex,endIndex),pageable,articles.size());
+        int length=articles.size();
+        int end=(pageable.getPageNumber()+1)*pageable.getPageSize();
+        int endIndex=end>=length?length:end;
+        Page<Article> page=new PageImpl<Article>(articles.subList(fromIndex,endIndex),pageable,length);
         return ServerResponse.createBySuccess(page);
     }
 }

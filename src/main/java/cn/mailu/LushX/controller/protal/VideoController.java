@@ -45,8 +45,10 @@ public class VideoController {
     public ServerResponse<Page<Video>> getHotTv(@PageableDefault(value = 20,size = 20)Pageable pageable){
         List<Video> tvs = (List<Video>) redisService.getValueByKey(RedisKey.VIDEO_PREFIX_HOME_TV_KEY+"_"+ RedisKey.TAGS[0]);
         int fromIndex=pageable.getPageNumber()*pageable.getPageSize();
-        int endIndex=(pageable.getPageNumber()+1)*pageable.getPageSize();
-        Page<Video> page=new PageImpl<Video>(tvs.subList(fromIndex,endIndex),pageable,tvs.size());
+        int length=tvs.size();
+        int end=(pageable.getPageNumber()+1)*pageable.getPageSize();
+        int endIndex=end>=length?length:end;
+        Page<Video> page=new PageImpl<Video>(tvs.subList(fromIndex,endIndex),pageable,length);
         return ServerResponse.createBySuccess(page);
     }
 
@@ -59,8 +61,10 @@ public class VideoController {
     public ServerResponse<Page<Video>> getNewTv(@PageableDefault(value = 20,size = 20)Pageable pageable){
         List<Video> tvs = (List<Video>) redisService.getValueByKey(RedisKey.VIDEO_PREFIX_HOME_TV_KEY+"_"+ RedisKey.TAGS[0]);
         int fromIndex=pageable.getPageNumber()*pageable.getPageSize();
-        int endIndex=(pageable.getPageNumber()+1)*pageable.getPageSize();
-        Page<Video> page=new PageImpl<Video>(tvs.subList(fromIndex,endIndex),pageable,tvs.size());
+        int length=tvs.size();
+        int end=(pageable.getPageNumber()+1)*pageable.getPageSize();
+        int endIndex=end>=length?length:end;
+        Page<Video> page=new PageImpl<Video>(tvs.subList(fromIndex,endIndex),pageable,length);
         return ServerResponse.createBySuccess(page);
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Author:Drohe
@@ -65,6 +66,7 @@ public class YoukuCrawler {
             String url = "http:" + element.select("div.p-thumb a").get(0).attr("href");
            Document infoDocument=JsoupUtils.getDocWithPC(url);
             String info = "http:" + infoDocument.select("#module_basic_title > div.base_info > a.desc-link").attr("href");
+            video.setVideoId(UUID.randomUUID().toString());
             video.setTitle(title);
             video.setImage(image);
             video.setValue(url);
