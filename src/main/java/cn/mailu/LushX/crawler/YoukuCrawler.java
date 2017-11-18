@@ -30,26 +30,40 @@ public class YoukuCrawler {
 
     private static Logger logger = LoggerFactory.getLogger(YoukuCrawler.class);
 
-    private final static String YK_TV_URL = "http://list.youku.com/category/show/c_97.html";
-    private final static String YK_MOVIE_URL = "http://list.youku.com/category/show/c_96.html";
-    private final static String YK_ZY_URL = "http://list.youku.com/category/show/c_85.html";
-    private final static String YK_DM_URL = "http://list.youku.com/category/show/c_100.html";
+    private final static String YK_TV_URL_HOT = "http://list.youku.com/category/show/c_97.html";
+    private final static String YK_MOVIE_URL_HOT= "http://list.youku.com/category/show/c_96.html";
+    private final static String YK_ZY_URL_HOT = "http://list.youku.com/category/show/c_85.html";
+    private final static String YK_DM_URL_HOT = "http://list.youku.com/category/show/c_100.html";
+    private final static String YK_TV_URL_NEW = "list.youku.com/category/show/c_97_s_6_d_1.html";
+    private final static String YK_MOVIE_URL_NEW= "http://list.youku.com/category/show/c_96_s_6_d_1.html";
+    private final static String YK_ZY_URL_NEW= "http://list.youku.com/category/show/c_85_s_6_d_1.html";
+    private final static String YK_DM_URL_NEW= "http://list.youku.com/category/show/c_100_s_6_d_1.html";
+
+
+
     private static final String TAG = "YOUKU";
 
     @Autowired
     private RedisService redisService;
 
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    @Scheduled(fixedRate = 5 * 60 * 60 * 1000)
     public void start() {
-        Document ykTv = JsoupUtils.getDocWithPC(YK_TV_URL);
-        Document ykMovie = JsoupUtils.getDocWithPC(YK_MOVIE_URL);
-        Document ykZy = JsoupUtils.getDocWithPC(YK_ZY_URL);
-        Document ykDm = JsoupUtils.getDocWithPC(YK_DM_URL);
-        saveVideosToRedis(ykTv, VideoTypeEnum.YK_TV.getCode());
-        saveVideosToRedis(ykMovie, VideoTypeEnum.YK_MOVIE.getCode());
-        saveVideosToRedis(ykZy, VideoTypeEnum.YK_ZY.getCode());
-        saveVideosToRedis(ykDm, VideoTypeEnum.YK_DM.getCode());
-
+        Document ykTvHot = JsoupUtils.getDocWithPC(YK_TV_URL_HOT);
+        Document ykMovieHot = JsoupUtils.getDocWithPC(YK_MOVIE_URL_HOT);
+        Document ykZyHot = JsoupUtils.getDocWithPC(YK_ZY_URL_HOT);
+        Document ykDmHot = JsoupUtils.getDocWithPC(YK_DM_URL_HOT);
+        Document ykTvNew = JsoupUtils.getDocWithPC(YK_TV_URL_NEW);
+        Document ykMovieNew = JsoupUtils.getDocWithPC(YK_MOVIE_URL_NEW);
+        Document ykZyNew = JsoupUtils.getDocWithPC(YK_ZY_URL_NEW);
+        Document ykDmNew = JsoupUtils.getDocWithPC(YK_DM_URL_NEW);
+        saveVideosToRedis(ykTvHot, VideoTypeEnum.YK_TV_HOT.getCode());
+        saveVideosToRedis(ykMovieHot, VideoTypeEnum.YK_MOVIE_HOT.getCode());
+        saveVideosToRedis(ykZyHot, VideoTypeEnum.YK_ZY_HOT.getCode());
+        saveVideosToRedis(ykDmHot, VideoTypeEnum.YK_DM_HOT.getCode());
+        saveVideosToRedis(ykTvNew, VideoTypeEnum.YK_TV_NEW.getCode());
+        saveVideosToRedis(ykMovieNew, VideoTypeEnum.YK_MOVIE_NEW.getCode());
+        saveVideosToRedis(ykZyNew, VideoTypeEnum.YK_ZY_NEW.getCode());
+        saveVideosToRedis(ykDmNew, VideoTypeEnum.YK_DM_NEW.getCode());
     }
 
     private List<Video> getYKVideosFromPcDocument(Document document) {
