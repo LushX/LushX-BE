@@ -23,7 +23,7 @@ import java.util.Map.Entry;
  * Jsoup 工具类
  * Created by Silence on 2017/1/25.
  */
-public class JsoupUtils {
+public class JsoupUtils  {
 
     private static Logger logger= LoggerFactory.getLogger(JsoupUtils.class);
     private static final String UA_PHONE = "Mozilla/5.0 (Linux; Android 4.3; Nexus 10 Build/JSS15Q) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Safari/537.36";

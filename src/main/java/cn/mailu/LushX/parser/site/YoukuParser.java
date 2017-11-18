@@ -50,7 +50,6 @@ public class YoukuParser implements Parser<Video> {
         JsonNode rootNode=mapper.readValue(result,JsonNode.class);
         JsonNode videoNode=rootNode.path("data").path("video");
         String title = videoNode.findValues("title").toString();
-        video.setVideoId(vid);//添加优酷vid为video的id
         video.setTitle(title);
         String image = videoNode.findValues("logo").toString();
         video.setImage(image);

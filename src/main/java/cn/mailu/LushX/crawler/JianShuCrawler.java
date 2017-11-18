@@ -10,6 +10,8 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +26,7 @@ import java.util.UUID;
  * @Modified By:
  */
 @Component
+@EnableAsync
 public class JianShuCrawler {
     private static Logger logger= LoggerFactory.getLogger(JianShuCrawler.class);
 
@@ -38,6 +41,7 @@ public class JianShuCrawler {
      * 每隔1天，爬简书7日热门
      */
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    @Async
     public void start(){
         logger.info("==================JianshuCrawler start===============");
         List<Document> documents = new ArrayList<>();

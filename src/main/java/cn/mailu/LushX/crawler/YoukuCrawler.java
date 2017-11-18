@@ -12,6 +12,8 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,18 +25,22 @@ import java.util.UUID;
  * @Author:Drohe
  * @Description:优酷视频爬取
  * @Date:Created in 13:15 2017/11/6
- * @Modified By:
+ * @Last Modified By:Drohe in 15:29 2017/11/18
  */
 
 @Component
+@EnableAsync
 public class YoukuCrawler {
+
+    //全局设定需要爬的页数
+    private int pageNum=3;
 
     private static Logger logger = LoggerFactory.getLogger(YoukuCrawler.class);
 
-    private final static String YK_TV_URL_HOT = "http://list.youku.com/category/show/c_97.html";
-    private final static String YK_MOVIE_URL_HOT= "http://list.youku.com/category/show/c_96.html";
-    private final static String YK_ZY_URL_HOT = "http://list.youku.com/category/show/c_85.html";
-    private final static String YK_DM_URL_HOT = "http://list.youku.com/category/show/c_100.html";
+    private final static String YK_TV_URL_HOT = "http://list.youku.com/category/show/c_97_s_1_d_1.html";
+    private final static String YK_MOVIE_URL_HOT= "http://list.youku.com/category/show/c_96_s_1_d_1.html";
+    private final static String YK_ZY_URL_HOT = "http://list.youku.com/category/show/c_85_s_1_d_1.html";
+    private final static String YK_DM_URL_HOT = "http://list.youku.com/category/show/c_100_s_1_d_1.html";
     private final static String YK_TV_URL_NEW = "http://list.youku.com/category/show/c_97_s_6_d_1.html";
     private final static String YK_MOVIE_URL_NEW= "http://list.youku.com/category/show/c_96_s_6_d_1.html";
     private final static String YK_ZY_URL_NEW= "http://list.youku.com/category/show/c_85_s_6_d_1.html";
@@ -47,31 +53,24 @@ public class YoukuCrawler {
     @Autowired
     private RedisService redisService;
 
-    // todo 开多线程
+
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    @Async
     public void start() {
         logger.info("================youkucrawler start=============");
-        Document ykTvHot = JsoupUtils.getDocWithPC(YK_TV_URL_HOT);
-        Document ykMovieHot = JsoupUtils.getDocWithPC(YK_MOVIE_URL_HOT);
-        Document ykZyHot = JsoupUtils.getDocWithPC(YK_ZY_URL_HOT);
-        Document ykDmHot = JsoupUtils.getDocWithPC(YK_DM_URL_HOT);
-        Document ykTvNew = JsoupUtils.getDocWithPC(YK_TV_URL_NEW);
-        Document ykMovieNew = JsoupUtils.getDocWithPC(YK_MOVIE_URL_NEW);
-        Document ykZyNew = JsoupUtils.getDocWithPC(YK_ZY_URL_NEW);
-        Document ykDmNew = JsoupUtils.getDocWithPC(YK_DM_URL_NEW);
-        //todo 暂时关闭日期和电影以外的爬取
-        //saveVideosToRedis(ykTvHot, VideoTypeEnum.YK_TV_HOT.getCode());
-        saveVideosToRedis(ykMovieHot, VideoTypeEnum.YK_MOVIE_HOT.getCode());
-        //saveVideosToRedis(ykZyHot, VideoTypeEnum.YK_ZY_HOT.getCode());
-        //saveVideosToRedis(ykDmHot, VideoTypeEnum.YK_DM_HOT.getCode());
-        //saveVideosToRedis(ykTvNew, VideoTypeEnum.YK_TV_NEW.getCode());
-        saveVideosToRedis(ykMovieNew, VideoTypeEnum.YK_MOVIE_NEW.getCode());
-        //saveVideosToRedis(ykZyNew, VideoTypeEnum.YK_ZY_NEW.getCode());
-        //saveVideosToRedis(ykDmNew, VideoTypeEnum.YK_DM_NEW.getCode());
-        logger.info("================youkucrawler stop=============");
-    }
 
-    private List<Video> getYKVideosFromPcDocument(Document document) {
+       pageTurning(YK_TV_URL_HOT, VideoTypeEnum.YK_TV_HOT.getCode());
+        pageTurning(YK_MOVIE_URL_HOT, VideoTypeEnum.YK_MOVIE_HOT.getCode());
+       //pageTurning(YK_ZY_URL_HOT, VideoTypeEnum.YK_ZY_HOT.getCode());
+        pageTurning(YK_DM_URL_HOT, VideoTypeEnum.YK_DM_HOT.getCode());//部分属性为空
+        pageTurning(YK_TV_URL_NEW, VideoTypeEnum.YK_TV_NEW.getCode());
+        pageTurning(YK_MOVIE_URL_NEW, VideoTypeEnum.YK_MOVIE_NEW.getCode());
+       // pageTurning(YK_ZY_URL_NEW, VideoTypeEnum.YK_ZY_NEW.getCode());
+        pageTurning(YK_DM_URL_NEW, VideoTypeEnum.YK_DM_NEW.getCode());
+        logger.info("================youkucrawler stop=============");
+    }//18296697365
+
+    private List<Video> getYKVideosFromPcDocument(Document document,int type) {
         List<Video> videos = new ArrayList<>();
         Elements videoElements = document.select("li.yk-col4");
         for (Element element : videoElements) {
@@ -85,30 +84,69 @@ public class YoukuCrawler {
             video.setTitle(title);
             video.setImage(image);
             video.setValue(url);
-            Document documentinfo = JsoupUtils.getDocWithPC(info);
-            Elements videoInfoElement = documentinfo.select("body > div.s-body > div > div.mod.mod-new > div.mod.fix");
+
+            Document infoPage;
+            //有些视频播放页不存在，首页爬取的页面直接为详情页，不做处理会造成空指针异常
+            if(url.indexOf("list.youku.com")==-1){
+
+                infoPage = JsoupUtils.getDocWithPC(info);
+            }else{
+                infoPage =infoDocument;
+            }
+
+            Elements videoInfoElement = infoPage.select("body > div.s-body > div > div.mod.mod-new > div.mod.fix");
             String actor = videoInfoElement.select("li.p-performer").attr("title");
             String alias = videoInfoElement.select("li.p-alias").attr("title");
-            String area = videoInfoElement.select("li.p-performer+li+li").text().replace("地区：","");
-            String director = videoInfoElement.select("li.p-performer+li").text().replace("导演：","");
+            String area=null;
+            String director=null;
+            //动画片详情页和其他稍有不同，这里用做出判断
+            if(type==VideoTypeEnum.YK_DM_HOT.getCode()||type==VideoTypeEnum.YK_DM_NEW.getCode()){
+
+                 director = videoInfoElement.select("li.p-score+li+li").text().replace("导演：","");
+                area = videoInfoElement.select("li.p-score+li+li+li").text().replace("地区：","");
+            }else{
+                 director = videoInfoElement.select("li.p-performer+li").text().replace("导演：","");
+                area = videoInfoElement.select("li.p-performer+li+li").text().replace("地区：","");
+            }
             String score = videoInfoElement.select("li.p-score span.star-num").text();
-            // todo 会出现结果为空 get（0）不存在
-            //String time = videoInfoElement.select("span.pub").get(0).text().replace("上映：", "").replace("优酷开播：","").replace("优酷上映：","");
+            String timeFromSpanPubElement= videoInfoElement.select("span.pub").size()==0? "" :videoInfoElement.select("span.pub").get(0).text().replace("上映：", "")
+                    .replace("优酷开播：","")
+                    .replace("优酷上映：","")
+                    .replace("优酷","");
+
+            String timeFromSpanSubTitleElement = videoInfoElement.select("span.sub-title").size()==0? "" :videoInfoElement.select("span.sub-title").get(0).text();
+
+            String time=timeFromSpanPubElement.length()>timeFromSpanSubTitleElement.length()?timeFromSpanPubElement:timeFromSpanSubTitleElement;
+
             video.setActor(actor);
             video.setAlias(alias);
             video.setArea(area);
             video.setDirector(director);
             video.setScore(score);
-            // todo 时间处理很多细节需处理
-            //video.setTime(new java.sql.Date(TimeUtils.stringToDate(time.replace(" ","")).getTime()));
+
+            video.setTime(new java.sql.Date(TimeUtils.stringToDate(time.replace(" ","")).getTime()));
             logger.info("YK:" + title);
             videos.add(video);
         }
         return videos;
     }
 
+    private void pageTurning(String  url, int videoType) {
+
+        for(int i=1;i<=pageNum;i++) {
+
+            url=url.replace(".html","")+"_p_"+i+".html";
+
+            Document document = JsoupUtils.getDocWithPC(url);
+
+            saveVideosToRedis(document,videoType);
+            logger.info("第"+i+"页 爬取完毕！ 甚至已经存入redis了  URL:  "+url);
+        }
+
+    }
+
     private void saveVideosToRedis(Document document, int videoType) {
         String videoKey = RedisKey.VIDEOS_KEY + "_" + videoType;
-        redisService.saveByKey(videoKey, getYKVideosFromPcDocument(document));
+        redisService.saveByKey(videoKey, getYKVideosFromPcDocument(document,videoType));
     }
 }

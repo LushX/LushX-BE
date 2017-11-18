@@ -42,6 +42,12 @@ return DateUtils.format(new Date(),DATE_TIME_PATTERN);
 
     public static Date stringToDate(String strDate) {
 
+        if("".equals(strDate)||null==strDate){
+            return new Date();
+        }
+        if(strDate.length()==4){
+            strDate=strDate+"-01-01";
+        }
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         try {
 
