@@ -16,7 +16,6 @@ public class HotelComment {
     private Double avgScore;
     private Integer level;
     private HotelInfo hotelInfoByHotelId;
-    private String hotelId;
 
     @Id
     @Column(name = "comment_id", nullable = false, length = 40)
@@ -92,13 +91,4 @@ public class HotelComment {
         this.hotelInfoByHotelId = hotelInfoByHotelId;
     }
 
-    @Basic
-    @Column(name = "hotel_id", nullable = false, length = 20)
-    public String getHotelId() {
-        return hotelId;
-    }
-
-    public void setHotelId(String hotelId) {
-        this.hotelId = hotelId;
-    }
 }

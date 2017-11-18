@@ -1,9 +1,6 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * @Ahtuor: xuzhenya
@@ -12,6 +9,7 @@ import javax.persistence.Id;
  * @Modified By:
  */
 @Entity
+@Table(name = "city", schema = "LushX", catalog = "")
 public class City {
     private int id;
     private String name;

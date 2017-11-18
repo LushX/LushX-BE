@@ -10,6 +10,7 @@ import java.util.Collection;
  * @Modified By:
  */
 @Entity
+@Table(name = "type", schema = "LushX", catalog = "")
 public class Type {
     private String typeId;
     private String icon;

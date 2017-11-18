@@ -12,6 +12,7 @@ import java.util.Collection;
  * @Modified By:
  */
 @Entity
+@Table(name = "article", schema = "LushX", catalog = "")
 public class Article {
     private String articleId;
     private String title;
