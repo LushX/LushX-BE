@@ -75,7 +75,7 @@ public class UserController {
             try {
                 token = jwtUtils.generateAccessToken(JWTUserFactory.create(userNew));
                 Map<String,Object> map= Maps.newHashMap();
-                map.put("AccessToken","Bearer "+token);
+                map.put(token_header,"Bearer "+token);
                 map.put("info",toUserVO(userNew));
                 logger.info("验证成功，发出token");
                 return ServerResponse.createBySuccess(map);
