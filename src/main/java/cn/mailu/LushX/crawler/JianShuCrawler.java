@@ -32,7 +32,8 @@ public class JianShuCrawler {
 
     private final static String JIANSHU_URL="http://www.jianshu.com";
     private final static String JIANSHU_TRENDING_URL="http://www.jianshu.com/trending/weekly?page=";
-    private static final String TAG = "Jianshu";
+    private final static String JIANSHU_NEW_URL="http://www.jianshu.com/recommendations/notes?category_id=56&max_id=1511078256&page=";
+
 
     @Autowired
     private RedisService redisService;
@@ -45,19 +46,29 @@ public class JianShuCrawler {
     public void start(){
         logger.info("==================JianshuCrawler start===============");
         List<Document> documents = new ArrayList<>();
+        // 爬取简书7日热门榜
         for (int i = 1; i < 10; i++){
             Document document = JsoupUtils.getDocWithPC(JIANSHU_TRENDING_URL + String.valueOf(i)); // 拼接文章列表url
             documents.add(document);
         }
-        saveArticleToRedis(documents);
+        saveArticleToRedis(documents,RedisKey.JIANSHU_TRENDING_KEY + "_" + RedisKey.TAGS[2]);
+
+        documents.clear();
+        // 爬取简书最新上榜文章
+        for (int i = 1; i <= 3; i++){
+            Document document = JsoupUtils.getDocWithPC(JIANSHU_NEW_URL + String.valueOf(i)); // 拼接文章列表url
+            documents.add(document);
+        }
+        saveArticleToRedis(documents,RedisKey.JIANSHU_NEW_KEY + "_" + RedisKey.TAGS[2]);
         logger.info("==================JianshuCrawler stop===============");
+
     }
 
 
     /**
      * 爬简书 将对象存入redis
      */
-    private void saveArticleToRedis(List<Document> documents) {
+    private void saveArticleToRedis(List<Document> documents,String key) {
         List<Article> articleList = new ArrayList();
         for (Document document : documents) {
             Elements videoElement = document.select(".wrap-img");
@@ -69,7 +80,6 @@ public class JianShuCrawler {
             }
         }
 
-        String key = RedisKey.JIANSHU_TRENDING_KEY + "_" + TAG;
         redisService.saveByKey(key, articleList);
     }
 
