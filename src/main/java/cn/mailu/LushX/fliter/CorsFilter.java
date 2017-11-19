@@ -31,7 +31,7 @@ public class CorsFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin","*");  //允许跨域访问的域
         response.setHeader("Access-Control-Allow-Methods","POST,GET,OPTIONS,DELETE");  //允许使用的请求方法
         response.setHeader("Access-Control-Expose-Headers","*");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,Cache-Control,Pragma,Content-Type,Access-Token");  //允许使用的请求方法
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,Cache-Control,Pragma,Content-Type,access-token");  //允许使用的请求方法
         response.setHeader("Access-Control-Allow-Credentials","true");//是否允许请求带有验证信息
         if(request.getMethod().equals("OPTIONS")){
             response.setContentType("application/json;charset=utf-8");
