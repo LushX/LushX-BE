@@ -1,5 +1,9 @@
 package cn.mailu.LushX.fliter;
 
+import cn.mailu.LushX.common.ResponseCode;
+import cn.mailu.LushX.common.ServerResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.deploy.net.HttpUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -26,8 +30,13 @@ public class CorsFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin",request.getHeader("origin"));
         response.setHeader("Access-Control-Allow-Origin","*");  //允许跨域访问的域
         response.setHeader("Access-Control-Allow-Methods","POST,GET,OPTIONS,DELETE");  //允许使用的请求方法
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,Cache-Control,Pragma,Content-Type,Token，AccessToken");  //允许使用的请求方法
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,Cache-Control,Pragma,Content-Type,Token,AccessToken");  //允许使用的请求方法
         response.setHeader("Access-Control-Allow-Credentials","true");//是否允许请求带有验证信息
+        if(request.getMethod().equals("OPTIONS")){
+            response.setContentType("application/json;charset=utf-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().println();
+        }
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
