@@ -42,6 +42,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         logger.info("=====请求地址==="+request.getRequestURL());
         String auth_token = request.getHeader(this.token_header);
+        logger.info("=====请求头信息==="+auth_token);
         final String auth_token_start = "Bearer ";
         if (StringUtils.isNotEmpty(auth_token) && auth_token.startsWith(auth_token_start)) {
             auth_token = auth_token.substring(auth_token_start.length());
