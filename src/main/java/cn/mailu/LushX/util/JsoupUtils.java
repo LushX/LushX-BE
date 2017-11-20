@@ -36,15 +36,17 @@ public class JsoupUtils {
         int times = 1;
 
         Document document = null;
-
-       /* if(url.contains("http:h")){
+        logger.info("===url before==={}",url);
+        if(url.contains("http:h")){
 
          url= url.replace("http:h","h");
-        }*/
+        }
+
+        logger.info("===url after==={}",url);
 
             try {
                 document=Jsoup.connect(url).userAgent(UA_PC).timeout(5*1000).ignoreContentType(true).get();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 logger.error("网址请求失败：" + url);
                 throw new LushXException("网址请求失败");
             }
