@@ -58,7 +58,7 @@ public class YoukuCrawler {
     public void start() {
         logger.info("================youkucrawler start=============");
 
-        //pageTurning(YK_TV_URL_HOT, VideoTypeEnum.YK_TV_HOT.getCode());
+        pageTurning(YK_TV_URL_HOT, VideoTypeEnum.YK_TV_HOT.getCode());
         pageTurning(YK_MOVIE_URL_HOT, VideoTypeEnum.YK_MOVIE_HOT.getCode());
         //pageTurning(YK_ZY_URL_HOT, VideoTypeEnum.YK_ZY_HOT.getCode());
         pageTurning(YK_DM_URL_HOT, VideoTypeEnum.YK_DM_HOT.getCode());//部分属性为空
@@ -84,13 +84,21 @@ public class YoukuCrawler {
             video.setImage(image);
             video.setValue(url);
 
-            Document infoPage;
+            Document infoPage = null;
             //有些视频播放页不存在，首页爬取的页面直接为详情页，不做处理会造成空指针异常
             if (url.indexOf("list.youku.com") == -1) {
-                infoPage = JsoupUtils.getDocWithPC(info);
+                try {
+
+                    infoPage = JsoupUtils.getDocWithPC(info);
+
+                } catch (Exception e) {
+
+                    logger.error(e.getMessage());
+                }
             } else {
                 infoPage = infoDocument;
             }
+
 
             Elements videoInfoElement = infoPage.select("body > div.s-body > div > div.mod.mod-new > div.mod.fix");
             String actor = videoInfoElement.select("li.p-performer").attr("title");
@@ -106,6 +114,8 @@ public class YoukuCrawler {
                 director = videoInfoElement.select("li.p-performer+li").text().replace("导演：", "");
                 area = videoInfoElement.select("li.p-performer+li+li").text().replace("地区：", "");
             }
+            String summary=videoInfoElement.select("span.text").text().replace("简介：","");
+            String videoType=videoInfoElement.select("li:contains(类型：)").text().replace("类型：","");
             String score = videoInfoElement.select("li.p-score span.star-num").text();
             String timeFromSpanPubElement = videoInfoElement.select("span.pub").size() == 0 ? "" : videoInfoElement.select("span.pub").get(0).text()
                     .replace("上映：", "")
@@ -117,6 +127,8 @@ public class YoukuCrawler {
 
             String time = timeFromSpanPubElement.length() > timeFromSpanSubTitleElement.length() ? timeFromSpanPubElement : timeFromSpanSubTitleElement;
 
+            video.setType(videoType);
+            video.setOther(summary);
             video.setActor(actor);
             video.setAlias(alias);
             video.setArea(area);
@@ -132,7 +144,7 @@ public class YoukuCrawler {
 
     private void pageTurning(String url, int videoType) {
 
-        List <Document> documents=new ArrayList<>();
+        List<Document> documents = new ArrayList<>();
 
         for (int i = 1; i <= pageNum; i++) {
 
@@ -148,13 +160,13 @@ public class YoukuCrawler {
     }
 
     private void saveVideosToRedis(List<Document> documents, int videoType) {
-        List <Video> videoList=new ArrayList<>();
-        for(int i=1;i<=pageNum;i++){
+        List<Video> videoList = new ArrayList<>();
+        for (int i = 1; i <= pageNum; i++) {
 
-            videoList.addAll(getYKVideosFromPcDocument(documents.get(i-1), videoType));
+            videoList.addAll(getYKVideosFromPcDocument(documents.get(i - 1), videoType));
         }
         String videoKey = RedisKey.VIDEOS_KEY + "_" + videoType;
-        redisService.saveByKey(videoKey,videoList);
+        redisService.saveByKey(videoKey, videoList);
         logger.info("已存入redis！");
     }
 }

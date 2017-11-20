@@ -37,15 +37,16 @@ public class JsoupUtils {
 
         Document document = null;
 
-        if(url.contains("http:h")){
+       // if(url.contains("http:h")){
 
-         url= url.replace("http:h","h");
-        }
+      //   url= url.replace("http:h","h");
+      //  }
 
             try {
-                document=Jsoup.connect(url).userAgent(UA_PC).timeout(TIME_OUT).ignoreContentType(true).get();
+                document=Jsoup.connect(url).userAgent(UA_PC).timeout(5*1000).ignoreContentType(true).get();
             } catch (IOException e) {
                 logger.error("网址请求失败：" + url);
+                throw new LushXException("网址请求失败");
             }
         return document;
     }
