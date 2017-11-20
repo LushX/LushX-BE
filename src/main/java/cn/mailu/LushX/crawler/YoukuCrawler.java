@@ -3,6 +3,7 @@ package cn.mailu.LushX.crawler;
 import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.constant.VideoTypeEnum;
 import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.exception.LushXException;
 import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.JsoupUtils;
 import cn.mailu.LushX.util.TimeUtils;
@@ -85,15 +86,16 @@ public class YoukuCrawler {
             video.setValue(url);
 
             Document infoPage = null;
-            //有些视频播放页不存在，首页爬取的页面直接为详情页，不做处理会造成空指针异常
+            //todo 有些视频播放页不存在，首页爬取的页面直接为详情页，不做处理会造成空指针异常
             if (url.indexOf("list.youku.com") == -1) {
                 try {
 
                     infoPage = JsoupUtils.getDocWithPC(info);
 
-                } catch (Exception e) {
+                } catch (LushXException e) {
 
                     logger.error(e.getMessage());
+                    continue;
                 }
             } else {
                 infoPage = infoDocument;
