@@ -19,6 +19,7 @@ import java.util.Enumeration;
  * @Description:解决跨域请求
  * @Date: Create in 2017/11/4 11:47
  */
+@Component
 public class CorsFilter implements Filter {
 
     Logger logger= LoggerFactory.getLogger(CorsFilter.class);
