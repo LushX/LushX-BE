@@ -37,10 +37,10 @@ public class JsoupUtils {
 
         Document document = null;
 
-       // if(url.contains("http:h")){
+        if(url.contains("http:h")){
 
-      //   url= url.replace("http:h","h");
-      //  }
+         url= url.replace("http:h","h");
+        }
 
             try {
                 document=Jsoup.connect(url).userAgent(UA_PC).timeout(5*1000).ignoreContentType(true).get();
