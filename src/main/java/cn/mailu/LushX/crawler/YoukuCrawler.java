@@ -58,7 +58,7 @@ public class YoukuCrawler {
     public void start() {
         logger.info("================youkucrawler start=============");
 
-        //pageTurning(YK_TV_URL_HOT, VideoTypeEnum.YK_TV_HOT.getCode());
+        pageTurning(YK_TV_URL_HOT, VideoTypeEnum.YK_TV_HOT.getCode());
         pageTurning(YK_MOVIE_URL_HOT, VideoTypeEnum.YK_MOVIE_HOT.getCode());
         //pageTurning(YK_ZY_URL_HOT, VideoTypeEnum.YK_ZY_HOT.getCode());
         pageTurning(YK_DM_URL_HOT, VideoTypeEnum.YK_DM_HOT.getCode());//部分属性为空
