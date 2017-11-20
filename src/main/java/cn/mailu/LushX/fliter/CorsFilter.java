@@ -19,7 +19,6 @@ import java.util.Enumeration;
  * @Description:解决跨域请求
  * @Date: Create in 2017/11/4 11:47
  */
-@Component
 public class CorsFilter implements Filter {
 
     Logger logger= LoggerFactory.getLogger(CorsFilter.class);
@@ -33,10 +32,10 @@ public class CorsFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request= (HttpServletRequest) servletRequest;
         HttpServletResponse response= (HttpServletResponse) servletResponse;
-        logger.info("requestMethod{}",request.getMethod());
+        logger.info("====requestMethod{}====",request.getMethod());
         Enumeration e = request.getHeaderNames();
         while (e.hasMoreElements()){
-            logger.info("requestHeader{}",(String)e.nextElement());
+            logger.info("====requestHeader===={}",request.getHeader((String)e.nextElement()));
         }
         response.setHeader("Access-Control-Allow-Origin",request.getHeader("origin"));
         response.setHeader("Access-Control-Allow-Origin","*");  //允许跨域访问的域
