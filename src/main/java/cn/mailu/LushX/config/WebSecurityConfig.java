@@ -37,11 +37,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        //放行swagger
-        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**");
-    }
 
     //配置http的安全配置
     @Override
@@ -55,25 +50,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 所有 / 的所有请求 都放行
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()    //对preflight放行
                 .antMatchers("/*").permitAll()
+                .antMatchers("/u").denyAll()
                 .antMatchers("/article/**").permitAll()
                 .antMatchers("/video/**").permitAll()
                 .antMatchers("/api/**").permitAll()
-                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**")
+                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**","/swagger-ui.html", "/webjars/**")
                 .permitAll()
                 .antMatchers("/manage/**").hasRole("ADMIN") // 需要相应的角色才能访问
-                 //允许对于网站静态资源的无授权访问
-                .antMatchers(
-                        HttpMethod.GET,
-                        "/",
-                        "/*.html",
-                        "/favicon.ico",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
-                ).permitAll()
-
-                // 对于获取token的rest api要允许匿名访问
-                //.antMatchers("/auth/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
 
