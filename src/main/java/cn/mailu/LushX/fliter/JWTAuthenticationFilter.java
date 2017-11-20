@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 /**
  * @Author: NULL
@@ -41,6 +42,11 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         logger.info("=====请求地址==="+request.getRequestURL());
+        logger.info("requestMethod{}",request.getMethod());
+        Enumeration e = request.getHeaderNames();
+        while (e.hasMoreElements()){
+            logger.info("requestHeader{}",(String)e.nextElement());
+        }
         String auth_token = request.getHeader(this.token_header);
         logger.info("=====请求头信息==="+auth_token);
         final String auth_token_start = "Bearer ";

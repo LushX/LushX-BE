@@ -3,12 +3,16 @@ package cn.mailu.LushX.fliter;
 import cn.mailu.LushX.common.ResponseCode;
 import cn.mailu.LushX.common.ServerResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Enumeration;
 
 /**
  * @Author: NULL
@@ -17,6 +21,9 @@ import java.io.IOException;
  */
 @Component
 public class CorsFilter implements Filter {
+
+    Logger logger= LoggerFactory.getLogger(CorsFilter.class);
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -26,6 +33,11 @@ public class CorsFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request= (HttpServletRequest) servletRequest;
         HttpServletResponse response= (HttpServletResponse) servletResponse;
+        logger.info("requestMethod{}",request.getMethod());
+        Enumeration e = request.getHeaderNames();
+        while (e.hasMoreElements()){
+            logger.info("requestHeader{}",(String)e.nextElement());
+        }
         response.setHeader("Access-Control-Allow-Origin",request.getHeader("origin"));
         response.setHeader("Access-Control-Allow-Origin","*");  //允许跨域访问的域
         response.setHeader("Access-Control-Allow-Methods","POST,GET,OPTIONS,DELETE");  //允许使用的请求方法
