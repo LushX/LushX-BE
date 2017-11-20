@@ -53,7 +53,7 @@ public class ArticleController {
     })
     @GetMapping("/new")
     public ServerResponse<Page<Article>> getNewArticle(@PageableDefault(value = 20,size = 20)Pageable pageable){
-        List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY+"_"+RedisKey.TAGS[2]);
+        List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_NEW_KEY + "_" + RedisKey.TAGS[2]);
         return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,articles));
     }
 }

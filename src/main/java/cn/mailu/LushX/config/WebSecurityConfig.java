@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 import javax.annotation.Resource;
 
@@ -52,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 // 所有 / 的所有请求 都放行
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()    //对preflight放行
                 .antMatchers("/*").permitAll()
                 .antMatchers("/article/**").permitAll()
                 .antMatchers("/video/**").permitAll()
@@ -118,4 +120,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             }
         });
     }
+
+
 }

@@ -3,7 +3,6 @@ package cn.mailu.LushX.fliter;
 import cn.mailu.LushX.common.ResponseCode;
 import cn.mailu.LushX.common.ServerResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.deploy.net.HttpUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -36,7 +35,6 @@ public class CorsFilter implements Filter {
         /*if(request.getMethod().equals("OPTIONS")){
             response.setContentType("application/json;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().println();
         }*/
         filterChain.doFilter(servletRequest, servletResponse);
     }
