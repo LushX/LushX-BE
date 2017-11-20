@@ -78,7 +78,14 @@ public class YoukuCrawler {
             String title = element.select("div.p-thumb a").get(0).attr("title");
             String image = element.select("img.quic").attr("src").replace("http:", "");
             String url = "http:" + element.select("div.p-thumb a").get(0).attr("href");
-            Document infoDocument = JsoupUtils.getDocWithPC(url);
+            Document infoDocument;
+            try {
+                infoDocument = JsoupUtils.getDocWithPC(url);
+            }catch (LushXException e){
+                logger.error(e.getMessage());
+                continue;
+            }
+
             String info = "http:" + infoDocument.select("#module_basic_title > div.base_info > a.desc-link").attr("href");
             video.setVideoId(UUID.randomUUID().toString());
             video.setTitle(title);
