@@ -119,7 +119,6 @@ public class UserController {
     }
 
     @ApiOperation(value="更新用户信息", notes="更新用户信息")
-   // @ApiImplicitParam(name = "user", value = "user",required = true,dataType ="User")
     @PutMapping("/u")
     public ServerResponse updateUser(@AuthenticationPrincipal @ApiParam(hidden = true)  JWTUserDetails jwtuser,@ApiParam(required = true) @RequestBody User user ){
         user.setUserId(jwtuser.getUserId());

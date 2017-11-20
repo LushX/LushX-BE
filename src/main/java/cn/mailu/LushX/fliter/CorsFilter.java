@@ -33,21 +33,12 @@ public class CorsFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request= (HttpServletRequest) servletRequest;
         HttpServletResponse response= (HttpServletResponse) servletResponse;
-        logger.info("====requestMethod{}====",request.getMethod());
-        Enumeration e = request.getHeaderNames();
-        while (e.hasMoreElements()){
-            logger.info("====requestHeader===={}",request.getHeader((String)e.nextElement()));
-        }
         response.setHeader("Access-Control-Allow-Origin",request.getHeader("origin"));
         response.setHeader("Access-Control-Allow-Origin","*");  //允许跨域访问的域
         response.setHeader("Access-Control-Allow-Methods","POST,GET,OPTIONS,DELETE");  //允许使用的请求方法
         response.setHeader("Access-Control-Expose-Headers","*");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,Cache-Control,Pragma,Content-Type,Authorization");  //允许使用的请求方法
         response.setHeader("Access-Control-Allow-Credentials","true");//是否允许请求带有验证信息
-        /*if(request.getMethod().equals("OPTIONS")){
-            response.setContentType("application/json;charset=utf-8");
-            response.setStatus(HttpServletResponse.SC_OK);
-        }*/
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
