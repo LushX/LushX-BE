@@ -103,30 +103,35 @@ public class UserController {
     @ApiImplicitParam(name = "headImg", value = "headImg传base64字符串", required = true,dataType ="String")
     @PostMapping("/u/avatar")
     public ServerResponse updateAvatar(@AuthenticationPrincipal JWTUserDetails jwtuser, @ApiParam(hidden = true)@RequestBody User user ){
-
-        Map map=fileService.uploadImage(user.getHeadImg());
-        if(((int)map.get("status")==0)){
-            String headImg= (String) map.get("message");
-            logger.info("图片地址{}",headImg);
-            user.setUserId(jwtuser.getUserId());
-            user.setHeadImg(headImg);
-            if(userService.save(user)==null){
-                return ServerResponse.createByErrorMessage("更新用户头像错误");
+        if(jwtuser!=null){
+            Map map=fileService.uploadImage(user.getHeadImg());
+            if(((int)map.get("status")==0)){
+                String headImg= (String) map.get("message");
+                logger.info("图片地址{}",headImg);
+                user.setUserId(jwtuser.getUserId());
+                user.setHeadImg(headImg);
+                if(userService.save(user)==null){
+                    return ServerResponse.createByErrorMessage("更新用户头像错误");
+                }
+                return ServerResponse.createBySuccess(headImg);
             }
-            return ServerResponse.createBySuccess(headImg);
+            return ServerResponse.createByErrorMessage("图片上传错误");
         }
-        return ServerResponse.createByErrorMessage("图片上传错误");
+        return ServerResponse.createByErrorMessage("未登录");
     }
 
     @ApiOperation(value="更新用户信息", notes="更新用户信息")
     @PostMapping("/u")
     public ServerResponse updateUser(@AuthenticationPrincipal @ApiParam(hidden = true)  JWTUserDetails jwtuser,@ApiParam(required = true) @RequestBody User user ){
-        user.setUserId(jwtuser.getUserId());
-        user.setPassword(MD5Utils.MD5EncodeUtf8(user.getPassword()));
-        if(userService.save(user)!=null){
-            return ServerResponse.createBySuccess();
+        if(jwtuser!=null) {
+            user.setUserId(jwtuser.getUserId());
+            user.setPassword(MD5Utils.MD5EncodeUtf8(user.getPassword()));
+            if (userService.save(user) != null) {
+                return ServerResponse.createBySuccess();
+            }
+            return ServerResponse.createByErrorMessage("更新密码失败");
         }
-        return ServerResponse.createByErrorMessage("更新密码失败");
+        return ServerResponse.createByErrorMessage("未登录");
     }
 
     //生成UserVO
