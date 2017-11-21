@@ -132,10 +132,21 @@ public class UserController {
             if(StringUtils.isNotEmpty(user.getUsername())){
                 user.setMd5(MD5Utils.MD5EncodeUtf8(user.getUsername()));
             }
-            if (userService.updateSelective(user) != null) {
-                return ServerResponse.createBySuccess();
+            User  userNew=userService.updateSelective(user);
+            if(userNew!=null){
+                String token= null;
+                try {
+                    token = jwtUtils.generateAccessToken(JWTUserFactory.create(userNew));
+                    Map<String,Object> map= Maps.newHashMap();
+                    map.put(token_header,"Bearer "+token);
+                    map.put("info",toUserVO(userNew));
+                    logger.info("修改用户信息，验证成功，发出token");
+                    return ServerResponse.createBySuccess(map);
+                } catch (JsonProcessingException e) {
+                    logger.error("generateAccessToken error");
+                }
             }
-            return ServerResponse.createByErrorMessage("更新密码失败");
+            return ServerResponse.createByErrorMessage("更新信息失败");
         }
         return ServerResponse.createByErrorMessage("未登录");
     }
