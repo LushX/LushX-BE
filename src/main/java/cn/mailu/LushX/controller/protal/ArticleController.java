@@ -3,6 +3,7 @@ package cn.mailu.LushX.controller.protal;
 import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Article;
+import cn.mailu.LushX.security.JWTUserDetails;
 import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.CommonUtils;
 import io.swagger.annotations.Api;
@@ -15,10 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -58,4 +57,27 @@ public class ArticleController {
         return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,articles));
     }
 
+    @ApiOperation(value="收藏文章", notes="收藏文章")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
+            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
+    })
+    @PostMapping("/like")
+    public ServerResponse saveArticle(@AuthenticationPrincipal JWTUserDetails jwtuser,@RequestBody String articleId){
+        if(jwtuser!=null){
+            List<Article> articleNews = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_NEW_KEY + "_" + RedisKey.TAGS[2]);
+            List<Article> articleHots = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY+"_"+RedisKey.TAGS[2]);
+            for(Article a: articleNews){
+                if(a.getArticleId()==articleId){
+                    //todo 保存到仓库
+                }
+            }
+            for(Article a: articleHots){
+                if(a.getArticleId()==articleId){
+                    //todo 保存到仓库
+                }
+            }
+        }
+        return ServerResponse.createByErrorMessage("未登录");
+    }
 }

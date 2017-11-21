@@ -22,4 +22,6 @@ public interface UserService extends BaseService<User> {
     User save(User user);
 
     User findByUsernameAndPassword(String username, String password);
+
+    User updateSelective(User user);
 }

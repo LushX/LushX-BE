@@ -111,7 +111,7 @@ public class UserController {
                 logger.info("图片地址{}",headImg);
                 user.setUserId(jwtuser.getUserId());
                 user.setHeadImg(headImg);
-                if(userService.save(user)==null){
+                if(userService.updateSelective(user)==null){
                     return ServerResponse.createByErrorMessage("更新用户头像错误");
                 }
                 return ServerResponse.createBySuccess(headImg);
@@ -132,7 +132,7 @@ public class UserController {
             if(StringUtils.isNotEmpty(user.getUsername())){
                 user.setMd5(MD5Utils.MD5EncodeUtf8(user.getUsername()));
             }
-            if (userService.save(user) != null) {
+            if (userService.updateSelective(user) != null) {
                 return ServerResponse.createBySuccess();
             }
             return ServerResponse.createByErrorMessage("更新密码失败");

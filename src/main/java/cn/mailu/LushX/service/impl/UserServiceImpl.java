@@ -5,6 +5,7 @@ import cn.mailu.LushX.entity.User;
 import cn.mailu.LushX.repository.UserRepository;
 import cn.mailu.LushX.service.UserService;
 import cn.mailu.LushX.util.MD5Utils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateById(User user) {
-        deleteById(user.getUserId());
+        userRepository.delete(user.getUserId());
         userRepository.save(user);
     }
 
@@ -89,4 +90,35 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsernameAndPassword(username,password);
     }
 
+    public User updateSelective(User user) {
+        User updateUser = userRepository.findOne(user.getUserId());
+        if (StringUtils.isNotBlank(user.getGender())) {
+            updateUser.setGender(user.getGender());
+        }
+        if (StringUtils.isNotBlank(user.getHeadImg())) {
+            updateUser.setHeadImg(user.getHeadImg());
+        }
+        if (StringUtils.isNotBlank(user.getLoginType())) {
+            updateUser.setLoginType(user.getLoginType());
+        }
+        if (StringUtils.isNotBlank(user.getGender())) {
+            updateUser.setGender(user.getGender());
+        }
+        if (StringUtils.isNotBlank(user.getMd5())) {
+            updateUser.setMd5(user.getMd5());
+        }
+        if (StringUtils.isNotBlank(user.getMeta())) {
+            updateUser.setMeta(user.getMeta());
+        }
+        if (StringUtils.isNotBlank(user.getPassword())) {
+            updateUser.setPassword(user.getPassword());
+        }
+        if (StringUtils.isNotBlank(user.getRole())) {
+            updateUser.setRole(user.getRole());
+        }
+        if (StringUtils.isNotBlank(user.getUsername())) {
+            updateUser.setUsername(user.getUsername());
+        }
+        return userRepository.save(updateUser);
+    }
 }

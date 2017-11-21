@@ -1,5 +1,6 @@
 package cn.mailu.LushX.controller.api;
 
+import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
@@ -37,19 +38,19 @@ public class VideoAPI {
     @GetMapping
     @ApiOperation(value = "获取真实播放地址")
     @ApiImplicitParam(name = "url",value = "视频源地址",required = true,paramType = "query")
-    public Video getRealPlayUrl(@RequestParam(value = "url") String url) throws IOException {
+    public ServerResponse getRealPlayUrl(@RequestParam(value = "url") String url) throws IOException {
         url = url.replaceAll("\\?(spm|from).*", "");
-        return (Video) parserManager.parse(url);
+        return ServerResponse.createBySuccess(((Video) parserManager.parse(url)).getPlayUrl());
     }
 
     @GetMapping("/episode")
     @ApiOperation(value = "获取视频相关集数")
     @ApiImplicitParam(name = "url",value = "视频源地址",required = true,paramType = "query")
-    public List<Episode> getEpisodes(@RequestParam(value = "url") String url) throws IOException {
+    public ServerResponse getEpisodes(@RequestParam(value = "url") String url) throws IOException {
         url = url.replaceAll("\\?(spm|from).*", "");
         String key = UrlUtils.getTopDomain(url);
         Parser videoParse = parserManager.getParser(key);
-        return videoParse.parseEpisodes(url);
+        return ServerResponse.createBySuccess(videoParse.parseEpisodes(url));
     }
 
     /**
