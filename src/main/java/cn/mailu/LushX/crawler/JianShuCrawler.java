@@ -127,8 +127,4 @@ public class JianShuCrawler {
         return article;
     }
 
-    public static void main(String[] args) {
-        System.out.println(getJianShuNewUrl("http://www.jianshu.com/recommendations/notes?category_id=56&max_id=1511230983"));
-    }
-
 }
