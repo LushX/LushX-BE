@@ -101,7 +101,7 @@ public class UserController {
 
     @ApiOperation(value="更新用户头像", notes="更新用户头像")
     @ApiImplicitParam(name = "headImg", value = "headImg传base64字符串", required = true,dataType ="String")
-    @PutMapping("/u/avatar")
+    @PostMapping("/u/avatar")
     public ServerResponse updateAvatar(@AuthenticationPrincipal JWTUserDetails jwtuser, @ApiParam(hidden = true)@RequestBody User user ){
 
         Map map=fileService.uploadImage(user.getHeadImg());
@@ -119,7 +119,7 @@ public class UserController {
     }
 
     @ApiOperation(value="更新用户信息", notes="更新用户信息")
-    @PutMapping("/u")
+    @PostMapping("/u")
     public ServerResponse updateUser(@AuthenticationPrincipal @ApiParam(hidden = true)  JWTUserDetails jwtuser,@ApiParam(required = true) @RequestBody User user ){
         user.setUserId(jwtuser.getUserId());
         user.setPassword(MD5Utils.MD5EncodeUtf8(user.getPassword()));
