@@ -32,8 +32,7 @@ public class JianShuCrawler {
 
     private final static String JIANSHU_URL="http://www.jianshu.com";
     private final static String JIANSHU_TRENDING_URL="http://www.jianshu.com/trending/weekly?page=";
-    private final static String JIANSHU_NEW_URL="http://www.jianshu.com/recommendations/notes?category_id=56&max_id=1511078256&page=";
-
+    private final static String JIANSHU_NEW_URL="http://www.jianshu.com/recommendations/notes?category_id=56";
 
     @Autowired
     private RedisService redisService;
@@ -55,8 +54,17 @@ public class JianShuCrawler {
 
         documents.clear();
         // 爬取简书最新上榜文章
-        for (int i = 1; i <= 3; i++){
-            Document document = JsoupUtils.getDocWithPC(JIANSHU_NEW_URL + String.valueOf(i)); // 拼接文章列表url
+        String newUrl = JIANSHU_NEW_URL;
+        for (int i = 1; i <= 5; i++){
+            Document document;
+            if(i == 1){
+                document = JsoupUtils.getDocWithPC(JIANSHU_NEW_URL);
+                newUrl = getJianShuNewUrl(newUrl);
+            }else{
+                document = JsoupUtils.getDocWithPC(newUrl);
+                newUrl = getJianShuNewUrl(newUrl);
+            }
+
             documents.add(document);
         }
         saveArticleToRedis(documents,RedisKey.JIANSHU_NEW_KEY + "_" + RedisKey.TAGS[2]);
@@ -64,6 +72,17 @@ public class JianShuCrawler {
 
     }
 
+    /**
+     *
+     * @param url
+     * @return
+     */
+    public static String getJianShuNewUrl(String url){
+        Document document = JsoupUtils.getDocWithPC(url);
+        String max_id = document.getElementsByTag("li").last().attr("data-recommended-at");
+        max_id = String.valueOf(Integer.parseInt(max_id) - 1);
+        return JIANSHU_NEW_URL + "&max_id=" + max_id;
+    }
 
     /**
      * 爬简书 将对象存入redis
@@ -106,6 +125,10 @@ public class JianShuCrawler {
                         + document.getElementsByTag("link"));
 
         return article;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getJianShuNewUrl("http://www.jianshu.com/recommendations/notes?category_id=56&max_id=1511230983"));
     }
 
 }
