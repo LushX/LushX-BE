@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.*;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,7 +126,12 @@ public class UserController {
     public ServerResponse updateUser(@AuthenticationPrincipal @ApiParam(hidden = true)  JWTUserDetails jwtuser,@ApiParam(required = true) @RequestBody User user ){
         if(jwtuser!=null) {
             user.setUserId(jwtuser.getUserId());
-            user.setPassword(MD5Utils.MD5EncodeUtf8(user.getPassword()));
+            if(StringUtils.isNotEmpty(user.getPassword())){
+                user.setPassword(MD5Utils.MD5EncodeUtf8(user.getPassword()));
+            }
+            if(StringUtils.isNotEmpty(user.getUsername())){
+                user.setMd5(MD5Utils.MD5EncodeUtf8(user.getUsername()));
+            }
             if (userService.save(user) != null) {
                 return ServerResponse.createBySuccess();
             }

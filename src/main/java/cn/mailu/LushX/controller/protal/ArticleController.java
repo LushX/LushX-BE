@@ -57,4 +57,5 @@ public class ArticleController {
         List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_NEW_KEY + "_" + RedisKey.TAGS[2]);
         return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,articles));
     }
+
 }
