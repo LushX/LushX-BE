@@ -16,6 +16,7 @@ public class City {
     private String pinyin;
     private Integer isOpen;
 
+
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

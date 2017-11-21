@@ -43,9 +43,9 @@ public class YoukuParser implements Parser<Video> {
     public Video parse(String url) throws IOException {
         final Video video = new Video();
         video.setValue(url);
-        String vid = matchVid(url);
-        String api = createPlayRequestApi(vid);
-        String result = UrlUtils.getResponse(api);
+        String vid = matchVid(url);//匹配Vid
+        String api = createPlayRequestApi(vid);//拼接Api请求
+        String result = UrlUtils.getResponse(api);//请求Api
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode=mapper.readValue(result,JsonNode.class);
         JsonNode videoNode=rootNode.path("data").path("video");
