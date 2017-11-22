@@ -57,17 +57,22 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // It is not compelling necessary to load the use details from the database. You could also store the information
             // in the token and read it from it. It's up to you ;)
-            // UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            UserDetails userDetails = jwtUtils.getUserFromToken(auth_token);
-            logger.info(userDetails.getUsername());
+
+            //UserDetails userDetails = jwtUtils.getUserFromToken(auth_token);
+
             // For simple validation it is completely sufficient to just check the token integrity. You don't have to call
             // the database compellingly. Again it's up to you ;)
-            if (jwtUtils.validateToken(auth_token, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                logger.info(String.format("Authenticated user %s, setting security context", username));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            if(userDetails!=null){
+                logger.info(userDetails.getUsername());
+                if (jwtUtils.validateToken(auth_token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    logger.info(String.format("Authenticated user %s, setting security context", username));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
+
         }
 
         filterChain.doFilter(request, response);

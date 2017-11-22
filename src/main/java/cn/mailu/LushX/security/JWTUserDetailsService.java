@@ -24,7 +24,7 @@ public class JWTUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user=userRepository.findByUsername(username);
         if(user==null){
-            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
+            return null;
         }else{
             return JWTUserFactory.create(user);
         }
