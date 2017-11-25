@@ -3,11 +3,14 @@ package cn.mailu.LushX.crawler;
 
 import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.constant.VideoTypeEnum;
+import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.exception.LushXException;
 import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.JsoupUtils;
 import cn.mailu.LushX.util.TimeUtils;
+import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
+import org.apache.commons.lang.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -19,10 +22,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.text.ParseException;
+import java.util.*;
 
 
 /**
@@ -37,18 +38,18 @@ import java.util.UUID;
 public class ChenluoCrawler {
 
     //全局设定需要爬的页数
-    private int pageNum = 3;
+    private int pageNum = 1;
 
     private static Logger logger = LoggerFactory.getLogger(ChenluoCrawler.class);
 
-    private final static String CL_TV_URL_HOT = "https://www.50s.cc/whole/2~~~~~~~0~hits~~.html";
-    private final static String CL_MOVIE_URL_HOT = "https://www.50s.cc/whole/1~~~~~~~0~hits~~.html";
-    private final static String CL_ZY_URL_HOT = "https://www.50s.cc/whole/4~~~~~~~0~hits~~.html";
-    private final static String CL_DM_URL_HOT = "https://www.50s.cc/whole/3~~~~~~~0~hits~~.html";
-    private final static String CL_TV_URL_NEW = "https://www.50s.cc/whole/2~~~~~~~0~id~~.html";
-    private final static String CL_MOVIE_URL_NEW = "https://www.50s.cc/whole/1~~~~~~~0~id~~.html";
-    private final static String CL_ZY_URL_NEW = "https://www.50s.cc/whole/4~~~~~~~0~id~~.html";
-    private final static String CL_DM_URL_NEW = "https://www.50s.cc/whole/3~~~~~~~0~id~~.html";
+    private final static String CL_TV_URL_HOT = "https://www.50s.cc/whole/2~~~~~~~0~hits~.html";
+    private final static String CL_MOVIE_URL_HOT = "https://www.50s.cc/whole/1~~~~~~~0~hits~.html";
+    private final static String CL_ZY_URL_HOT = "https://www.50s.cc/whole/4~~~~~~~0~hits~.html";
+    private final static String CL_DM_URL_HOT = "https://www.50s.cc/whole/3~~~~~~~0~hits~.html";
+    private final static String CL_TV_URL_NEW = "https://www.50s.cc/whole/2~~~~~~~0~id~.html";
+    private final static String CL_MOVIE_URL_NEW = "https://www.50s.cc/whole/1~~~~~~~0~id~.html";
+    private final static String CL_ZY_URL_NEW = "https://www.50s.cc/whole/4~~~~~~~0~id~.html";
+    private final static String CL_DM_URL_NEW = "https://www.50s.cc/whole/3~~~~~~~0~id~.html";
 
     private static final String TAG = "CHENLUO";
 
@@ -108,9 +109,6 @@ public class ChenluoCrawler {
             //每个视频固有的id
             String vid = infoUrl.replace("/show/", "").replace(".html", "");
 
-            //Element epElement=infoBlock.select()
-
-
             video.setValue(vid);
             video.setVideoId(UUID.randomUUID().toString());
             video.setTitle(title);
@@ -122,6 +120,38 @@ public class ChenluoCrawler {
             video.setArea(area);
             video.setDirector(director);
             //video.setScore(score);
+            Element epBlock = infoBlock.select("div.row div.row").get(2);
+
+            Elements epElements = epBlock.select("div#tvTabContent div.tab-pane").get(0).select("div[class~=^col-xs-1 play-]");
+            Collection<Episode> episodes = new ArrayList<>();
+
+            for (Element epElement : epElements) {
+
+                Episode episode = new Episode();
+
+                String epUrl = "https://www.50s.cc" + epElement.select("a").attr("href");
+
+                String epNumStr = epElement.select("a").text()
+                        .replace("第", "")
+                        .replace("集", "")
+                        .replace("期", "")
+                        .trim();
+
+                int epNum = 0;
+
+                if (StringUtils.isNotEmpty(epNumStr) && StringUtils.isNotBlank(epNumStr) && StringUtils.isNumeric(epNumStr)) {
+
+                    epNum = Integer.parseInt(epNumStr);
+
+                }
+
+                episode.setIndex(epNum);
+                episode.setEpisodeId(UUID.randomUUID().toString());
+                episode.setValue(epUrl);
+                episodes.add(episode);
+            }
+
+            video.setEpisodesByVideoId(episodes);
 
             try {
 
@@ -134,6 +164,30 @@ public class ChenluoCrawler {
                 video.setTime(new java.sql.Date((new Date()).getTime()));
                 // continue;
             }
+
+
+
+
+            /*String epNumStr=infoBlock.select("td:contains(状态)+td ").text().replace("更新至","").replace("集","").trim();
+
+            int epNum=0;
+
+            try{
+
+                epNum=Integer.parseInt(epNumStr);
+
+            }catch (Exception e){
+                logger.error(e.getMessage());
+                epNum=0;
+            }
+
+            for(int i=0;epNum!=0&&i<epNum;i++){
+
+
+
+            }*/
+
+
             logger.info("CHENLUO:" + title);
             videos.add(video);
         }
@@ -141,15 +195,9 @@ public class ChenluoCrawler {
     }
 
     /**
-     *
      * @param url
-     *
-     *@param videoType
-     *
-     * 翻页
-     *
-     *@Date: Created in 23:44 2017/11/25
-     *
+     * @param videoType 翻页
+     * @Date: Created in 23:44 2017/11/25
      */
     private void pageTurning(String url, int videoType) {
 
@@ -157,28 +205,22 @@ public class ChenluoCrawler {
 
         for (int i = 1; i <= pageNum; i++) {
 
-            url = url.replace(".html", "") + i + ".html";
+            String urlPage = url.replace(".html", "") + i + ".html";
 
-            Document document = JsoupUtils.getDocWithPC(url);
+            Document document = JsoupUtils.getDocWithPC(urlPage);
 
             documents.add(document);
 
-            logger.info("第" + i + "页 列表爬取完毕！ URL:  " + url);
+            logger.info("第" + i + "页 列表爬取完毕！ URL:  " + urlPage);
         }
         saveVideosToRedis(documents, videoType);
     }
 
 
     /**
-     *
      * @param documents
-     *
-     *@param videoType
-     *
-     * 存入redis数据库
-     *
-     *@Date: Created in 23:44 2017/11/25
-     *
+     * @param videoType 存入redis数据库
+     * @Date: Created in 23:44 2017/11/25
      */
     private void saveVideosToRedis(List<Document> documents, int videoType) {
         List<Video> videoList = new ArrayList<>();
