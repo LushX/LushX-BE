@@ -29,7 +29,7 @@ import java.util.UUID;
  * @Last_Modified By:Drohe in 23:57 2017/11/18
  */
 
-@Component
+//@Component
 @EnableAsync
 public class YoukuCrawler {
 

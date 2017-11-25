@@ -21,7 +21,7 @@ import java.util.List;
  * 腾讯视频信息爬虫
  * Created by Silence on 2017/2/12.
  */
-@Component
+//@Component
 public class QqCrawler {
 
     private static final String HOME_PAGE_PC = "https://v.qq.com/";

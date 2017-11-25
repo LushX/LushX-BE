@@ -1,6 +1,8 @@
 package cn.mailu.LushX.util;
 
 
+import cn.mailu.LushX.exception.LushXException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,20 +44,21 @@ return DateUtils.format(new Date(),DATE_TIME_PATTERN);
 
     public static Date stringToDate(String strDate) {
 
-        if("".equals(strDate)||null==strDate){
+        if("".equals(strDate)||null==strDate||strDate.equals("0")){
             return new Date();
         }
         if(strDate.length()==4){
             strDate=strDate+"-01-01";
         }
+
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         try {
 
             return  sdf.parse(strDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new LushXException("无法处理的时间格式：" + strDate);
         }
-        return null;
+       // return null;
     }
 
 

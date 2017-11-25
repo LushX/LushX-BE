@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * 熊猫TV 爬虫
  */
-@Component
+//@Component
 public class PandaCrawler {
 
     private static Logger logger= LoggerFactory.getLogger(PandaCrawler.class);

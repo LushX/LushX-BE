@@ -25,7 +25,7 @@ import java.util.UUID;
  * @Date: Created in 下午 5:12 2017-11-08
  * @Modified By:
  */
-@Component
+//@Component
 @EnableAsync
 public class JianShuCrawler {
     private static Logger logger= LoggerFactory.getLogger(JianShuCrawler.class);
