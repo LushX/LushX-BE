@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -125,4 +128,15 @@ public class VideoController {
         List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY+"_"+ VideoTypeEnum.CL_DM_NEW.getCode());
         return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,videos));
     }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "搜索视频")
+    @ApiImplicitParam(name = "keyword",value = "关键词",required = true,paramType = "query")
+    public ServerResponse searchVideo(@RequestParam(value = "keyword") String keyword) throws IOException {
+        if(StringUtils.isNotEmpty(keyword.trim())){
+            //todo 搜索
+        }
+        return ServerResponse.createByErrorMessage("关键词不为空");
+    }
+
 }
