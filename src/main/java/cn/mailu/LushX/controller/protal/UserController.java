@@ -93,6 +93,7 @@ public class UserController {
         if(jwtuser!=null){
             User user=userService.selectById(jwtuser.getUserId());
             UserVO userVo=toUserVO(user);
+            // todo 获取收藏列表
             return ServerResponse.createBySuccess(userVo);
         }
         return ServerResponse.createByErrorMessage("未登录");
@@ -151,6 +152,13 @@ public class UserController {
         return ServerResponse.createByErrorMessage("未登录");
     }
 
+    @PostMapping("/u/dislike")
+    @ApiOperation(value = "取消收藏")
+    @ApiImplicitParam(name = "id",value = "取消收藏的id",required = true,paramType = "query")
+    public ServerResponse dislike(@AuthenticationPrincipal @ApiParam(hidden = true)  JWTUserDetails jwtuser,@RequestBody String id) {
+        //todo 取消收藏
+        return ServerResponse.createByError();
+    }
     //生成UserVO
     private UserVO toUserVO(User user){
         UserVO userVO=new UserVO();

@@ -132,7 +132,7 @@ public class VideoController {
     @GetMapping("/search")
     @ApiOperation(value = "搜索视频")
     @ApiImplicitParam(name = "keyword",value = "关键词",required = true,paramType = "query")
-    public ServerResponse searchVideo(@RequestParam(value = "keyword") String keyword) throws IOException {
+    public ServerResponse searchVideo(@RequestParam(value = "keyword") String keyword){
         if(StringUtils.isNotEmpty(keyword.trim())){
             //todo 搜索
         }
