@@ -15,6 +15,8 @@ import cn.mailu.LushX.util.CommonUtils;
 import cn.mailu.LushX.util.JWTUtils;
 import cn.mailu.LushX.util.MD5Utils;
 import cn.mailu.LushX.vo.UserVO;
+import cn.mailu.LushX.vo.UserWithLikeVO;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
@@ -102,7 +104,7 @@ public class UserController {
 
     @ApiOperation(value = "用户首页", notes = "用户首页")
     @GetMapping("/u")
-    public ServerResponse userspace(@AuthenticationPrincipal JWTUserDetails jwtuser) {
+    public ServerResponse<UserWithLikeVO> userspace(@AuthenticationPrincipal JWTUserDetails jwtuser) {
         if (jwtuser != null) {
             User user = userService.selectById(jwtuser.getUserId());
             UserVO userVo = toUserVO(user);
@@ -112,10 +114,10 @@ public class UserController {
             Page<Video> videoPage = CommonUtils.getPage(pageable, videos);
             List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY + "_" + RedisKey.TAGS[2]);
             Page<Article> articlePage = CommonUtils.getPage(pageable, articles);
-            Map res = Maps.newHashMap();
-            res.put("user", userVo);
-            res.put("video", videoPage);
-            res.put("article", articlePage);
+            Map map = Maps.newHashMap();
+            map.put("video", videoPage);
+            map.put("article", articlePage);
+            UserWithLikeVO res=new UserWithLikeVO(userVo,map);
             return ServerResponse.createBySuccess(res);
         }
         return ServerResponse.createByErrorMessage("未登录");
@@ -152,6 +154,10 @@ public class UserController {
                 user.setPassword(MD5Utils.MD5EncodeUtf8(user.getPassword()));
             }
             if (StringUtils.isNotEmpty(user.getUsername())) {
+                User res=userService.findByUsername(user.getUsername());
+                if(res!=null){
+                    return ServerResponse.createByErrorMessage("用户名已存在");
+                }
                 user.setMd5(MD5Utils.MD5EncodeUtf8(user.getUsername()));
             }
             User userNew = userService.updateSelective(user);
