@@ -69,7 +69,7 @@ public class VideoController {
             @ApiImplicitParam(name = "size", value = "页大小", defaultValue = "20", required = false, paramType = "query")
     })
     public ServerResponse<Page<Video>> getHotZy(@PageableDefault(value = 20, size = 20) Pageable pageable) {
-        List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY + "_" + VideoTypeEnum.YK_ZY_HOT.getCode());
+        List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY + "_" + VideoTypeEnum.CL_ZY_HOT.getCode());
         return ServerResponse.createBySuccess(CommonUtils.getPage(pageable, videos));
     }
 
