@@ -28,52 +28,50 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/article")
-@Api(value = "ArticleController",description = "文章展示接口")
+@Api(value = "ArticleController", description = "文章展示接口")
 public class ArticleController {
 
-    private static Logger logger= LoggerFactory.getLogger(ArticleController.class);
+    private static Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     @Autowired
     private RedisService redisService;
 
-    @ApiOperation(value="最热文章", notes="最热文章")
+    @ApiOperation(value = "最热文章", notes = "最热文章")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
-            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
+            @ApiImplicitParam(name = "page", value = "第几页", defaultValue = "0", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "size", value = "页大小", defaultValue = "20", required = false, paramType = "query")
     })
     @GetMapping("/hot")
-    public ServerResponse<Page<Article>> getHotArticle(@PageableDefault(value = 20,size = 20)Pageable pageable){
-        List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY+"_"+RedisKey.TAGS[2]);
-        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,articles));
-    }
-    @ApiOperation(value="最热文章", notes="最热文章")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
-            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
-    })
-    @GetMapping("/new")
-    public ServerResponse<Page<Article>> getNewArticle(@PageableDefault(value = 20,size = 20)Pageable pageable){
-        List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_NEW_KEY + "_" + RedisKey.TAGS[2]);
-        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable,articles));
+    public ServerResponse<Page<Article>> getHotArticle(@PageableDefault(value = 20, size = 20) Pageable pageable) {
+        List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY + "_" + RedisKey.TAGS[2]);
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable, articles));
     }
 
-    @ApiOperation(value="收藏文章", notes="收藏文章")
+    @ApiOperation(value = "最热文章", notes = "最热文章")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "第几页",defaultValue = "0",required = false,paramType ="query"),
-            @ApiImplicitParam(name = "size", value = "页大小",defaultValue = "20",required = false,paramType ="query")
+            @ApiImplicitParam(name = "page", value = "第几页", defaultValue = "0", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "size", value = "页大小", defaultValue = "20", required = false, paramType = "query")
     })
+    @GetMapping("/new")
+    public ServerResponse<Page<Article>> getNewArticle(@PageableDefault(value = 20, size = 20) Pageable pageable) {
+        List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_NEW_KEY + "_" + RedisKey.TAGS[2]);
+        return ServerResponse.createBySuccess(CommonUtils.getPage(pageable, articles));
+    }
+
+    @ApiOperation(value = "收藏文章", notes = "收藏文章")
+    @ApiImplicitParam(name = "articleId", value = "收藏文章id", required = true)
     @PostMapping("/like")
-    public ServerResponse saveArticle(@AuthenticationPrincipal JWTUserDetails jwtuser,@RequestBody String articleId){
-        if(jwtuser!=null){
+    public ServerResponse saveArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody String articleId) {
+        if (jwtuser != null) {
             List<Article> articleNews = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_NEW_KEY + "_" + RedisKey.TAGS[2]);
-            List<Article> articleHots = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY+"_"+RedisKey.TAGS[2]);
-            for(Article a: articleNews){
-                if(a.getArticleId()==articleId){
+            List<Article> articleHots = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY + "_" + RedisKey.TAGS[2]);
+            for (Article a : articleNews) {
+                if (a.getArticleId() == articleId) {
                     //todo 保存到仓库
                 }
             }
-            for(Article a: articleHots){
-                if(a.getArticleId()==articleId){
+            for (Article a : articleHots) {
+                if (a.getArticleId() == articleId) {
                     //todo 保存到仓库
                 }
             }
