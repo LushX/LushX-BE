@@ -16,12 +16,14 @@ public class UserVO {
     private String username;  //用户名
     private String headImg;  //用户头像
     private String gender;  // 性别
+    private Map collection; //收藏
 
-    public UserVO(String userId, String username, String headImg, String gender) {
-        this.userId = userId;
-        this.username = username;
-        this.headImg = headImg;
-        this.gender = gender;
+    public Map getCollection() {
+        return collection;
+    }
+
+    public void setCollection(Map collection) {
+        this.collection = collection;
     }
 
     public UserVO() {

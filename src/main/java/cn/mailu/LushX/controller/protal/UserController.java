@@ -15,10 +15,7 @@ import cn.mailu.LushX.util.CommonUtils;
 import cn.mailu.LushX.util.JWTUtils;
 import cn.mailu.LushX.util.MD5Utils;
 import cn.mailu.LushX.vo.UserVO;
-import cn.mailu.LushX.vo.UserWithLikeVO;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.*;
 import org.apache.commons.lang.StringUtils;
@@ -29,15 +26,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +83,18 @@ public class UserController {
                 token = jwtUtils.generateAccessToken(JWTUserFactory.create(userNew));
                 Map<String, Object> map = Maps.newHashMap();
                 map.put(token_header, "Bearer " + token);
-                map.put("info", toUserVO(userNew));
+                //todo 删除
+                UserVO userVo=toUserVO(userNew);
+                List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY + "_" + VideoTypeEnum.CL_TV_HOT.getCode());
+                Pageable pageable = new PageRequest(0, 10);
+                Page<Video> videoPage = CommonUtils.getPage(pageable, videos);
+                List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY + "_" + RedisKey.TAGS[2]);
+                Page<Article> articlePage = CommonUtils.getPage(pageable, articles);
+                Map map2 = Maps.newHashMap();
+                map2.put("video", videoPage);
+                map2.put("article", articlePage);
+                userVo.setCollection(map2);
+                map.put("info", userVo);
                 logger.info("验证成功，发出token");
                 return ServerResponse.createBySuccess(map);
             } catch (JsonProcessingException e) {
@@ -104,7 +106,7 @@ public class UserController {
 
     @ApiOperation(value = "用户首页", notes = "用户首页")
     @GetMapping("/u")
-    public ServerResponse<UserWithLikeVO> userspace(@AuthenticationPrincipal JWTUserDetails jwtuser) {
+    public ServerResponse userspace(@AuthenticationPrincipal JWTUserDetails jwtuser) {
         if (jwtuser != null) {
             User user = userService.selectById(jwtuser.getUserId());
             UserVO userVo = toUserVO(user);
@@ -117,8 +119,8 @@ public class UserController {
             Map map = Maps.newHashMap();
             map.put("video", videoPage);
             map.put("article", articlePage);
-            UserWithLikeVO res=new UserWithLikeVO(userVo,map);
-            return ServerResponse.createBySuccess(res);
+            userVo.setCollection(map);
+            return ServerResponse.createBySuccess(userVo);
         }
         return ServerResponse.createByErrorMessage("未登录");
     }
@@ -167,7 +169,18 @@ public class UserController {
                     token = jwtUtils.generateAccessToken(JWTUserFactory.create(userNew));
                     Map<String, Object> map = Maps.newHashMap();
                     map.put(token_header, "Bearer " + token);
-                    map.put("info", toUserVO(userNew));
+                    //todo 删除
+                    UserVO userVo=toUserVO(userNew);
+                    List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY + "_" + VideoTypeEnum.CL_TV_HOT.getCode());
+                    Pageable pageable = new PageRequest(0, 10);
+                    Page<Video> videoPage = CommonUtils.getPage(pageable, videos);
+                    List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY + "_" + RedisKey.TAGS[2]);
+                    Page<Article> articlePage = CommonUtils.getPage(pageable, articles);
+                    Map map2 = Maps.newHashMap();
+                    map2.put("video", videoPage);
+                    map2.put("article", articlePage);
+                    userVo.setCollection(map2);
+                    map.put("info", userVo);
                     logger.info("修改用户信息，验证成功，发出token");
                     return ServerResponse.createBySuccess(map);
                 } catch (JsonProcessingException e) {
