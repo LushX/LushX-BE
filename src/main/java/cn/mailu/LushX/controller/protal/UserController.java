@@ -91,9 +91,8 @@ public class UserController {
             UserVO userVo = toUserVO(user);
             Pageable pageable = new PageRequest(0, 10);
             Map map = Maps.newHashMap();
-            //todo
             map.put("video", articleRepertoryService.getLikeArticleListByUserId(user.getUserId(), pageable));
-            map.put("article", articleRepertoryService.getLikeArticleListByUserId(user.getUserId(), pageable));
+            map.put("article", videoRepertoryService.getLikeVideoListByUserId(user.getUserId(),pageable));
             userVo.setCollection(map);
             return ServerResponse.createBySuccess(userVo);
         }
@@ -156,8 +155,7 @@ public class UserController {
             Pageable pageable = new PageRequest(0, 10);
             Map map2 = Maps.newHashMap();
             map2.put("video", articleRepertoryService.getLikeArticleListByUserId(userNew.getUserId(), pageable));
-            //todo 视频收藏
-            map2.put("article", articleRepertoryService.getLikeArticleListByUserId(userNew.getUserId(), pageable));
+            map2.put("article", videoRepertoryService.getLikeVideoListByUserId(userNew.getUserId(), pageable));
             userVo.setCollection(map2);
             map.put("info", userVo);
             logger.info("验证成功，发出token");

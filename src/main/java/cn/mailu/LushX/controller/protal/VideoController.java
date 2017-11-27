@@ -4,9 +4,12 @@ import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.constant.VideoTypeEnum;
 import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.entity.VideoRepertory;
 import cn.mailu.LushX.security.JWTUserDetails;
 import cn.mailu.LushX.service.RedisService;
+import cn.mailu.LushX.service.VideoRepertoryService;
 import cn.mailu.LushX.util.CommonUtils;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -21,6 +24,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: NULL
@@ -36,6 +40,9 @@ public class VideoController {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private VideoRepertoryService videoRepertoryService;
 
 
     @ApiOperation(value = "最热tv", notes = "最热tv")
@@ -139,11 +146,67 @@ public class VideoController {
     @ApiOperation(value = "收藏视频", notes = "收藏视频")
     @ApiImplicitParam(name = "video", value = "视频对象", required = true, dataType = "Video")
     @PostMapping("/like")
-    public ServerResponse saveArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody Video video) {
+    public ServerResponse likeVideo(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody Video video) {
         if (jwtuser != null) {
-            // todo收藏视频
+            VideoRepertory videoRepertory = videoRepertoryService.findByUserId(jwtuser.getUserId());
+            videoRepertory.getVideos().add(video);
+            if (videoRepertoryService.save(videoRepertory) != null) {
+                return ServerResponse.createBySuccessMessage("收藏成功");
+            }
+            return ServerResponse.createByErrorMessage("收藏失败");
         }
         return ServerResponse.createByErrorMessage("未登录");
     }
 
+    @ApiOperation(value = "取消收藏视频", notes = "取消收藏视频")
+    @ApiImplicitParam(name = "videoId", value = "取消收藏视频id", required = true)
+    @PostMapping("/dislike")
+    public ServerResponse dislikeVideo(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody String videoId) {
+        if (jwtuser != null) {
+            VideoRepertory videoRepertory = videoRepertoryService.findByUserId(jwtuser.getUserId());
+            List<Video> videos = (List<Video>) videoRepertory.getVideos();
+            for (Video a : videos) {
+                if (a.getVideoId() == videoId) {
+                    videos.remove(a);
+                    if (videoRepertoryService.save(videoRepertory) != null) {
+                        return ServerResponse.createBySuccess();
+                    }
+                }
+            }
+            return ServerResponse.createByErrorMessage("取消收藏失败");
+        }
+        return ServerResponse.createByErrorMessage("未登录");
+    }
+
+    @ApiOperation(value = "是否已收藏视频", notes = "是否已收藏视频")
+    @ApiImplicitParam(name = "videoId", value = "视频id", required = true, paramType = "query")
+    @GetMapping("/islike")
+    public ServerResponse isLike(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestParam String videoId) {
+        Map res = Maps.newHashMap();
+        res.put("isLike", false);
+        if (jwtuser != null) {
+            VideoRepertory videoRepertory = videoRepertoryService.findByUserId(jwtuser.getUserId());
+            for (Video a : videoRepertory.getVideos()) {
+                if (a.getVideoId() == videoId) {
+                    res.put("isLike", true);
+                    break;
+                }
+            }
+            return ServerResponse.createBySuccess(res);
+        }
+        return ServerResponse.createByErrorMessage("未登录");
+    }
+
+    @ApiOperation(value = "收藏视频列表", notes = "收藏视频列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "第几页", defaultValue = "0", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "size", value = "页大小", defaultValue = "20", required = false, paramType = "query")
+    })
+    @GetMapping("/like")
+    public ServerResponse<Page<Video>> getLikeVideo(@AuthenticationPrincipal JWTUserDetails jwtuser, @PageableDefault(value = 20, size = 20) Pageable pageable) {
+        if (jwtuser != null) {
+            return ServerResponse.createBySuccess(videoRepertoryService.getLikeVideoListByUserId(jwtuser.getUserId(),pageable));
+        }
+        return ServerResponse.createByErrorMessage("未登录");
+    }
 }
