@@ -1,8 +1,13 @@
 package cn.mailu.LushX.service.impl;
 
 import cn.mailu.LushX.common.ServerResponse;
+import cn.mailu.LushX.entity.ArticleRepertory;
 import cn.mailu.LushX.entity.User;
+import cn.mailu.LushX.entity.VideoRepertory;
+import cn.mailu.LushX.repository.ArticleRepertoryRepository;
+import cn.mailu.LushX.repository.ArticleRepository;
 import cn.mailu.LushX.repository.UserRepository;
+import cn.mailu.LushX.repository.VideoRepertoryRepository;
 import cn.mailu.LushX.service.UserService;
 import cn.mailu.LushX.util.MD5Utils;
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +29,13 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ArticleRepertoryRepository articleRepertoryRepository;
+
+    @Autowired
+    private VideoRepertoryRepository videoRepertoryRepository;
+
 
     @Override
     public void insert(User user) {
@@ -67,6 +79,16 @@ public class UserServiceImpl implements UserService {
         if(userRepository.save(user)==null){
             return ServerResponse.createByErrorMessage("注册失败");
         }
+        //添加对应的空仓库
+        ArticleRepertory articleRepertory=new ArticleRepertory();
+        articleRepertory.setArticleRepertoryId(UUID.randomUUID().toString());
+        articleRepertory.setUserId(user.getUserId());
+        articleRepertoryRepository.save(articleRepertory);
+
+        VideoRepertory videoRepertory=new VideoRepertory();
+        videoRepertory.setUserId(user.getUserId());
+        videoRepertory.setVideoRepertoryId(UUID.randomUUID().toString());
+        videoRepertoryRepository.save(videoRepertory);
         return ServerResponse.createBySuccessMessage("注册成功");
     }
 
