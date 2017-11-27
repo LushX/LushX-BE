@@ -1,12 +1,11 @@
 package cn.mailu.LushX.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 5:02 2017-11-26
+ * @Date: Created in 下午 2:32 2017-11-27
  * @Modified By:
  */
 @Entity
@@ -14,7 +13,6 @@ import java.util.Collection;
 public class ArticleRepertory {
     private String articleRepertoryId;
     private String userId;
-    private Collection<Article> articlesByArticleRepertoryId;
 
     @Id
     @Column(name = "article_repertory_id", nullable = false, length = 40)
@@ -55,14 +53,5 @@ public class ArticleRepertory {
         int result = articleRepertoryId != null ? articleRepertoryId.hashCode() : 0;
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "articleRepertoryByArticleRepertoryId")
-    public Collection<Article> getArticlesByArticleRepertoryId() {
-        return articlesByArticleRepertoryId;
-    }
-
-    public void setArticlesByArticleRepertoryId(Collection<Article> articlesByArticleRepertoryId) {
-        this.articlesByArticleRepertoryId = articlesByArticleRepertoryId;
     }
 }

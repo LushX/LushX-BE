@@ -1,12 +1,11 @@
 package cn.mailu.LushX.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 9:33 2017-11-16
+ * @Date: Created in 下午 2:32 2017-11-27
  * @Modified By:
  */
 @Entity
@@ -23,7 +22,6 @@ public class HotelInfo {
     private String sourceWeb;
     private String facility;
     private Integer comments;
-    private Collection<HotelComment> hotelCommentsByHotelId;
 
     @Id
     @Column(name = "hotel_id", nullable = false, length = 40)
@@ -172,14 +170,5 @@ public class HotelInfo {
         result = 31 * result + (facility != null ? facility.hashCode() : 0);
         result = 31 * result + (comments != null ? comments.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "hotelInfoByHotelId")
-    public Collection<HotelComment> getHotelCommentsByHotelId() {
-        return hotelCommentsByHotelId;
-    }
-
-    public void setHotelCommentsByHotelId(Collection<HotelComment> hotelCommentsByHotelId) {
-        this.hotelCommentsByHotelId = hotelCommentsByHotelId;
     }
 }

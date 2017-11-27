@@ -1,20 +1,20 @@
 package cn.mailu.LushX.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
-import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 9:33 2017-11-16
+ * @Date: Created in 下午 2:32 2017-11-27
  * @Modified By:
  */
 @Entity
-@Table(name = "article", schema = "LushX", catalog = "")
 public class Article {
     private String articleId;
+    private String articleRepertoryId;
     private String title;
     private String image;
     private String content;
@@ -24,9 +24,6 @@ public class Article {
     private String value;
     private String other;
     private String provider;
-    private Collection<ArticleType> articleTypesByArticleId;
-    private String articleRepertoryId;
-    private ArticleRepertory articleRepertoryByArticleRepertoryId;
 
     @Id
     @Column(name = "article_id", nullable = false, length = 40)
@@ -36,6 +33,16 @@ public class Article {
 
     public void setArticleId(String articleId) {
         this.articleId = articleId;
+    }
+
+    @Basic
+    @Column(name = "article_repertory_id", nullable = true, length = 40)
+    public String getArticleRepertoryId() {
+        return articleRepertoryId;
+    }
+
+    public void setArticleRepertoryId(String articleRepertoryId) {
+        this.articleRepertoryId = articleRepertoryId;
     }
 
     @Basic
@@ -136,6 +143,8 @@ public class Article {
         Article article = (Article) o;
 
         if (articleId != null ? !articleId.equals(article.articleId) : article.articleId != null) return false;
+        if (articleRepertoryId != null ? !articleRepertoryId.equals(article.articleRepertoryId) : article.articleRepertoryId != null)
+            return false;
         if (title != null ? !title.equals(article.title) : article.title != null) return false;
         if (image != null ? !image.equals(article.image) : article.image != null) return false;
         if (content != null ? !content.equals(article.content) : article.content != null) return false;
@@ -152,6 +161,7 @@ public class Article {
     @Override
     public int hashCode() {
         int result = articleId != null ? articleId.hashCode() : 0;
+        result = 31 * result + (articleRepertoryId != null ? articleRepertoryId.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (image != null ? image.hashCode() : 0);
         result = 31 * result + (content != null ? content.hashCode() : 0);
@@ -162,34 +172,5 @@ public class Article {
         result = 31 * result + (other != null ? other.hashCode() : 0);
         result = 31 * result + (provider != null ? provider.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "articleByArticleId")
-    public Collection<ArticleType> getArticleTypesByArticleId() {
-        return articleTypesByArticleId;
-    }
-
-    public void setArticleTypesByArticleId(Collection<ArticleType> articleTypesByArticleId) {
-        this.articleTypesByArticleId = articleTypesByArticleId;
-    }
-
-    @Basic
-    @Column(name = "article_repertory_id", nullable = true, length = 40)
-    public String getArticleRepertoryId() {
-        return articleRepertoryId;
-    }
-
-    public void setArticleRepertoryId(String articleRepertoryId) {
-        this.articleRepertoryId = articleRepertoryId;
-    }
-
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "article_repertory_id")
-    public ArticleRepertory getArticleRepertoryByArticleRepertoryId() {
-        return articleRepertoryByArticleRepertoryId;
-    }
-
-    public void setArticleRepertoryByArticleRepertoryId(ArticleRepertory articleRepertoryByArticleRepertoryId) {
-        this.articleRepertoryByArticleRepertoryId = articleRepertoryByArticleRepertoryId;
     }
 }

@@ -1,15 +1,17 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 9:33 2017-11-16
+ * @Date: Created in 下午 2:32 2017-11-27
  * @Modified By:
  */
 @Entity
-@Table(name = "user", schema = "LushX", catalog = "")
 public class User {
     private String userId;
     private String role;

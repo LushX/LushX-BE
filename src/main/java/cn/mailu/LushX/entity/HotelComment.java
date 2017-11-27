@@ -5,18 +5,17 @@ import javax.persistence.*;
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 9:33 2017-11-16
+ * @Date: Created in 下午 2:32 2017-11-27
  * @Modified By:
  */
 @Entity
 @Table(name = "hotel_comment", schema = "LushX", catalog = "")
 public class HotelComment {
     private String commentId;
+    private String hotelId;
     private String content;
     private Double avgScore;
     private Integer level;
-    private HotelInfo hotelInfoByHotelId;
-    private String hotelId;
 
     @Id
     @Column(name = "comment_id", nullable = false, length = 40)
@@ -26,6 +25,16 @@ public class HotelComment {
 
     public void setCommentId(String commentId) {
         this.commentId = commentId;
+    }
+
+    @Basic
+    @Column(name = "hotel_id", nullable = false, length = 20)
+    public String getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(String hotelId) {
+        this.hotelId = hotelId;
     }
 
     @Basic
@@ -66,6 +75,7 @@ public class HotelComment {
         HotelComment that = (HotelComment) o;
 
         if (commentId != null ? !commentId.equals(that.commentId) : that.commentId != null) return false;
+        if (hotelId != null ? !hotelId.equals(that.hotelId) : that.hotelId != null) return false;
         if (content != null ? !content.equals(that.content) : that.content != null) return false;
         if (avgScore != null ? !avgScore.equals(that.avgScore) : that.avgScore != null) return false;
         if (level != null ? !level.equals(that.level) : that.level != null) return false;
@@ -76,29 +86,10 @@ public class HotelComment {
     @Override
     public int hashCode() {
         int result = commentId != null ? commentId.hashCode() : 0;
+        result = 31 * result + (hotelId != null ? hotelId.hashCode() : 0);
         result = 31 * result + (content != null ? content.hashCode() : 0);
         result = 31 * result + (avgScore != null ? avgScore.hashCode() : 0);
         result = 31 * result + (level != null ? level.hashCode() : 0);
         return result;
-    }
-
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "hotel_id", nullable = false)
-    public HotelInfo getHotelInfoByHotelId() {
-        return hotelInfoByHotelId;
-    }
-
-    public void setHotelInfoByHotelId(HotelInfo hotelInfoByHotelId) {
-        this.hotelInfoByHotelId = hotelInfoByHotelId;
-    }
-
-    @Basic
-    @Column(name = "hotel_id", nullable = false, length = 20)
-    public String getHotelId() {
-        return hotelId;
-    }
-
-    public void setHotelId(String hotelId) {
-        this.hotelId = hotelId;
     }
 }

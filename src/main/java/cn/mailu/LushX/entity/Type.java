@@ -1,16 +1,17 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.*;
-import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 9:33 2017-11-16
+ * @Date: Created in 下午 2:32 2017-11-27
  * @Modified By:
  */
 @Entity
-@Table(name = "type", schema = "LushX", catalog = "")
 public class Type {
     private String typeId;
     private String icon;
@@ -67,5 +68,4 @@ public class Type {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
-
 }

@@ -1,12 +1,11 @@
 package cn.mailu.LushX.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 5:03 2017-11-26
+ * @Date: Created in 下午 2:32 2017-11-27
  * @Modified By:
  */
 @Entity
@@ -14,7 +13,6 @@ import java.util.Collection;
 public class VideoRepertory {
     private String videoRepertoryId;
     private String userId;
-    private Collection<Video> videosByVideoRepertoryId;
 
     @Id
     @Column(name = "video_repertory_id", nullable = false, length = 40)
@@ -55,14 +53,5 @@ public class VideoRepertory {
         int result = videoRepertoryId != null ? videoRepertoryId.hashCode() : 0;
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
         return result;
-    }
-
-    @OneToMany(mappedBy = "videoRepertoryByVideoRepertoryId")
-    public Collection<Video> getVideosByVideoRepertoryId() {
-        return videosByVideoRepertoryId;
-    }
-
-    public void setVideosByVideoRepertoryId(Collection<Video> videosByVideoRepertoryId) {
-        this.videosByVideoRepertoryId = videosByVideoRepertoryId;
     }
 }

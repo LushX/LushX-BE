@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 9:33 2017-11-16
+ * @Date: Created in 下午 2:32 2017-11-27
  * @Modified By:
  */
 public class ArticleTypePK implements Serializable {
