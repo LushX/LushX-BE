@@ -69,7 +69,7 @@ public class ArticleController {
     //文章收藏api
 
     @ApiOperation(value = "收藏文章", notes = "收藏文章")
-    @ApiImplicitParam(name = "article", value = "收藏文章实体类", required = true)
+    @ApiImplicitParam(name = "article", value = "收藏文章实体类", required = true,dataType = "Article")
     @PostMapping("/like")
     public ServerResponse saveArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody Article article) {
         if (jwtuser != null) {
