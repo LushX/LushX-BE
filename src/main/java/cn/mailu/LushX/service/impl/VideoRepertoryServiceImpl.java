@@ -1,7 +1,16 @@
 package cn.mailu.LushX.service.impl;
 
+import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.entity.VideoRepertory;
+import cn.mailu.LushX.repository.VideoRepertoryRepository;
 import cn.mailu.LushX.service.VideoRepertoryService;
+import cn.mailu.LushX.util.CommonUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Author: NULL
@@ -10,4 +19,23 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class VideoRepertoryServiceImpl implements VideoRepertoryService{
+
+    @Autowired
+    private VideoRepertoryRepository videoRepertoryRepository;
+
+    @Override
+    public VideoRepertory findByUserId(String userId) {
+        return videoRepertoryRepository.findByUserId(userId);
+    }
+
+    @Override
+    public VideoRepertory save(VideoRepertory videoRepertory) {
+        return videoRepertoryRepository.save(videoRepertory);
+    }
+
+    @Override
+    public Page<Video> getLikeVideoListByUserId(String userId, Pageable pageable) {
+        List videos= (List) videoRepertoryRepository.findByUserId(userId).getVideos();
+        return CommonUtils.getPage(pageable,videos);
+    }
 }
