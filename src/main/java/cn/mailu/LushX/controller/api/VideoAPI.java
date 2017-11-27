@@ -35,23 +35,15 @@ public class VideoAPI {
     @Autowired
     private RedisService redisService;
 
-    @GetMapping
-    @ApiOperation(value = "获取真实播放地址")
-    @ApiImplicitParam(name = "url",value = "视频源地址",required = true,paramType = "query")
-    public ServerResponse getRealPlayUrl(@RequestParam(value = "url") String url) throws IOException {
-        url = url.replaceAll("\\?(spm|from).*", "");
-        return ServerResponse.createBySuccess(((Video) parserManager.parse(url)).getPlayUrl());
-    }
-
-    @GetMapping("/episode")
-    @ApiOperation(value = "获取视频相关集数")
-    @ApiImplicitParam(name = "url",value = "视频源地址",required = true,paramType = "query")
-    public ServerResponse getEpisodes(@RequestParam(value = "url") String url) throws IOException {
-        url = url.replaceAll("\\?(spm|from).*", "");
-        String key = UrlUtils.getTopDomain(url);
-        Parser videoParse = parserManager.getParser(key);
-        return ServerResponse.createBySuccess(videoParse.parseEpisodes(url));
-    }
+//    @GetMapping("/episode")
+//    @ApiOperation(value = "获取视频相关集数")
+//    @ApiImplicitParam(name = "url",value = "视频源地址",required = true,paramType = "query")
+//    public ServerResponse getEpisodes(@RequestParam(value = "url") String url) throws IOException {
+//        url = url.replaceAll("\\?(spm|from).*", "");
+//        String key = UrlUtils.getTopDomain(url);
+//        Parser videoParse = parserManager.getParser(key);
+//        return ServerResponse.createBySuccess(videoParse.parseEpisodes(url));
+//    }
 
     /**
      * 解析腾讯视频片段

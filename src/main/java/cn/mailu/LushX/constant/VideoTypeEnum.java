@@ -16,7 +16,18 @@ public enum VideoTypeEnum {
     IQY_TV(11), // 爱奇艺-电视剧
     IQY_MOVIE(12), // 爱奇艺-电影
     IQY_ZY(13), // 爱奇艺-综艺
-    IQY_DM(14); // 爱奇艺-动漫
+    IQY_DM(14), // 爱奇艺-动漫
+
+    CL_TV_HOT(21),//尘落-电视-最热
+    CL_MOVIES_HOT(22),//~~-电影-最热
+    CL_ZY_HOT(23),//~~-综艺-最热
+    CL_DM_HOT(24),//~~-动漫-最热
+
+    CL_TV_NEW(25),//~~-电视-最新
+    CL_MOVIES_NEW(26),//~~-电影-最新
+    CL_ZY_NEW(27),//~~-综艺-最新
+    CL_DM_NEW(28);//~~-动漫-最新
+
 
     private int code;
 

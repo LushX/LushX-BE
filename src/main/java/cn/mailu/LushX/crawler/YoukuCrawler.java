@@ -29,7 +29,7 @@ import java.util.UUID;
  * @Last_Modified By:Drohe in 23:57 2017/11/18
  */
 
-@Component
+//@Component
 @EnableAsync
 public class YoukuCrawler {
 
@@ -157,13 +157,13 @@ public class YoukuCrawler {
 
         for (int i = 1; i <= pageNum; i++) {
 
-            url = url.replace(".html", "") + "_p_" + i + ".html";
+           String urlPage = url.replace(".html", "") + "_p_" + i + ".html";
 
-            Document document = JsoupUtils.getDocWithPC(url);
+            Document document = JsoupUtils.getDocWithPC(urlPage);
 
             documents.add(document);
 
-            logger.info("第" + i + "页 列表爬取完毕！ URL:  " + url);
+            logger.info("第" + i + "页 列表爬取完毕！ URL:  " + urlPage);
         }
         saveVideosToRedis(documents, videoType);
     }

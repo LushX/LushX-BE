@@ -121,9 +121,7 @@ public class JianShuCrawler {
         article.setTime(document.select("span.publish-time").text().replace("*",""));
         article.setContent(document.select("div.show-content").toString());
         article.setImage(document.select("a.avatar img").attr("src").toString());
-        article.setCss(document.getElementsByTag("meta").toString() + "\n"
-                        + document.getElementsByTag("link"));
-
+        //article.setCss(document.getElementsByTag("meta").toString() + "\n"+ document.getElementsByTag("link"));
         return article;
     }
 
