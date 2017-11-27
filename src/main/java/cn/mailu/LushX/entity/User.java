@@ -1,149 +1,153 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 2:32 2017-11-27
+ * @Date: Created in 下午 5:35 2017-11-05
  * @Modified By:
  */
 @Entity
-public class User {
-    private String userId;
-    private String role;
-    private String gender;
-    private String headImg;
-    private String loginType;
-    private String md5;
-    private String meta;
-    private String password;
-    private String username;
+@Table(name = "user", catalog = "LushX")
 
-    @Id
-    @Column(name = "user_id", nullable = false, length = 40)
-    public String getUserId() {
-        return userId;
-    }
+public class User implements java.io.Serializable {
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	// Fields
 
-    @Basic
-    @Column(name = "role", nullable = false, length = 30)
-    public String getRole() {
-        return role;
-    }
+	private String userId;
+	private String role;
+	private String gender;
+	private String headImg;
+	private String loginType;
+	private String md5;
+	private String meta;
+	private String password;
+	private String username;
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+	// Constructors
 
-    @Basic
-    @Column(name = "gender", nullable = true, length = 1)
-    public String getGender() {
-        return gender;
-    }
+	/** default constructor */
+	public User() {
+	}
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+	/** minimal constructor */
+	public User(String userId, String role, String md5, String password, String username) {
+		this.userId = userId;
+		this.role = role;
+		this.md5 = md5;
+		this.password = password;
+		this.username = username;
+	}
 
-    @Basic
-    @Column(name = "head_img", nullable = true, length = 50)
-    public String getHeadImg() {
-        return headImg;
-    }
+	/** full constructor */
+	public User(String userId, String role, String gender, String headImg, String loginType, String md5, String meta,
+			String password, String username) {
+		this.userId = userId;
+		this.role = role;
+		this.gender = gender;
+		this.headImg = headImg;
+		this.loginType = loginType;
+		this.md5 = md5;
+		this.meta = meta;
+		this.password = password;
+		this.username = username;
+	}
 
-    public void setHeadImg(String headImg) {
-        this.headImg = headImg;
-    }
+	// Property accessors
+	@Id
 
-    @Basic
-    @Column(name = "login_type", nullable = true, length = 1)
-    public String getLoginType() {
-        return loginType;
-    }
+	@Column(name = "user_id", unique = true, nullable = false, length = 40)
 
-    public void setLoginType(String loginType) {
-        this.loginType = loginType;
-    }
+	public String getUserId() {
+		return this.userId;
+	}
 
-    @Basic
-    @Column(name = "md5", nullable = false, length = 100)
-    public String getMd5() {
-        return md5;
-    }
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    public void setMd5(String md5) {
-        this.md5 = md5;
-    }
+	@Column(name = "role", nullable = false, length = 30)
 
-    @Basic
-    @Column(name = "meta", nullable = true, length = 255)
-    public String getMeta() {
-        return meta;
-    }
+	public String getRole() {
+		return this.role;
+	}
 
-    public void setMeta(String meta) {
-        this.meta = meta;
-    }
+	public void setRole(String role) {
+		this.role = role;
+	}
 
-    @Basic
-    @Column(name = "password", nullable = false, length = 60)
-    public String getPassword() {
-        return password;
-    }
+	@Column(name = "gender", length = 1)
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getGender() {
+		return this.gender;
+	}
 
-    @Basic
-    @Column(name = "username", nullable = false, length = 20)
-    public String getUsername() {
-        return username;
-    }
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	@Column(name = "head_img", length = 50)
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public String getHeadImg() {
+		return this.headImg;
+	}
 
-        User user = (User) o;
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
+	}
 
-        if (userId != null ? !userId.equals(user.userId) : user.userId != null) return false;
-        if (role != null ? !role.equals(user.role) : user.role != null) return false;
-        if (gender != null ? !gender.equals(user.gender) : user.gender != null) return false;
-        if (headImg != null ? !headImg.equals(user.headImg) : user.headImg != null) return false;
-        if (loginType != null ? !loginType.equals(user.loginType) : user.loginType != null) return false;
-        if (md5 != null ? !md5.equals(user.md5) : user.md5 != null) return false;
-        if (meta != null ? !meta.equals(user.meta) : user.meta != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+	@Column(name = "login_type", length = 1)
 
-        return true;
-    }
+	public String getLoginType() {
+		return this.loginType;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (headImg != null ? headImg.hashCode() : 0);
-        result = 31 * result + (loginType != null ? loginType.hashCode() : 0);
-        result = 31 * result + (md5 != null ? md5.hashCode() : 0);
-        result = 31 * result + (meta != null ? meta.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        return result;
-    }
+	public void setLoginType(String loginType) {
+		this.loginType = loginType;
+	}
+
+	@Column(name = "md5", nullable = false, length = 100)
+
+	public String getMd5() {
+		return this.md5;
+	}
+
+	public void setMd5(String md5) {
+		this.md5 = md5;
+	}
+
+	@Column(name = "meta")
+
+	public String getMeta() {
+		return this.meta;
+	}
+
+	public void setMeta(String meta) {
+		this.meta = meta;
+	}
+
+	@Column(name = "password", nullable = false, length = 60)
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Column(name = "username", nullable = false, length = 20)
+
+	public String getUsername() {
+		return this.username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 }

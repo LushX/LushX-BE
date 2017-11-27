@@ -1,176 +1,190 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.Basic;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 2:32 2017-11-27
+ * @Date: Created in 下午 5:35 2017-11-05
  * @Modified By:
  */
 @Entity
-public class Article {
-    private String articleId;
-    private String articleRepertoryId;
-    private String title;
-    private String image;
-    private String content;
-    private String author;
-    private String css;
-    private String time;
-    private String value;
-    private String other;
-    private String provider;
+@Table(name = "article", catalog = "LushX")
 
-    @Id
-    @Column(name = "article_id", nullable = false, length = 40)
-    public String getArticleId() {
-        return articleId;
-    }
+public class Article implements java.io.Serializable {
 
-    public void setArticleId(String articleId) {
-        this.articleId = articleId;
-    }
+	// Fields
 
-    @Basic
-    @Column(name = "article_repertory_id", nullable = true, length = 40)
-    public String getArticleRepertoryId() {
-        return articleRepertoryId;
-    }
+	private String articleId;
+	private String title;
+	private String image;
+	private String content;
+	private String author;
+	private String css;
+	private String time;
+	private String value;
+	private String other;
+	private String provider;
+	private Set<ArticleRepertory> articleRepertories = new HashSet<ArticleRepertory>(0);
+	private Set<Type> types = new HashSet<Type>(0);
 
-    public void setArticleRepertoryId(String articleRepertoryId) {
-        this.articleRepertoryId = articleRepertoryId;
-    }
+	// Constructors
 
-    @Basic
-    @Column(name = "title", nullable = true, length = 50)
-    public String getTitle() {
-        return title;
-    }
+	/** default constructor */
+	public Article() {
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	/** minimal constructor */
+	public Article(String articleId) {
+		this.articleId = articleId;
+	}
 
-    @Basic
-    @Column(name = "image", nullable = true, length = 50)
-    public String getImage() {
-        return image;
-    }
+	/** full constructor */
+	public Article(String articleId, String title, String image, String content, String author, String css, String time,
+			String value, String other, String provider, Set<ArticleRepertory> articleRepertories, Set<Type> types) {
+		this.articleId = articleId;
+		this.title = title;
+		this.image = image;
+		this.content = content;
+		this.author = author;
+		this.css = css;
+		this.time = time;
+		this.value = value;
+		this.other = other;
+		this.provider = provider;
+		this.articleRepertories = articleRepertories;
+		this.types = types;
+	}
 
-    public void setImage(String image) {
-        this.image = image;
-    }
+	// Property accessors
+	@Id
 
-    @Basic
-    @Column(name = "content", nullable = true, length = -1)
-    public String getContent() {
-        return content;
-    }
+	@Column(name = "article_id", unique = true, nullable = false, length = 40)
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public String getArticleId() {
+		return this.articleId;
+	}
 
-    @Basic
-    @Column(name = "author", nullable = true, length = 30)
-    public String getAuthor() {
-        return author;
-    }
+	public void setArticleId(String articleId) {
+		this.articleId = articleId;
+	}
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+	@Column(name = "title", length = 50)
 
-    @Basic
-    @Column(name = "css", nullable = true, length = 255)
-    public String getCss() {
-        return css;
-    }
+	public String getTitle() {
+		return this.title;
+	}
 
-    public void setCss(String css) {
-        this.css = css;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    @Basic
-    @Column(name = "time", nullable = true, length = 20)
-    public String getTime() {
-        return time;
-    }
+	@Column(name = "image", length = 50)
 
-    public void setTime(String time) {
-        this.time = time;
-    }
+	public String getImage() {
+		return this.image;
+	}
 
-    @Basic
-    @Column(name = "value", nullable = true, length = 50)
-    public String getValue() {
-        return value;
-    }
+	public void setImage(String image) {
+		this.image = image;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	@Column(name = "content", length = 65535)
 
-    @Basic
-    @Column(name = "other", nullable = true, length = 255)
-    public String getOther() {
-        return other;
-    }
+	public String getContent() {
+		return this.content;
+	}
 
-    public void setOther(String other) {
-        this.other = other;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    @Basic
-    @Column(name = "provider", nullable = true, length = 50)
-    public String getProvider() {
-        return provider;
-    }
+	@Column(name = "author", length = 30)
 
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
+	public String getAuthor() {
+		return this.author;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public void setAuthor(String author) {
+		this.author = author;
+	}
 
-        Article article = (Article) o;
+	@Column(name = "css")
 
-        if (articleId != null ? !articleId.equals(article.articleId) : article.articleId != null) return false;
-        if (articleRepertoryId != null ? !articleRepertoryId.equals(article.articleRepertoryId) : article.articleRepertoryId != null)
-            return false;
-        if (title != null ? !title.equals(article.title) : article.title != null) return false;
-        if (image != null ? !image.equals(article.image) : article.image != null) return false;
-        if (content != null ? !content.equals(article.content) : article.content != null) return false;
-        if (author != null ? !author.equals(article.author) : article.author != null) return false;
-        if (css != null ? !css.equals(article.css) : article.css != null) return false;
-        if (time != null ? !time.equals(article.time) : article.time != null) return false;
-        if (value != null ? !value.equals(article.value) : article.value != null) return false;
-        if (other != null ? !other.equals(article.other) : article.other != null) return false;
-        if (provider != null ? !provider.equals(article.provider) : article.provider != null) return false;
+	public String getCss() {
+		return this.css;
+	}
 
-        return true;
-    }
+	public void setCss(String css) {
+		this.css = css;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = articleId != null ? articleId.hashCode() : 0;
-        result = 31 * result + (articleRepertoryId != null ? articleRepertoryId.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (image != null ? image.hashCode() : 0);
-        result = 31 * result + (content != null ? content.hashCode() : 0);
-        result = 31 * result + (author != null ? author.hashCode() : 0);
-        result = 31 * result + (css != null ? css.hashCode() : 0);
-        result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (other != null ? other.hashCode() : 0);
-        result = 31 * result + (provider != null ? provider.hashCode() : 0);
-        return result;
-    }
+	@Column(name = "time", length = 20)
+
+	public String getTime() {
+		return this.time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	@Column(name = "value", length = 50)
+
+	public String getValue() {
+		return this.value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	@Column(name = "other")
+
+	public String getOther() {
+		return this.other;
+	}
+
+	public void setOther(String other) {
+		this.other = other;
+	}
+
+	@Column(name = "provider", length = 50)
+
+	public String getProvider() {
+		return this.provider;
+	}
+
+	public void setProvider(String provider) {
+		this.provider = provider;
+	}
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "articles")
+
+	public Set<ArticleRepertory> getArticleRepertories() {
+		return this.articleRepertories;
+	}
+
+	public void setArticleRepertories(Set<ArticleRepertory> articleRepertories) {
+		this.articleRepertories = articleRepertories;
+	}
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "articles")
+
+	public Set<Type> getTypes() {
+		return this.types;
+	}
+
+	public void setTypes(Set<Type> types) {
+		this.types = types;
+	}
+
 }

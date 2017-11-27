@@ -1,174 +1,191 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 2:32 2017-11-27
+ * @Date: Created in 下午 5:35 2017-11-05
  * @Modified By:
  */
 @Entity
-@Table(name = "hotel_info", schema = "LushX", catalog = "")
-public class HotelInfo {
-    private String hotelId;
-    private String name;
-    private String position;
-    private String phone;
-    private String info;
-    private String introduction;
-    private String sourceCity;
-    private String img;
-    private String sourceWeb;
-    private String facility;
-    private Integer comments;
+@Table(name = "hotel_info", catalog = "LushX")
 
-    @Id
-    @Column(name = "hotel_id", nullable = false, length = 40)
-    public String getHotelId() {
-        return hotelId;
-    }
+public class HotelInfo implements java.io.Serializable {
 
-    public void setHotelId(String hotelId) {
-        this.hotelId = hotelId;
-    }
+	// Fields
 
-    @Basic
-    @Column(name = "name", nullable = true, length = 50)
-    public String getName() {
-        return name;
-    }
+	private String hotelId;
+	private String name;
+	private String position;
+	private String phone;
+	private String info;
+	private String introduction;
+	private String sourceCity;
+	private String img;
+	private String sourceWeb;
+	private String facility;
+	private Integer comments;
+	private Set<HotelComment> hotelComments = new HashSet<HotelComment>(0);
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	// Constructors
 
-    @Basic
-    @Column(name = "position", nullable = true, length = 50)
-    public String getPosition() {
-        return position;
-    }
+	/** default constructor */
+	public HotelInfo() {
+	}
 
-    public void setPosition(String position) {
-        this.position = position;
-    }
+	/** minimal constructor */
+	public HotelInfo(String hotelId) {
+		this.hotelId = hotelId;
+	}
 
-    @Basic
-    @Column(name = "phone", nullable = true, length = 50)
-    public String getPhone() {
-        return phone;
-    }
+	/** full constructor */
+	public HotelInfo(String hotelId, String name, String position, String phone, String info, String introduction,
+			String sourceCity, String img, String sourceWeb, String facility, Integer comments,
+			Set<HotelComment> hotelComments) {
+		this.hotelId = hotelId;
+		this.name = name;
+		this.position = position;
+		this.phone = phone;
+		this.info = info;
+		this.introduction = introduction;
+		this.sourceCity = sourceCity;
+		this.img = img;
+		this.sourceWeb = sourceWeb;
+		this.facility = facility;
+		this.comments = comments;
+		this.hotelComments = hotelComments;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+	// Property accessors
+	@Id
 
-    @Basic
-    @Column(name = "info", nullable = true, length = 1024)
-    public String getInfo() {
-        return info;
-    }
+	@Column(name = "hotel_id", unique = true, nullable = false, length = 40)
 
-    public void setInfo(String info) {
-        this.info = info;
-    }
+	public String getHotelId() {
+		return this.hotelId;
+	}
 
-    @Basic
-    @Column(name = "introduction", nullable = true, length = -1)
-    public String getIntroduction() {
-        return introduction;
-    }
+	public void setHotelId(String hotelId) {
+		this.hotelId = hotelId;
+	}
 
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
+	@Column(name = "name", length = 50)
 
-    @Basic
-    @Column(name = "source_city", nullable = true, length = 10)
-    public String getSourceCity() {
-        return sourceCity;
-    }
+	public String getName() {
+		return this.name;
+	}
 
-    public void setSourceCity(String sourceCity) {
-        this.sourceCity = sourceCity;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Basic
-    @Column(name = "img", nullable = true, length = 1024)
-    public String getImg() {
-        return img;
-    }
+	@Column(name = "position", length = 50)
 
-    public void setImg(String img) {
-        this.img = img;
-    }
+	public String getPosition() {
+		return this.position;
+	}
 
-    @Basic
-    @Column(name = "source_web", nullable = true, length = 20)
-    public String getSourceWeb() {
-        return sourceWeb;
-    }
+	public void setPosition(String position) {
+		this.position = position;
+	}
 
-    public void setSourceWeb(String sourceWeb) {
-        this.sourceWeb = sourceWeb;
-    }
+	@Column(name = "phone", length = 50)
 
-    @Basic
-    @Column(name = "facility", nullable = true, length = 1024)
-    public String getFacility() {
-        return facility;
-    }
+	public String getPhone() {
+		return this.phone;
+	}
 
-    public void setFacility(String facility) {
-        this.facility = facility;
-    }
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
-    @Basic
-    @Column(name = "comments", nullable = true)
-    public Integer getComments() {
-        return comments;
-    }
+	@Column(name = "info", length = 1024)
 
-    public void setComments(Integer comments) {
-        this.comments = comments;
-    }
+	public String getInfo() {
+		return this.info;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public void setInfo(String info) {
+		this.info = info;
+	}
 
-        HotelInfo hotelInfo = (HotelInfo) o;
+	@Column(name = "introduction", length = 65535)
 
-        if (hotelId != null ? !hotelId.equals(hotelInfo.hotelId) : hotelInfo.hotelId != null) return false;
-        if (name != null ? !name.equals(hotelInfo.name) : hotelInfo.name != null) return false;
-        if (position != null ? !position.equals(hotelInfo.position) : hotelInfo.position != null) return false;
-        if (phone != null ? !phone.equals(hotelInfo.phone) : hotelInfo.phone != null) return false;
-        if (info != null ? !info.equals(hotelInfo.info) : hotelInfo.info != null) return false;
-        if (introduction != null ? !introduction.equals(hotelInfo.introduction) : hotelInfo.introduction != null)
-            return false;
-        if (sourceCity != null ? !sourceCity.equals(hotelInfo.sourceCity) : hotelInfo.sourceCity != null) return false;
-        if (img != null ? !img.equals(hotelInfo.img) : hotelInfo.img != null) return false;
-        if (sourceWeb != null ? !sourceWeb.equals(hotelInfo.sourceWeb) : hotelInfo.sourceWeb != null) return false;
-        if (facility != null ? !facility.equals(hotelInfo.facility) : hotelInfo.facility != null) return false;
-        if (comments != null ? !comments.equals(hotelInfo.comments) : hotelInfo.comments != null) return false;
+	public String getIntroduction() {
+		return this.introduction;
+	}
 
-        return true;
-    }
+	public void setIntroduction(String introduction) {
+		this.introduction = introduction;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = hotelId != null ? hotelId.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (position != null ? position.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (info != null ? info.hashCode() : 0);
-        result = 31 * result + (introduction != null ? introduction.hashCode() : 0);
-        result = 31 * result + (sourceCity != null ? sourceCity.hashCode() : 0);
-        result = 31 * result + (img != null ? img.hashCode() : 0);
-        result = 31 * result + (sourceWeb != null ? sourceWeb.hashCode() : 0);
-        result = 31 * result + (facility != null ? facility.hashCode() : 0);
-        result = 31 * result + (comments != null ? comments.hashCode() : 0);
-        return result;
-    }
+	@Column(name = "source_city", length = 10)
+
+	public String getSourceCity() {
+		return this.sourceCity;
+	}
+
+	public void setSourceCity(String sourceCity) {
+		this.sourceCity = sourceCity;
+	}
+
+	@Column(name = "img", length = 1024)
+
+	public String getImg() {
+		return this.img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
+	@Column(name = "source_web", length = 20)
+
+	public String getSourceWeb() {
+		return this.sourceWeb;
+	}
+
+	public void setSourceWeb(String sourceWeb) {
+		this.sourceWeb = sourceWeb;
+	}
+
+	@Column(name = "facility", length = 1024)
+
+	public String getFacility() {
+		return this.facility;
+	}
+
+	public void setFacility(String facility) {
+		this.facility = facility;
+	}
+
+	@Column(name = "comments")
+
+	public Integer getComments() {
+		return this.comments;
+	}
+
+	public void setComments(Integer comments) {
+		this.comments = comments;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "hotelInfo")
+
+	public Set<HotelComment> getHotelComments() {
+		return this.hotelComments;
+	}
+
+	public void setHotelComments(Set<HotelComment> hotelComments) {
+		this.hotelComments = hotelComments;
+	}
+
 }

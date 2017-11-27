@@ -1,84 +1,88 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 2:32 2017-11-27
+ * @Date: Created in 下午 5:35 2017-11-05
  * @Modified By:
  */
 @Entity
-public class City {
-    private int id;
-    private String name;
-    private String pinyin;
-    private Integer isOpen;
+@Table(name = "city", catalog = "LushX")
 
-    @Id
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
-    }
+public class City implements java.io.Serializable {
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	// Fields
 
-    @Basic
-    @Column(name = "name", nullable = true, length = 10)
-    public String getName() {
-        return name;
-    }
+	private Integer id;
+	private String name;
+	private String pinyin;
+	private Integer isOpen;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	// Constructors
 
-    @Basic
-    @Column(name = "pinyin", nullable = true, length = 25)
-    public String getPinyin() {
-        return pinyin;
-    }
+	/** default constructor */
+	public City() {
+	}
 
-    public void setPinyin(String pinyin) {
-        this.pinyin = pinyin;
-    }
+	/** minimal constructor */
+	public City(Integer id) {
+		this.id = id;
+	}
 
-    @Basic
-    @Column(name = "isOpen", nullable = true)
-    public Integer getIsOpen() {
-        return isOpen;
-    }
+	/** full constructor */
+	public City(Integer id, String name, String pinyin, Integer isOpen) {
+		this.id = id;
+		this.name = name;
+		this.pinyin = pinyin;
+		this.isOpen = isOpen;
+	}
 
-    public void setIsOpen(Integer isOpen) {
-        this.isOpen = isOpen;
-    }
+	// Property accessors
+	@Id
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Column(name = "id", unique = true, nullable = false)
 
-        City city = (City) o;
+	public Integer getId() {
+		return this.id;
+	}
 
-        if (id != city.id) return false;
-        if (name != null ? !name.equals(city.name) : city.name != null) return false;
-        if (pinyin != null ? !pinyin.equals(city.pinyin) : city.pinyin != null) return false;
-        if (isOpen != null ? !isOpen.equals(city.isOpen) : city.isOpen != null) return false;
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-        return true;
-    }
+	@Column(name = "name", length = 10)
 
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (pinyin != null ? pinyin.hashCode() : 0);
-        result = 31 * result + (isOpen != null ? isOpen.hashCode() : 0);
-        return result;
-    }
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Column(name = "pinyin", length = 25)
+
+	public String getPinyin() {
+		return this.pinyin;
+	}
+
+	public void setPinyin(String pinyin) {
+		this.pinyin = pinyin;
+	}
+
+	@Column(name = "isOpen")
+
+	public Integer getIsOpen() {
+		return this.isOpen;
+	}
+
+	public void setIsOpen(Integer isOpen) {
+		this.isOpen = isOpen;
+	}
+
 }

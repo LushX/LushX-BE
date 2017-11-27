@@ -1,216 +1,232 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.Basic;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import java.sql.Date;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 2:32 2017-11-27
+ * @Date: Created in 下午 5:35 2017-11-05
  * @Modified By:
  */
 @Entity
-public class Video {
-    private String videoId;
-    private String videoRepertoryId;
-    private String title;
-    private String alias;
-    private String image;
-    private String playUrl;
-    private String type;
-    private String value;
-    private String director;
-    private String actor;
-    private String area;
-    private String score;
-    private Date time;
-    private String other;
+@Table(name = "video", catalog = "LushX")
 
-    @Id
-    @Column(name = "video_id", nullable = false, length = 40)
-    public String getVideoId() {
-        return videoId;
-    }
+public class Video implements java.io.Serializable {
 
-    public void setVideoId(String videoId) {
-        this.videoId = videoId;
-    }
+	// Fields
 
-    @Basic
-    @Column(name = "video_repertory_id", nullable = true, length = 40)
-    public String getVideoRepertoryId() {
-        return videoRepertoryId;
-    }
+	private String videoId;
+	private String title;
+	private String alias;
+	private String image;
+	private String playUrl;
+	private String type;
+	private String value;
+	private String director;
+	private String actor;
+	private String area;
+	private String score;
+	private Date time;
+	private String other;
+	private Set<Episode> episodes = new HashSet<Episode>(0);
+	private Set<VideoRepertory> videoRepertories = new HashSet<VideoRepertory>(0);
 
-    public void setVideoRepertoryId(String videoRepertoryId) {
-        this.videoRepertoryId = videoRepertoryId;
-    }
+	// Constructors
 
-    @Basic
-    @Column(name = "title", nullable = true, length = 50)
-    public String getTitle() {
-        return title;
-    }
+	/** default constructor */
+	public Video() {
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	/** minimal constructor */
+	public Video(String videoId) {
+		this.videoId = videoId;
+	}
 
-    @Basic
-    @Column(name = "alias", nullable = true, length = 50)
-    public String getAlias() {
-        return alias;
-    }
+	/** full constructor */
+	public Video(String videoId, String title, String alias, String image, String playUrl, String type, String value,
+			String director, String actor, String area, String score, Date time, String other, Set<Episode> episodes,
+			Set<VideoRepertory> videoRepertories) {
+		this.videoId = videoId;
+		this.title = title;
+		this.alias = alias;
+		this.image = image;
+		this.playUrl = playUrl;
+		this.type = type;
+		this.value = value;
+		this.director = director;
+		this.actor = actor;
+		this.area = area;
+		this.score = score;
+		this.time = time;
+		this.other = other;
+		this.episodes = episodes;
+		this.videoRepertories = videoRepertories;
+	}
 
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
+	// Property accessors
+	@Id
 
-    @Basic
-    @Column(name = "image", nullable = true, length = 50)
-    public String getImage() {
-        return image;
-    }
+	@Column(name = "video_id", unique = true, nullable = false, length = 40)
 
-    public void setImage(String image) {
-        this.image = image;
-    }
+	public String getVideoId() {
+		return this.videoId;
+	}
 
-    @Basic
-    @Column(name = "playUrl", nullable = true, length = 100)
-    public String getPlayUrl() {
-        return playUrl;
-    }
+	public void setVideoId(String videoId) {
+		this.videoId = videoId;
+	}
 
-    public void setPlayUrl(String playUrl) {
-        this.playUrl = playUrl;
-    }
+	@Column(name = "title", length = 50)
 
-    @Basic
-    @Column(name = "type", nullable = true, length = 2)
-    public String getType() {
-        return type;
-    }
+	public String getTitle() {
+		return this.title;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    @Basic
-    @Column(name = "value", nullable = true, length = 50)
-    public String getValue() {
-        return value;
-    }
+	@Column(name = "alias", length = 50)
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public String getAlias() {
+		return this.alias;
+	}
 
-    @Basic
-    @Column(name = "director", nullable = true, length = 15)
-    public String getDirector() {
-        return director;
-    }
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
 
-    public void setDirector(String director) {
-        this.director = director;
-    }
+	@Column(name = "image", length = 50)
 
-    @Basic
-    @Column(name = "actor", nullable = true, length = 50)
-    public String getActor() {
-        return actor;
-    }
+	public String getImage() {
+		return this.image;
+	}
 
-    public void setActor(String actor) {
-        this.actor = actor;
-    }
+	public void setImage(String image) {
+		this.image = image;
+	}
 
-    @Basic
-    @Column(name = "area", nullable = true, length = 15)
-    public String getArea() {
-        return area;
-    }
+	@Column(name = "playUrl", length = 100)
 
-    public void setArea(String area) {
-        this.area = area;
-    }
+	public String getPlayUrl() {
+		return this.playUrl;
+	}
 
-    @Basic
-    @Column(name = "score", nullable = true, length = 2)
-    public String getScore() {
-        return score;
-    }
+	public void setPlayUrl(String playUrl) {
+		this.playUrl = playUrl;
+	}
 
-    public void setScore(String score) {
-        this.score = score;
-    }
+	@Column(name = "type", length = 2)
 
-    @Basic
-    @Column(name = "time", nullable = true)
-    public Date getTime() {
-        return time;
-    }
+	public String getType() {
+		return this.type;
+	}
 
-    public void setTime(Date time) {
-        this.time = time;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    @Basic
-    @Column(name = "other", nullable = true, length = 255)
-    public String getOther() {
-        return other;
-    }
+	@Column(name = "value", length = 50)
 
-    public void setOther(String other) {
-        this.other = other;
-    }
+	public String getValue() {
+		return this.value;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-        Video video = (Video) o;
+	@Column(name = "director", length = 15)
 
-        if (videoId != null ? !videoId.equals(video.videoId) : video.videoId != null) return false;
-        if (videoRepertoryId != null ? !videoRepertoryId.equals(video.videoRepertoryId) : video.videoRepertoryId != null)
-            return false;
-        if (title != null ? !title.equals(video.title) : video.title != null) return false;
-        if (alias != null ? !alias.equals(video.alias) : video.alias != null) return false;
-        if (image != null ? !image.equals(video.image) : video.image != null) return false;
-        if (playUrl != null ? !playUrl.equals(video.playUrl) : video.playUrl != null) return false;
-        if (type != null ? !type.equals(video.type) : video.type != null) return false;
-        if (value != null ? !value.equals(video.value) : video.value != null) return false;
-        if (director != null ? !director.equals(video.director) : video.director != null) return false;
-        if (actor != null ? !actor.equals(video.actor) : video.actor != null) return false;
-        if (area != null ? !area.equals(video.area) : video.area != null) return false;
-        if (score != null ? !score.equals(video.score) : video.score != null) return false;
-        if (time != null ? !time.equals(video.time) : video.time != null) return false;
-        if (other != null ? !other.equals(video.other) : video.other != null) return false;
+	public String getDirector() {
+		return this.director;
+	}
 
-        return true;
-    }
+	public void setDirector(String director) {
+		this.director = director;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = videoId != null ? videoId.hashCode() : 0;
-        result = 31 * result + (videoRepertoryId != null ? videoRepertoryId.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (alias != null ? alias.hashCode() : 0);
-        result = 31 * result + (image != null ? image.hashCode() : 0);
-        result = 31 * result + (playUrl != null ? playUrl.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (director != null ? director.hashCode() : 0);
-        result = 31 * result + (actor != null ? actor.hashCode() : 0);
-        result = 31 * result + (area != null ? area.hashCode() : 0);
-        result = 31 * result + (score != null ? score.hashCode() : 0);
-        result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + (other != null ? other.hashCode() : 0);
-        return result;
-    }
+	@Column(name = "actor", length = 50)
+
+	public String getActor() {
+		return this.actor;
+	}
+
+	public void setActor(String actor) {
+		this.actor = actor;
+	}
+
+	@Column(name = "area", length = 15)
+
+	public String getArea() {
+		return this.area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	@Column(name = "score", length = 2)
+
+	public String getScore() {
+		return this.score;
+	}
+
+	public void setScore(String score) {
+		this.score = score;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "time", length = 10)
+
+	public Date getTime() {
+		return this.time;
+	}
+
+	public void setTime(Date time) {
+		this.time = time;
+	}
+
+	@Column(name = "other")
+
+	public String getOther() {
+		return this.other;
+	}
+
+	public void setOther(String other) {
+		this.other = other;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "video")
+
+	public Set<Episode> getEpisodes() {
+		return this.episodes;
+	}
+
+	public void setEpisodes(Set<Episode> episodes) {
+		this.episodes = episodes;
+	}
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "videos")
+
+	public Set<VideoRepertory> getVideoRepertories() {
+		return this.videoRepertories;
+	}
+
+	public void setVideoRepertories(Set<VideoRepertory> videoRepertories) {
+		this.videoRepertories = videoRepertories;
+	}
+
 }

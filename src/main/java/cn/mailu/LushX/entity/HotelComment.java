@@ -1,95 +1,105 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 2:32 2017-11-27
+ * @Date: Created in 下午 5:35 2017-11-05
  * @Modified By:
  */
 @Entity
-@Table(name = "hotel_comment", schema = "LushX", catalog = "")
-public class HotelComment {
-    private String commentId;
-    private String hotelId;
-    private String content;
-    private Double avgScore;
-    private Integer level;
+@Table(name = "hotel_comment", catalog = "LushX")
 
-    @Id
-    @Column(name = "comment_id", nullable = false, length = 40)
-    public String getCommentId() {
-        return commentId;
-    }
+public class HotelComment implements java.io.Serializable {
 
-    public void setCommentId(String commentId) {
-        this.commentId = commentId;
-    }
+	// Fields
 
-    @Basic
-    @Column(name = "hotel_id", nullable = false, length = 20)
-    public String getHotelId() {
-        return hotelId;
-    }
+	private String commentId;
+	private HotelInfo hotelInfo;
+	private String content;
+	private Float avgScore;
+	private Integer level;
 
-    public void setHotelId(String hotelId) {
-        this.hotelId = hotelId;
-    }
+	// Constructors
 
-    @Basic
-    @Column(name = "content", nullable = true, length = -1)
-    public String getContent() {
-        return content;
-    }
+	/** default constructor */
+	public HotelComment() {
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	/** minimal constructor */
+	public HotelComment(String commentId, HotelInfo hotelInfo) {
+		this.commentId = commentId;
+		this.hotelInfo = hotelInfo;
+	}
 
-    @Basic
-    @Column(name = "avg_score", nullable = true, precision = 0)
-    public Double getAvgScore() {
-        return avgScore;
-    }
+	/** full constructor */
+	public HotelComment(String commentId, HotelInfo hotelInfo, String content, Float avgScore, Integer level) {
+		this.commentId = commentId;
+		this.hotelInfo = hotelInfo;
+		this.content = content;
+		this.avgScore = avgScore;
+		this.level = level;
+	}
 
-    public void setAvgScore(Double avgScore) {
-        this.avgScore = avgScore;
-    }
+	// Property accessors
+	@Id
 
-    @Basic
-    @Column(name = "level", nullable = true)
-    public Integer getLevel() {
-        return level;
-    }
+	@Column(name = "comment_id", unique = true, nullable = false, length = 40)
 
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
+	public String getCommentId() {
+		return this.commentId;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public void setCommentId(String commentId) {
+		this.commentId = commentId;
+	}
 
-        HotelComment that = (HotelComment) o;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "hotel_id", nullable = false)
 
-        if (commentId != null ? !commentId.equals(that.commentId) : that.commentId != null) return false;
-        if (hotelId != null ? !hotelId.equals(that.hotelId) : that.hotelId != null) return false;
-        if (content != null ? !content.equals(that.content) : that.content != null) return false;
-        if (avgScore != null ? !avgScore.equals(that.avgScore) : that.avgScore != null) return false;
-        if (level != null ? !level.equals(that.level) : that.level != null) return false;
+	public HotelInfo getHotelInfo() {
+		return this.hotelInfo;
+	}
 
-        return true;
-    }
+	public void setHotelInfo(HotelInfo hotelInfo) {
+		this.hotelInfo = hotelInfo;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = commentId != null ? commentId.hashCode() : 0;
-        result = 31 * result + (hotelId != null ? hotelId.hashCode() : 0);
-        result = 31 * result + (content != null ? content.hashCode() : 0);
-        result = 31 * result + (avgScore != null ? avgScore.hashCode() : 0);
-        result = 31 * result + (level != null ? level.hashCode() : 0);
-        return result;
-    }
+	@Column(name = "content", length = 65535)
+
+	public String getContent() {
+		return this.content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	@Column(name = "avg_score", precision = 12, scale = 0)
+
+	public Float getAvgScore() {
+		return this.avgScore;
+	}
+
+	public void setAvgScore(Float avgScore) {
+		this.avgScore = avgScore;
+	}
+
+	@Column(name = "level")
+
+	public Integer getLevel() {
+		return this.level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
 }

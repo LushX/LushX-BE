@@ -1,71 +1,98 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.Basic;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 2:32 2017-11-27
+ * @Date: Created in 下午 5:35 2017-11-05
  * @Modified By:
  */
 @Entity
-public class Type {
-    private String typeId;
-    private String icon;
-    private String name;
+@Table(name = "type", catalog = "LushX")
 
-    @Id
-    @Column(name = "type_id", nullable = false, length = 2)
-    public String getTypeId() {
-        return typeId;
-    }
+public class Type implements java.io.Serializable {
 
-    public void setTypeId(String typeId) {
-        this.typeId = typeId;
-    }
+	// Fields
 
-    @Basic
-    @Column(name = "icon", nullable = true, length = 20)
-    public String getIcon() {
-        return icon;
-    }
+	private String typeId;
+	private String icon;
+	private String name;
+	private Set<Article> articles = new HashSet<Article>(0);
 
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
+	// Constructors
 
-    @Basic
-    @Column(name = "name", nullable = true, length = 20)
-    public String getName() {
-        return name;
-    }
+	/** default constructor */
+	public Type() {
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	/** minimal constructor */
+	public Type(String typeId) {
+		this.typeId = typeId;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	/** full constructor */
+	public Type(String typeId, String icon, String name, Set<Article> articles) {
+		this.typeId = typeId;
+		this.icon = icon;
+		this.name = name;
+		this.articles = articles;
+	}
 
-        Type type = (Type) o;
+	// Property accessors
+	@Id
 
-        if (typeId != null ? !typeId.equals(type.typeId) : type.typeId != null) return false;
-        if (icon != null ? !icon.equals(type.icon) : type.icon != null) return false;
-        if (name != null ? !name.equals(type.name) : type.name != null) return false;
+	@Column(name = "type_id", unique = true, nullable = false, length = 2)
 
-        return true;
-    }
+	public String getTypeId() {
+		return this.typeId;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = typeId != null ? typeId.hashCode() : 0;
-        result = 31 * result + (icon != null ? icon.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
-    }
+	public void setTypeId(String typeId) {
+		this.typeId = typeId;
+	}
+
+	@Column(name = "icon", length = 20)
+
+	public String getIcon() {
+		return this.icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	@Column(name = "name", length = 20)
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "article_type", catalog = "LushX", joinColumns = {
+			@JoinColumn(name = "type_id", nullable = false, updatable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "article_id", nullable = false, updatable = false) })
+
+	public Set<Article> getArticles() {
+		return this.articles;
+	}
+
+	public void setArticles(Set<Article> articles) {
+		this.articles = articles;
+	}
+
 }

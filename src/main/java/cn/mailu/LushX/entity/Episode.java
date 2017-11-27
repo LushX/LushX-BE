@@ -1,84 +1,93 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 2:32 2017-11-27
+ * @Date: Created in 下午 5:35 2017-11-05
  * @Modified By:
  */
 @Entity
-public class Episode {
-    private String episodeId;
-    private String videoId;
-    private Integer index;
-    private String value;
+@Table(name = "episode", catalog = "LushX")
 
-    @Id
-    @Column(name = "episode_id", nullable = false, length = 40)
-    public String getEpisodeId() {
-        return episodeId;
-    }
+public class Episode implements java.io.Serializable {
 
-    public void setEpisodeId(String episodeId) {
-        this.episodeId = episodeId;
-    }
+	// Fields
 
-    @Basic
-    @Column(name = "video_id", nullable = false, length = 20)
-    public String getVideoId() {
-        return videoId;
-    }
+	private String episodeId;
+	private Video video;
+	private Integer index;
+	private String value;
 
-    public void setVideoId(String videoId) {
-        this.videoId = videoId;
-    }
+	// Constructors
 
-    @Basic
-    @Column(name = "index", nullable = true)
-    public Integer getIndex() {
-        return index;
-    }
+	/** default constructor */
+	public Episode() {
+	}
 
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
+	/** minimal constructor */
+	public Episode(String episodeId, Video video) {
+		this.episodeId = episodeId;
+		this.video = video;
+	}
 
-    @Basic
-    @Column(name = "value", nullable = true, length = 50)
-    public String getValue() {
-        return value;
-    }
+	/** full constructor */
+	public Episode(String episodeId, Video video, Integer index, String value) {
+		this.episodeId = episodeId;
+		this.video = video;
+		this.index = index;
+		this.value = value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	// Property accessors
+	@Id
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Column(name = "episode_id", unique = true, nullable = false, length = 40)
 
-        Episode episode = (Episode) o;
+	public String getEpisodeId() {
+		return this.episodeId;
+	}
 
-        if (episodeId != null ? !episodeId.equals(episode.episodeId) : episode.episodeId != null) return false;
-        if (videoId != null ? !videoId.equals(episode.videoId) : episode.videoId != null) return false;
-        if (index != null ? !index.equals(episode.index) : episode.index != null) return false;
-        if (value != null ? !value.equals(episode.value) : episode.value != null) return false;
+	public void setEpisodeId(String episodeId) {
+		this.episodeId = episodeId;
+	}
 
-        return true;
-    }
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "video_id", nullable = false)
 
-    @Override
-    public int hashCode() {
-        int result = episodeId != null ? episodeId.hashCode() : 0;
-        result = 31 * result + (videoId != null ? videoId.hashCode() : 0);
-        result = 31 * result + (index != null ? index.hashCode() : 0);
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        return result;
-    }
+	public Video getVideo() {
+		return this.video;
+	}
+
+	public void setVideo(Video video) {
+		this.video = video;
+	}
+
+	@Column(name = "index")
+
+	public Integer getIndex() {
+		return this.index;
+	}
+
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
+
+	@Column(name = "value", length = 50)
+
+	public String getValue() {
+		return this.value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
 }

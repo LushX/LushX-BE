@@ -1,57 +1,86 @@
 package cn.mailu.LushX.entity;
 
-import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 /**
  * @Ahtuor: xuzhenya
  * @Description:
- * @Date: Created in 下午 2:32 2017-11-27
+ * @Date: Created in 下午 5:35 2017-11-05
  * @Modified By:
  */
 @Entity
-@Table(name = "video_repertory", schema = "LushX", catalog = "")
-public class VideoRepertory {
-    private String videoRepertoryId;
-    private String userId;
+@Table(name = "video_repertory", catalog = "LushX")
 
-    @Id
-    @Column(name = "video_repertory_id", nullable = false, length = 40)
-    public String getVideoRepertoryId() {
-        return videoRepertoryId;
-    }
+public class VideoRepertory implements java.io.Serializable {
 
-    public void setVideoRepertoryId(String videoRepertoryId) {
-        this.videoRepertoryId = videoRepertoryId;
-    }
+	// Fields
 
-    @Basic
-    @Column(name = "user_id", nullable = true, length = 40)
-    public String getUserId() {
-        return userId;
-    }
+	private String videoRepertoryId;
+	private String userId;
+	private Set<Video> videos = new HashSet<Video>(0);
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	// Constructors
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	/** default constructor */
+	public VideoRepertory() {
+	}
 
-        VideoRepertory that = (VideoRepertory) o;
+	/** minimal constructor */
+	public VideoRepertory(String videoRepertoryId) {
+		this.videoRepertoryId = videoRepertoryId;
+	}
 
-        if (videoRepertoryId != null ? !videoRepertoryId.equals(that.videoRepertoryId) : that.videoRepertoryId != null)
-            return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+	/** full constructor */
+	public VideoRepertory(String videoRepertoryId, String userId, Set<Video> videos) {
+		this.videoRepertoryId = videoRepertoryId;
+		this.userId = userId;
+		this.videos = videos;
+	}
 
-        return true;
-    }
+	// Property accessors
+	@Id
 
-    @Override
-    public int hashCode() {
-        int result = videoRepertoryId != null ? videoRepertoryId.hashCode() : 0;
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
-        return result;
-    }
+	@Column(name = "video_repertory_id", unique = true, nullable = false, length = 40)
+
+	public String getVideoRepertoryId() {
+		return this.videoRepertoryId;
+	}
+
+	public void setVideoRepertoryId(String videoRepertoryId) {
+		this.videoRepertoryId = videoRepertoryId;
+	}
+
+	@Column(name = "user_id", length = 40)
+
+	public String getUserId() {
+		return this.userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "repertory_video", catalog = "LushX", joinColumns = {
+			@JoinColumn(name = "video_repertory_id", nullable = false, updatable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "video_id", nullable = false, updatable = false) })
+
+	public Set<Video> getVideos() {
+		return this.videos;
+	}
+
+	public void setVideos(Set<Video> videos) {
+		this.videos = videos;
+	}
+
 }
