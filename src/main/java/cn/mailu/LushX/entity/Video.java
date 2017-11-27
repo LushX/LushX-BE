@@ -26,6 +26,8 @@ public class Video {
     private String area;
     private String score;
     private Date time;
+    private String videoRepertoryId;
+    private VideoRepertory videoRepertoryByVideoRepertoryId;
 
     @Id
     @Column(name = "video_id", nullable = false, length = 40)
@@ -194,5 +196,25 @@ public class Video {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    @Basic
+    @Column(name = "video_repertory_id", nullable = true, length = 40)
+    public String getVideoRepertoryId() {
+        return videoRepertoryId;
+    }
+
+    public void setVideoRepertoryId(String videoRepertoryId) {
+        this.videoRepertoryId = videoRepertoryId;
+    }
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "video_repertory_id")
+    public VideoRepertory getVideoRepertoryByVideoRepertoryId() {
+        return videoRepertoryByVideoRepertoryId;
+    }
+
+    public void setVideoRepertoryByVideoRepertoryId(VideoRepertory videoRepertoryByVideoRepertoryId) {
+        this.videoRepertoryByVideoRepertoryId = videoRepertoryByVideoRepertoryId;
     }
 }

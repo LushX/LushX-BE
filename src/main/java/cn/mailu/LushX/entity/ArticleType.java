@@ -12,10 +12,10 @@ import javax.persistence.*;
 @Table(name = "article_type", schema = "LushX", catalog = "")
 @IdClass(ArticleTypePK.class)
 public class ArticleType extends ArticleTypePK{
-    private Article articleByArticleId;
-    private Type typeByTypeId;
+
     private String typeId;
     private String articleId;
+    private Article articleByArticleId;
 
     @Override
     public boolean equals(Object o) {
@@ -25,9 +25,8 @@ public class ArticleType extends ArticleTypePK{
 
         ArticleType that = (ArticleType) o;
 
-        if (articleByArticleId != null ? !articleByArticleId.equals(that.articleByArticleId) : that.articleByArticleId != null)
-            return false;
-        if (typeByTypeId != null ? !typeByTypeId.equals(that.typeByTypeId) : that.typeByTypeId != null) return false;
+        if (typeId != null ? !typeId.equals(that.typeId) : that.typeId != null) return false;
+        if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null) return false;
 
         return true;
     }
@@ -35,29 +34,9 @@ public class ArticleType extends ArticleTypePK{
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (articleByArticleId != null ? articleByArticleId.hashCode() : 0);
-        result = 31 * result + (typeByTypeId != null ? typeByTypeId.hashCode() : 0);
+        result = 31 * result + (typeId != null ? typeId.hashCode() : 0);
+        result = 31 * result + (articleId != null ? articleId.hashCode() : 0);
         return result;
-    }
-
-    @ManyToOne
-    @JoinColumn( referencedColumnName = "article_id", nullable = false)
-    public Article getArticleByArticleId() {
-        return articleByArticleId;
-    }
-
-    public void setArticleByArticleId(Article articleByArticleId) {
-        this.articleByArticleId = articleByArticleId;
-    }
-
-    @ManyToOne
-    @JoinColumn( referencedColumnName = "type_id", nullable = false)
-    public Type getTypeByTypeId() {
-        return typeByTypeId;
-    }
-
-    public void setTypeByTypeId(Type typeByTypeId) {
-        this.typeByTypeId = typeByTypeId;
     }
 
     @Id
@@ -78,5 +57,15 @@ public class ArticleType extends ArticleTypePK{
 
     public void setArticleId(String articleId) {
         this.articleId = articleId;
+    }
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "article_id", nullable = false)
+    public Article getArticleByArticleId() {
+        return articleByArticleId;
+    }
+
+    public void setArticleByArticleId(Article articleByArticleId) {
+        this.articleByArticleId = articleByArticleId;
     }
 }

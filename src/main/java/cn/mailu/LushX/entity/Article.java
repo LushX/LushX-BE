@@ -25,6 +25,8 @@ public class Article {
     private String other;
     private String provider;
     private Collection<ArticleType> articleTypesByArticleId;
+    private String articleRepertoryId;
+    private ArticleRepertory articleRepertoryByArticleRepertoryId;
 
     @Id
     @Column(name = "article_id", nullable = false, length = 40)
@@ -169,5 +171,25 @@ public class Article {
 
     public void setArticleTypesByArticleId(Collection<ArticleType> articleTypesByArticleId) {
         this.articleTypesByArticleId = articleTypesByArticleId;
+    }
+
+    @Basic
+    @Column(name = "article_repertory_id", nullable = true, length = 40)
+    public String getArticleRepertoryId() {
+        return articleRepertoryId;
+    }
+
+    public void setArticleRepertoryId(String articleRepertoryId) {
+        this.articleRepertoryId = articleRepertoryId;
+    }
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "article_repertory_id")
+    public ArticleRepertory getArticleRepertoryByArticleRepertoryId() {
+        return articleRepertoryByArticleRepertoryId;
+    }
+
+    public void setArticleRepertoryByArticleRepertoryId(ArticleRepertory articleRepertoryByArticleRepertoryId) {
+        this.articleRepertoryByArticleRepertoryId = articleRepertoryByArticleRepertoryId;
     }
 }

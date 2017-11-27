@@ -15,7 +15,6 @@ public class Type {
     private String typeId;
     private String icon;
     private String name;
-    private Collection<ArticleType> articleTypesByTypeId;
 
     @Id
     @Column(name = "type_id", nullable = false, length = 2)
@@ -69,12 +68,4 @@ public class Type {
         return result;
     }
 
-    @OneToMany(mappedBy = "typeByTypeId")
-    public Collection<ArticleType> getArticleTypesByTypeId() {
-        return articleTypesByTypeId;
-    }
-
-    public void setArticleTypesByTypeId(Collection<ArticleType> articleTypesByTypeId) {
-        this.articleTypesByTypeId = articleTypesByTypeId;
-    }
 }
