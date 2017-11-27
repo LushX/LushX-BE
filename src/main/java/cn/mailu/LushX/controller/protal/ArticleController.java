@@ -71,10 +71,10 @@ public class ArticleController {
     @ApiOperation(value = "收藏文章", notes = "收藏文章")
     @ApiImplicitParam(name = "article", value = "收藏文章实体类", required = true,dataType = "Article")
     @PostMapping("/like")
-    public ServerResponse saveArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody Article article) {
+    public ServerResponse likeArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody Article article) {
         if (jwtuser != null) {
             ArticleRepertory articleRepertory = articleRepertoryService.findByUserId(jwtuser.getUserId());
-            articleRepertory.getArticlesByArticleRepertoryId().add(article);
+            articleRepertory.getArticles().add(article);
             if (articleRepertoryService.save(articleRepertory) != null) {
                 return ServerResponse.createBySuccessMessage("收藏成功");
             }
@@ -86,10 +86,10 @@ public class ArticleController {
     @ApiOperation(value = "取消收藏文章", notes = "取消收藏文章")
     @ApiImplicitParam(name = "articleId", value = "取消收藏文章id", required = true)
     @PostMapping("/dislike")
-    public ServerResponse saveArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody String articleId) {
+    public ServerResponse dislikeArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody String articleId) {
         if (jwtuser != null) {
             ArticleRepertory articleRepertory = articleRepertoryService.findByUserId(jwtuser.getUserId());
-            List<Article> articles = (List<Article>) articleRepertory.getArticlesByArticleRepertoryId();
+            List<Article> articles = (List<Article>) articleRepertory.getArticles();
             for (Article a : articles) {
                 if (a.getArticleId() == articleId) {
                     articles.remove(a);
@@ -111,7 +111,7 @@ public class ArticleController {
         res.put("isLike", false);
         if (jwtuser != null) {
             ArticleRepertory articleRepertory = articleRepertoryService.findByUserId(jwtuser.getUserId());
-            for (Article a : articleRepertory.getArticlesByArticleRepertoryId()) {
+            for (Article a : articleRepertory.getArticles()) {
                 if (a.getArticleId() == articleId) {
                     res.put("isLike", true);
                     break;

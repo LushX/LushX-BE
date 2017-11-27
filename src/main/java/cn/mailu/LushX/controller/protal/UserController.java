@@ -26,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -67,8 +68,6 @@ public class UserController {
     @ApiImplicitParam(name = "user", value = "只需要username和password字段", required = true, dataType = "User")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ServerResponse<String> register(@RequestBody User user) {
-        logger.info(user.getGender());
-        logger.info(user.getUsername());
         return userService.register(user);
     }
 
@@ -77,33 +76,9 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ServerResponse login(@RequestBody User user) {
         User userNew = null;
-        logger.info("username:{}", user.getUsername());
-        logger.info("password:{}", user.getPassword());
-        logger.info("password:{}", MD5Utils.MD5EncodeUtf8(user.getPassword()));
         userNew = userService.findByUsernameAndPassword(user.getUsername(), MD5Utils.MD5EncodeUtf8(user.getPassword()));
         if (userNew != null) {
-            String token = null;
-            try {
-                token = jwtUtils.generateAccessToken(JWTUserFactory.create(userNew));
-                Map<String, Object> map = Maps.newHashMap();
-                map.put(token_header, "Bearer " + token);
-                //todo 删除
-                UserVO userVo=toUserVO(userNew);
-                List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY + "_" + VideoTypeEnum.CL_TV_HOT.getCode());
-                Pageable pageable = new PageRequest(0, 10);
-                Page<Video> videoPage = CommonUtils.getPage(pageable, videos);
-                List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY + "_" + RedisKey.TAGS[2]);
-                Page<Article> articlePage = CommonUtils.getPage(pageable, articles);
-                Map map2 = Maps.newHashMap();
-                map2.put("video", videoPage);
-                map2.put("article", articlePage);
-                userVo.setCollection(map2);
-                map.put("info", userVo);
-                logger.info("验证成功，发出token");
-                return ServerResponse.createBySuccess(map);
-            } catch (JsonProcessingException e) {
-                logger.error("generateAccessToken error");
-            }
+          return generateUserVO(userNew);
         }
         return ServerResponse.createByErrorMessage("用户名或密码错误");
     }
@@ -114,15 +89,11 @@ public class UserController {
         if (jwtuser != null) {
             User user = userService.selectById(jwtuser.getUserId());
             UserVO userVo = toUserVO(user);
-            // todo 获取收藏列表
-            List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY + "_" + VideoTypeEnum.CL_TV_HOT.getCode());
             Pageable pageable = new PageRequest(0, 10);
-            Page<Video> videoPage = CommonUtils.getPage(pageable, videos);
-            List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY + "_" + RedisKey.TAGS[2]);
-            Page<Article> articlePage = CommonUtils.getPage(pageable, articles);
             Map map = Maps.newHashMap();
-            map.put("video", videoPage);
-            map.put("article", articlePage);
+            //todo
+            map.put("video", articleRepertoryService.getLikeArticleListByUserId(user.getUserId(), pageable));
+            map.put("article", articleRepertoryService.getLikeArticleListByUserId(user.getUserId(), pageable));
             userVo.setCollection(map);
             return ServerResponse.createBySuccess(userVo);
         }
@@ -160,41 +131,41 @@ public class UserController {
                 user.setPassword(MD5Utils.MD5EncodeUtf8(user.getPassword()));
             }
             if (StringUtils.isNotEmpty(user.getUsername())) {
-                User res=userService.findByUsername(user.getUsername());
-                if(res!=null){
+                User res = userService.findByUsername(user.getUsername());
+                if (res != null) {
                     return ServerResponse.createByErrorMessage("用户名已存在");
                 }
                 user.setMd5(MD5Utils.MD5EncodeUtf8(user.getUsername()));
             }
             User userNew = userService.updateSelective(user);
             if (userNew != null) {
-                String token = null;
-                try {
-                    token = jwtUtils.generateAccessToken(JWTUserFactory.create(userNew));
-                    Map<String, Object> map = Maps.newHashMap();
-                    map.put(token_header, "Bearer " + token);
-                    //todo 修改为真实数据
-                    UserVO userVo=toUserVO(userNew);
-
-                    List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY + "_" + VideoTypeEnum.CL_TV_HOT.getCode());
-                    Pageable pageable = new PageRequest(0, 10);
-                    Page<Video> videoPage = CommonUtils.getPage(pageable, videos);
-                    List<Article> articles = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY + "_" + RedisKey.TAGS[2]);
-                    Page<Article> articlePage = CommonUtils.getPage(pageable, articles);
-                    Map map2 = Maps.newHashMap();
-                    map2.put("video", videoPage);
-                    map2.put("article", articlePage);
-                    userVo.setCollection(map2);
-                    map.put("info", userVo);
-                    logger.info("修改用户信息，验证成功，发出token");
-                    return ServerResponse.createBySuccess(map);
-                } catch (JsonProcessingException e) {
-                    logger.error("generateAccessToken error");
-                }
+                return generateUserVO(userNew);
             }
             return ServerResponse.createByErrorMessage("更新信息失败");
         }
         return ServerResponse.createByErrorMessage("未登录");
+    }
+
+    private ServerResponse generateUserVO(User userNew) {
+        String token = null;
+        try {
+            token = jwtUtils.generateAccessToken(JWTUserFactory.create(userNew));
+            Map<String, Object> map = Maps.newHashMap();
+            map.put(token_header, "Bearer " + token);
+            UserVO userVo = toUserVO(userNew);
+            Pageable pageable = new PageRequest(0, 10);
+            Map map2 = Maps.newHashMap();
+            map2.put("video", articleRepertoryService.getLikeArticleListByUserId(userNew.getUserId(), pageable));
+            //todo 视频收藏
+            map2.put("article", articleRepertoryService.getLikeArticleListByUserId(userNew.getUserId(), pageable));
+            userVo.setCollection(map2);
+            map.put("info", userVo);
+            logger.info("验证成功，发出token");
+            return ServerResponse.createBySuccess(map);
+        } catch (JsonProcessingException e) {
+            logger.error("generateAccessToken error");
+        }
+        return ServerResponse.createByError();
     }
 
     //生成UserVO
