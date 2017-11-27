@@ -3,9 +3,12 @@ package cn.mailu.LushX.controller.protal;
 import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Article;
+import cn.mailu.LushX.entity.ArticleRepertory;
 import cn.mailu.LushX.security.JWTUserDetails;
+import cn.mailu.LushX.service.ArticleRepertoryService;
 import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.CommonUtils;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -20,6 +23,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: NULL
@@ -35,6 +39,10 @@ public class ArticleController {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private ArticleRepertoryService articleRepertoryService;
+
 
     @ApiOperation(value = "最热文章", notes = "最热文章")
     @ApiImplicitParams({
@@ -58,23 +66,71 @@ public class ArticleController {
         return ServerResponse.createBySuccess(CommonUtils.getPage(pageable, articles));
     }
 
+    //文章收藏api
+
     @ApiOperation(value = "收藏文章", notes = "收藏文章")
-    @ApiImplicitParam(name = "articleId", value = "收藏文章id", required = true)
+    @ApiImplicitParam(name = "article", value = "收藏文章实体类", required = true)
     @PostMapping("/like")
+    public ServerResponse saveArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody Article article) {
+        if (jwtuser != null) {
+            ArticleRepertory articleRepertory = articleRepertoryService.findByUserId(jwtuser.getUserId());
+            articleRepertory.getArticlesByArticleRepertoryId().add(article);
+            if (articleRepertoryService.save(articleRepertory) != null) {
+                return ServerResponse.createBySuccessMessage("收藏成功");
+            }
+            return ServerResponse.createByErrorMessage("收藏失败");
+        }
+        return ServerResponse.createByErrorMessage("未登录");
+    }
+
+    @ApiOperation(value = "取消收藏文章", notes = "取消收藏文章")
+    @ApiImplicitParam(name = "articleId", value = "取消收藏文章id", required = true)
+    @PostMapping("/dislike")
     public ServerResponse saveArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody String articleId) {
         if (jwtuser != null) {
-            List<Article> articleNews = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_NEW_KEY + "_" + RedisKey.TAGS[2]);
-            List<Article> articleHots = (List<Article>) redisService.getValueByKey(RedisKey.JIANSHU_TRENDING_KEY + "_" + RedisKey.TAGS[2]);
-            for (Article a : articleNews) {
+            ArticleRepertory articleRepertory = articleRepertoryService.findByUserId(jwtuser.getUserId());
+            List<Article> articles = (List<Article>) articleRepertory.getArticlesByArticleRepertoryId();
+            for (Article a : articles) {
                 if (a.getArticleId() == articleId) {
-                    //todo 保存到仓库
+                    articles.remove(a);
+                    if (articleRepertoryService.save(articleRepertory) != null) {
+                        return ServerResponse.createBySuccess();
+                    }
                 }
             }
-            for (Article a : articleHots) {
+            return ServerResponse.createByErrorMessage("取消收藏失败");
+        }
+        return ServerResponse.createByErrorMessage("未登录");
+    }
+
+    @ApiOperation(value = "是否已收藏文章", notes = "是否已收藏文章")
+    @ApiImplicitParam(name = "articleId", value = "文章id", required = true, paramType = "query")
+    @GetMapping("/islike")
+    public ServerResponse isLike(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestParam String articleId) {
+        Map res = Maps.newHashMap();
+        res.put("isLike", false);
+        if (jwtuser != null) {
+            ArticleRepertory articleRepertory = articleRepertoryService.findByUserId(jwtuser.getUserId());
+            for (Article a : articleRepertory.getArticlesByArticleRepertoryId()) {
                 if (a.getArticleId() == articleId) {
-                    //todo 保存到仓库
+                    res.put("isLike", true);
+                    break;
                 }
             }
+            return ServerResponse.createBySuccess(res);
+        }
+        return ServerResponse.createByErrorMessage("未登录");
+    }
+
+    @ApiOperation(value = "收藏文章列表", notes = "收藏文章列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "第几页", defaultValue = "0", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "size", value = "页大小", defaultValue = "20", required = false, paramType = "query")
+    })
+    @GetMapping("/like")
+    public ServerResponse<Page<Article>> getLikeArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @PageableDefault(value = 20, size = 20) Pageable pageable) {
+        if (jwtuser != null) {
+            return ServerResponse.createBySuccess(articleRepertoryService.getLikeArticleListByUserId(jwtuser.getUserId(),pageable));
         }
         return ServerResponse.createByErrorMessage("未登录");
     }

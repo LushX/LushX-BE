@@ -8,9 +8,7 @@ import cn.mailu.LushX.entity.User;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.security.JWTUserDetails;
 import cn.mailu.LushX.security.JWTUserFactory;
-import cn.mailu.LushX.service.FileService;
-import cn.mailu.LushX.service.RedisService;
-import cn.mailu.LushX.service.UserService;
+import cn.mailu.LushX.service.*;
 import cn.mailu.LushX.util.CommonUtils;
 import cn.mailu.LushX.util.JWTUtils;
 import cn.mailu.LushX.util.MD5Utils;
@@ -45,6 +43,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ArticleRepertoryService articleRepertoryService;
+
+    @Autowired
+    private VideoRepertoryService videoRepertoryService;
 
     @Autowired
     private RedisService redisService;
@@ -169,8 +173,9 @@ public class UserController {
                     token = jwtUtils.generateAccessToken(JWTUserFactory.create(userNew));
                     Map<String, Object> map = Maps.newHashMap();
                     map.put(token_header, "Bearer " + token);
-                    //todo 删除
+                    //todo 修改为真实数据
                     UserVO userVo=toUserVO(userNew);
+
                     List<Video> videos = (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY + "_" + VideoTypeEnum.CL_TV_HOT.getCode());
                     Pageable pageable = new PageRequest(0, 10);
                     Page<Video> videoPage = CommonUtils.getPage(pageable, videos);
@@ -192,14 +197,6 @@ public class UserController {
         return ServerResponse.createByErrorMessage("未登录");
     }
 
-    @PostMapping("/u/dislike")
-    @ApiOperation(value = "取消收藏")
-    @ApiImplicitParam(name = "id", value = "取消收藏的id", required = true, paramType = "query")
-    public ServerResponse dislike(@AuthenticationPrincipal @ApiParam(hidden = true) JWTUserDetails jwtuser, @RequestBody String id) {
-        //todo 取消收藏
-        return ServerResponse.createByError();
-    }
-
     //生成UserVO
     private UserVO toUserVO(User user) {
         UserVO userVO = new UserVO();
@@ -208,6 +205,4 @@ public class UserController {
         userVO.setUsername(user.getUsername());
         return userVO;
     }
-
-
 }

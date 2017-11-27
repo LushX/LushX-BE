@@ -3,6 +3,8 @@ package cn.mailu.LushX.util;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.CollectionUtils;
+
 
 import java.util.List;
 
@@ -23,10 +25,14 @@ public class CommonUtils {
      * @return
      */
     public static <T> Page<T> getPage(Pageable pageable, List list){
-        int fromIndex=pageable.getPageNumber()*pageable.getPageSize();
-        int length=list.size();
-        int end=(pageable.getPageNumber()+1)*pageable.getPageSize();
-        int endIndex=end>=length?length:end;
-        return new PageImpl<T>(list.subList(fromIndex,endIndex),pageable,length);
+        if(list!=null&&list.size()!=0) {
+            int fromIndex = pageable.getPageNumber() * pageable.getPageSize();
+            int length = list.size();
+            int end = (pageable.getPageNumber() + 1) * pageable.getPageSize();
+            int endIndex = end >= length ? length : end;
+            return new PageImpl<T>(list.subList(fromIndex, endIndex), pageable, length);
+        }
+        //todo 处理空数据
+        return new  PageImpl<T>(null, pageable, 0);
     }
 }
