@@ -2,6 +2,7 @@ package cn.mailu.LushX.service;
 
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.entity.VideoRepertory;
+import cn.mailu.LushX.vo.VideoVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,5 +18,5 @@ public interface VideoRepertoryService {
 
     VideoRepertory save(VideoRepertory videoRepertory);
 
-    Page<Video> getLikeVideoListByUserId(String userId, Pageable pageable);
+    Page<VideoVO> getLikeVideoListByUserId(String userId, Pageable pageable);
 }

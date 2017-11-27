@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * @Modified By:
  */
 @Entity
-@Table(name = "user", catalog = "LushX")
+@Table(name = "user",catalog = "",schema = "LushX")
 
 public class User implements java.io.Serializable {
 

@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * @Modified By:
  */
 @Entity
-@Table(name = "episode", catalog = "LushX")
+@Table(name = "episode", catalog = "",schema = "LushX")
 
 public class Episode implements java.io.Serializable {
 

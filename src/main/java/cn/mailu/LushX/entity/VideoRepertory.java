@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * @Modified By:
  */
 @Entity
-@Table(name = "video_repertory", catalog = "LushX")
+@Table(name = "video_repertory", catalog = "",schema = "LushX")
 
 public class VideoRepertory implements java.io.Serializable {
 
@@ -71,7 +71,7 @@ public class VideoRepertory implements java.io.Serializable {
 	}
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "repertory_video", catalog = "LushX", joinColumns = {
+	@JoinTable(name = "repertory_video", catalog = "",schema = "LushX", joinColumns = {
 			@JoinColumn(name = "video_repertory_id", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "video_id", nullable = false, updatable = false) })
 

@@ -9,7 +9,7 @@ import javax.persistence.*;
  * @Modified By:
  */
 @Entity
-@Table(name = "article_type", schema = "LushX", catalog = "")
+@Table(name = "article_type", catalog = "",schema = "LushX")
 @IdClass(ArticleTypePK.class)
 public class ArticleType {
     private String typeId;

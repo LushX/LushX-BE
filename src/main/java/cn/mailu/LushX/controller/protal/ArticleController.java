@@ -8,6 +8,7 @@ import cn.mailu.LushX.security.JWTUserDetails;
 import cn.mailu.LushX.service.ArticleRepertoryService;
 import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.CommonUtils;
+import cn.mailu.LushX.vo.ArticleVO;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author: NULL
@@ -84,19 +86,23 @@ public class ArticleController {
     }
 
     @ApiOperation(value = "取消收藏文章", notes = "取消收藏文章")
-    @ApiImplicitParam(name = "articleId", value = "取消收藏文章id", required = true)
-    @PostMapping("/dislike")
-    public ServerResponse dislikeArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody String articleId) {
+    @ApiImplicitParam(name = "articleId", value = "取消收藏文章id", required = true,dataType ="path" )
+    @PostMapping("/dislike/{articleId}")
+    public ServerResponse dislikeArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @PathVariable String articleId) {
         if (jwtuser != null) {
             ArticleRepertory articleRepertory = articleRepertoryService.findByUserId(jwtuser.getUserId());
-            List<Article> articles = (List<Article>) articleRepertory.getArticles();
+            Set<Article> articles = articleRepertory.getArticles();
+            Article re=new Article();
             for (Article a : articles) {
-                if (a.getArticleId() == articleId) {
-                    articles.remove(a);
-                    if (articleRepertoryService.save(articleRepertory) != null) {
-                        return ServerResponse.createBySuccess();
-                    }
+                if (a.getArticleId().equals(articleId)) {
+                    re=a;
+                    break;
                 }
+            }
+            articles.remove(re);
+            articleRepertory.setArticles(articles);
+            if (articleRepertoryService.save(articleRepertory) != null) {
+                return ServerResponse.createBySuccess();
             }
             return ServerResponse.createByErrorMessage("取消收藏失败");
         }
@@ -112,7 +118,7 @@ public class ArticleController {
         if (jwtuser != null) {
             ArticleRepertory articleRepertory = articleRepertoryService.findByUserId(jwtuser.getUserId());
             for (Article a : articleRepertory.getArticles()) {
-                if (a.getArticleId() == articleId) {
+                if (a.getArticleId().equals(articleId) ) {
                     res.put("isLike", true);
                     break;
                 }
@@ -128,7 +134,7 @@ public class ArticleController {
             @ApiImplicitParam(name = "size", value = "页大小", defaultValue = "20", required = false, paramType = "query")
     })
     @GetMapping("/like")
-    public ServerResponse<Page<Article>> getLikeArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @PageableDefault(value = 20, size = 20) Pageable pageable) {
+    public ServerResponse<Page<ArticleVO>> getLikeArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @PageableDefault(value = 20, size = 20) Pageable pageable) {
         if (jwtuser != null) {
             return ServerResponse.createBySuccess(articleRepertoryService.getLikeArticleListByUserId(jwtuser.getUserId(),pageable));
         }

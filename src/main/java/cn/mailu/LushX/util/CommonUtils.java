@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * 一些公用的方法
+ *
  * @Ahtuor: xuzhenya
  * @Description:
  * @Date: Created in 下午 4:17 2017-11-18
@@ -18,21 +19,17 @@ import java.util.List;
 public class CommonUtils {
 
     /**
-     *
-     * @param pageable  pageable对象
-     * @param list  从redis中取出的list
+     * @param pageable pageable对象
+     * @param list     从redis中取出的list
      * @param <T>
      * @return
      */
-    public static <T> Page<T> getPage(Pageable pageable, List list){
-        if(list!=null&&list.size()!=0) {
-            int fromIndex = pageable.getPageNumber() * pageable.getPageSize();
-            int length = list.size();
-            int end = (pageable.getPageNumber() + 1) * pageable.getPageSize();
-            int endIndex = end >= length ? length : end;
-            return new PageImpl<T>(list.subList(fromIndex, endIndex), pageable, length);
-        }
-        //todo 处理空数据
-        return new  PageImpl<T>(null, pageable, 0);
+    public static <T> Page<T> getPage(Pageable pageable, List list) {
+
+        int fromIndex = pageable.getPageNumber() * pageable.getPageSize();
+        int length = list.size();
+        int end = (pageable.getPageNumber() + 1) * pageable.getPageSize();
+        int endIndex = end >= length ? length : end;
+        return new PageImpl<T>(list.subList(fromIndex, endIndex), pageable, length);
     }
 }

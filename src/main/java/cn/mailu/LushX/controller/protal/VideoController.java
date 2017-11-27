@@ -9,6 +9,7 @@ import cn.mailu.LushX.security.JWTUserDetails;
 import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.service.VideoRepertoryService;
 import cn.mailu.LushX.util.CommonUtils;
+import cn.mailu.LushX.vo.VideoVO;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -25,6 +26,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author: NULL
@@ -159,19 +161,23 @@ public class VideoController {
     }
 
     @ApiOperation(value = "取消收藏视频", notes = "取消收藏视频")
-    @ApiImplicitParam(name = "videoId", value = "取消收藏视频id", required = true)
-    @PostMapping("/dislike")
-    public ServerResponse dislikeVideo(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody String videoId) {
+    @ApiImplicitParam(name = "videoId", value = "取消收藏视频id", required = true,dataType ="path")
+    @PostMapping("/dislike/{videoId}")
+    public ServerResponse dislikeVideo(@AuthenticationPrincipal JWTUserDetails jwtuser, @PathVariable String videoId) {
         if (jwtuser != null) {
             VideoRepertory videoRepertory = videoRepertoryService.findByUserId(jwtuser.getUserId());
-            List<Video> videos = (List<Video>) videoRepertory.getVideos();
+            Set<Video> videos = videoRepertory.getVideos();
+            Video re=new Video();
             for (Video a : videos) {
-                if (a.getVideoId() == videoId) {
-                    videos.remove(a);
-                    if (videoRepertoryService.save(videoRepertory) != null) {
-                        return ServerResponse.createBySuccess();
-                    }
+                if (a.getVideoId().equals(videoId) ) {
+                    re=a;
+                    break;
                 }
+            }
+            videos.remove(re);
+            videoRepertory.setVideos(videos);
+            if (videoRepertoryService.save(videoRepertory) != null) {
+                return ServerResponse.createBySuccess();
             }
             return ServerResponse.createByErrorMessage("取消收藏失败");
         }
@@ -187,7 +193,7 @@ public class VideoController {
         if (jwtuser != null) {
             VideoRepertory videoRepertory = videoRepertoryService.findByUserId(jwtuser.getUserId());
             for (Video a : videoRepertory.getVideos()) {
-                if (a.getVideoId() == videoId) {
+                if (a.getVideoId().equals(videoId)) {
                     res.put("isLike", true);
                     break;
                 }
@@ -203,7 +209,7 @@ public class VideoController {
             @ApiImplicitParam(name = "size", value = "页大小", defaultValue = "20", required = false, paramType = "query")
     })
     @GetMapping("/like")
-    public ServerResponse<Page<Video>> getLikeVideo(@AuthenticationPrincipal JWTUserDetails jwtuser, @PageableDefault(value = 20, size = 20) Pageable pageable) {
+    public ServerResponse<Page<VideoVO>> getLikeVideo(@AuthenticationPrincipal JWTUserDetails jwtuser, @PageableDefault(value = 20, size = 20) Pageable pageable) {
         if (jwtuser != null) {
             return ServerResponse.createBySuccess(videoRepertoryService.getLikeVideoListByUserId(jwtuser.getUserId(),pageable));
         }

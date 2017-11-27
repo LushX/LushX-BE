@@ -5,6 +5,8 @@ import cn.mailu.LushX.entity.ArticleRepertory;
 import cn.mailu.LushX.repository.ArticleRepertoryRepository;
 import cn.mailu.LushX.service.ArticleRepertoryService;
 import cn.mailu.LushX.util.CommonUtils;
+import cn.mailu.LushX.vo.ArticleVO;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,8 +36,13 @@ public class ArticleRepertotyServiceImpl implements ArticleRepertoryService {
     }
 
     @Override
-    public Page<Article> getLikeArticleListByUserId(String userId,Pageable pageable) {
-    List articles= (List) articleRepertoryRepository.findByUserId(userId).getArticles();
-        return CommonUtils.getPage(pageable,articles);
+    public Page<ArticleVO> getLikeArticleListByUserId(String userId, Pageable pageable) {
+        List<Article> articles= Lists.newArrayList(articleRepertoryRepository.findByUserId(userId).getArticles().iterator());
+        List<ArticleVO> articleVOs=Lists.newArrayList();
+        for(Article a: articles){
+            articleVOs.add(ArticleVO.toArticleVO(a));
+        }
+        return CommonUtils.getPage(pageable,articleVOs);
     }
+
 }

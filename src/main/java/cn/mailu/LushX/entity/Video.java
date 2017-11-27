@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
  * @Modified By:
  */
 @Entity
-@Table(name = "video", catalog = "LushX")
+@Table(name = "video",catalog = "",schema = "LushX")
 
 public class Video implements java.io.Serializable {
 
@@ -118,7 +118,7 @@ public class Video implements java.io.Serializable {
 		this.image = image;
 	}
 
-	@Column(name = "playUrl", length = 100)
+	@Column(name = "play_url", length = 100)
 
 	public String getPlayUrl() {
 		return this.playUrl;

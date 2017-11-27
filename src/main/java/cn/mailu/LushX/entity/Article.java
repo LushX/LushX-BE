@@ -1,5 +1,7 @@
 package cn.mailu.LushX.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -17,7 +19,7 @@ import javax.persistence.Table;
  * @Modified By:
  */
 @Entity
-@Table(name = "article", catalog = "LushX")
+@Table(name = "article", catalog = "",schema = "LushX")
 
 public class Article implements java.io.Serializable {
 
@@ -87,7 +89,7 @@ public class Article implements java.io.Serializable {
 		this.title = title;
 	}
 
-	@Column(name = "image", length = 50)
+	@Column(name = "image", length = 255)
 
 	public String getImage() {
 		return this.image;

@@ -1,5 +1,6 @@
 package cn.mailu.LushX.vo;
 
+import cn.mailu.LushX.entity.User;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import java.util.Collection;
@@ -59,5 +60,13 @@ public class UserVO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public static UserVO toUserVO(User user) {
+        UserVO userVO = new UserVO();
+        userVO.setUserId(user.getUserId());
+        userVO.setHeadImg(user.getHeadImg());
+        userVO.setUsername(user.getUsername());
+        return userVO;
     }
 }

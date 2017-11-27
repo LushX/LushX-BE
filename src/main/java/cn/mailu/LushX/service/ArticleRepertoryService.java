@@ -2,6 +2,7 @@ package cn.mailu.LushX.service;
 
 import cn.mailu.LushX.entity.Article;
 import cn.mailu.LushX.entity.ArticleRepertory;
+import cn.mailu.LushX.vo.ArticleVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,5 +17,5 @@ public interface ArticleRepertoryService {
 
     ArticleRepertory save(ArticleRepertory articleRepertory);
 
-    Page<Article> getLikeArticleListByUserId(String userId, Pageable pageable);
+    Page<ArticleVO> getLikeArticleListByUserId(String userId, Pageable pageable);
 }

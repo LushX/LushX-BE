@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * @Modified By:
  */
 @Entity
-@Table(name = "type", catalog = "LushX")
+@Table(name = "type", catalog = "",schema = "LushX")
 
 public class Type implements java.io.Serializable {
 

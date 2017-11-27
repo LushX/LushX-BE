@@ -88,11 +88,11 @@ public class UserController {
     public ServerResponse userspace(@AuthenticationPrincipal JWTUserDetails jwtuser) {
         if (jwtuser != null) {
             User user = userService.selectById(jwtuser.getUserId());
-            UserVO userVo = toUserVO(user);
+            UserVO userVo = UserVO.toUserVO(user);
             Pageable pageable = new PageRequest(0, 10);
             Map map = Maps.newHashMap();
-            map.put("video", articleRepertoryService.getLikeArticleListByUserId(user.getUserId(), pageable));
-            map.put("article", videoRepertoryService.getLikeVideoListByUserId(user.getUserId(),pageable));
+            map.put("article", articleRepertoryService.getLikeArticleListByUserId(user.getUserId(), pageable));
+            map.put("video", videoRepertoryService.getLikeVideoListByUserId(user.getUserId(),pageable));
             userVo.setCollection(map);
             return ServerResponse.createBySuccess(userVo);
         }
@@ -151,11 +151,11 @@ public class UserController {
             token = jwtUtils.generateAccessToken(JWTUserFactory.create(userNew));
             Map<String, Object> map = Maps.newHashMap();
             map.put(token_header, "Bearer " + token);
-            UserVO userVo = toUserVO(userNew);
+            UserVO userVo = UserVO.toUserVO(userNew);
             Pageable pageable = new PageRequest(0, 10);
             Map map2 = Maps.newHashMap();
-            map2.put("video", articleRepertoryService.getLikeArticleListByUserId(userNew.getUserId(), pageable));
-            map2.put("article", videoRepertoryService.getLikeVideoListByUserId(userNew.getUserId(), pageable));
+            map2.put("video", videoRepertoryService.getLikeVideoListByUserId(userNew.getUserId(), pageable));
+            map2.put("article", articleRepertoryService.getLikeArticleListByUserId(userNew.getUserId(), pageable));
             userVo.setCollection(map2);
             map.put("info", userVo);
             logger.info("验证成功，发出token");
@@ -166,12 +166,4 @@ public class UserController {
         return ServerResponse.createByError();
     }
 
-    //生成UserVO
-    private UserVO toUserVO(User user) {
-        UserVO userVO = new UserVO();
-        userVO.setUserId(user.getUserId());
-        userVO.setHeadImg(user.getHeadImg());
-        userVO.setUsername(user.getUsername());
-        return userVO;
-    }
 }
