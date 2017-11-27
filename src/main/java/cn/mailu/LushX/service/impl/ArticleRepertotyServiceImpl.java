@@ -34,8 +34,8 @@ public class ArticleRepertotyServiceImpl implements ArticleRepertoryService {
     }
 
     @Override
-    public Page<Article> getLikeArticleListByUserId(String userId,Pageable pageable) {
-    List articles= (List) articleRepertoryRepository.findByUserId(userId).getArticlesByArticleRepertoryId();
+    public Page<Article> getLikeArticleListByUserId(String userId, Pageable pageable) {
+    List articles= (List) articleRepertoryRepository.findByUserId(userId).getArticles();
         return CommonUtils.getPage(pageable,articles);
     }
 }
