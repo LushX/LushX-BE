@@ -27,10 +27,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author: NULL
@@ -178,7 +175,7 @@ public class VideoController {
     public ServerResponse dislikeVideo(@AuthenticationPrincipal JWTUserDetails jwtuser, @PathVariable String videoId) {
         if (jwtuser != null) {
             VideoRepertory videoRepertory = videoRepertoryService.findByUserId(jwtuser.getUserId());
-            Set<Video> videos = videoRepertory.getVideos();
+            Collection<Video> videos = videoRepertory.getVideos();
             Iterator<Video> it=videos.iterator();
             while(it.hasNext()){
                 Video v=it.next();

@@ -162,7 +162,7 @@ public class Video implements java.io.Serializable {
 		this.director = director;
 	}
 
-	@Column(name = "actor", length = 50)
+	@Column(name = "actor", length = 255)
 
 	public String getActor() {
 		return this.actor;

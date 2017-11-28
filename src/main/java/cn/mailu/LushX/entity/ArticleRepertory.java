@@ -1,5 +1,6 @@
 package cn.mailu.LushX.entity;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -27,7 +28,7 @@ public class ArticleRepertory implements java.io.Serializable {
 
 	private String articleRepertoryId;
 	private String userId;
-	private Set<Article> articles = new HashSet<Article>(0);
+	private Collection<Article> articles ;
 
 	// Constructors
 
@@ -41,7 +42,7 @@ public class ArticleRepertory implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public ArticleRepertory(String articleRepertoryId, String userId, Set<Article> articles) {
+	public ArticleRepertory(String articleRepertoryId, String userId, Collection<Article> articles) {
 		this.articleRepertoryId = articleRepertoryId;
 		this.userId = userId;
 		this.articles = articles;
@@ -75,11 +76,11 @@ public class ArticleRepertory implements java.io.Serializable {
 			@JoinColumn(name = "article_repertory_id", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "article_id", nullable = false, updatable = false) })
 
-	public Set<Article> getArticles() {
+	public Collection<Article> getArticles() {
 		return this.articles;
 	}
 
-	public void setArticles(Set<Article> articles) {
+	public void setArticles(Collection<Article> articles) {
 		this.articles = articles;
 	}
 
