@@ -23,10 +23,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author: NULL
@@ -95,7 +92,7 @@ public class ArticleController {
     public ServerResponse dislikeArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @PathVariable String articleId) {
         if (jwtuser != null) {
             ArticleRepertory articleRepertory = articleRepertoryService.findByUserId(jwtuser.getUserId());
-            Set<Article> articles = articleRepertory.getArticles();
+            Collection<Article> articles = articleRepertory.getArticles();
             Iterator<Article> it=articles.iterator();
             while(it.hasNext()){
                 Article a=it.next();
