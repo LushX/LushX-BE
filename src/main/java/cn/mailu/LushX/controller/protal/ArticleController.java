@@ -23,6 +23,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,6 +77,9 @@ public class ArticleController {
     public ServerResponse likeArticle(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody Article article) {
         if (jwtuser != null) {
             ArticleRepertory articleRepertory = articleRepertoryService.findByUserId(jwtuser.getUserId());
+            if(articleRepertory.getArticles().contains(article)){
+                return ServerResponse.createBySuccessMessage("已收藏");
+            }
             articleRepertory.getArticles().add(article);
             if (articleRepertoryService.save(articleRepertory) != null) {
                 return ServerResponse.createBySuccessMessage("收藏成功");
@@ -92,17 +96,16 @@ public class ArticleController {
         if (jwtuser != null) {
             ArticleRepertory articleRepertory = articleRepertoryService.findByUserId(jwtuser.getUserId());
             Set<Article> articles = articleRepertory.getArticles();
-            Article re=new Article();
-            for (Article a : articles) {
-                if (a.getArticleId().equals(articleId)) {
-                    re=a;
-                    break;
+            Iterator<Article> it=articles.iterator();
+            while(it.hasNext()){
+                Article a=it.next();
+                if(a.getArticleId().equals(articleId)){
+                    it.remove();
                 }
             }
-            articles.remove(re);
             articleRepertory.setArticles(articles);
             if (articleRepertoryService.save(articleRepertory) != null) {
-                return ServerResponse.createBySuccess();
+                return ServerResponse.createBySuccessMessage("取消收藏成功");
             }
             return ServerResponse.createByErrorMessage("取消收藏失败");
         }

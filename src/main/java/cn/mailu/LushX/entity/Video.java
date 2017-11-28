@@ -1,5 +1,9 @@
 package cn.mailu.LushX.entity;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,7 +44,7 @@ public class Video implements java.io.Serializable {
 	private String score;
 	private Date time;
 	private String other;
-	private Set<Episode> episodes = new HashSet<Episode>(0);
+	private Collection<Episode> episodes;
 	private Set<VideoRepertory> videoRepertories = new HashSet<VideoRepertory>(0);
 
 	// Constructors
@@ -56,7 +60,7 @@ public class Video implements java.io.Serializable {
 
 	/** full constructor */
 	public Video(String videoId, String title, String alias, String image, String playUrl, String type, String value,
-			String director, String actor, String area, String score, Date time, String other, Set<Episode> episodes,
+			String director, String actor, String area, String score, Date time, String other, Collection<Episode> episodes,
 			Set<VideoRepertory> videoRepertories) {
 		this.videoId = videoId;
 		this.title = title;
@@ -108,7 +112,7 @@ public class Video implements java.io.Serializable {
 		this.alias = alias;
 	}
 
-	@Column(name = "image", length = 50)
+	@Column(name = "image", length = 255)
 
 	public String getImage() {
 		return this.image;
@@ -211,11 +215,11 @@ public class Video implements java.io.Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "video")
 
-	public Set<Episode> getEpisodes() {
+	public Collection<Episode> getEpisodes() {
 		return this.episodes;
 	}
 
-	public void setEpisodes(Set<Episode> episodes) {
+	public void setEpisodes(Collection<Episode> episodes) {
 		this.episodes = episodes;
 	}
 
@@ -229,4 +233,23 @@ public class Video implements java.io.Serializable {
 		this.videoRepertories = videoRepertories;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+
+		if (!(o instanceof Video)) return false;
+
+		Video video = (Video) o;
+
+		return new EqualsBuilder()
+				.append(getVideoId(), video.getVideoId())
+				.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37)
+				.append(getVideoId())
+				.toHashCode();
+	}
 }

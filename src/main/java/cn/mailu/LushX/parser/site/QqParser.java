@@ -58,7 +58,7 @@ public class QqParser implements Parser<Video> {
             String value = "http://v.qq.com" + element.attr("href");
             String index = element.text();
             episode.setValue(value);
-            episode.setIndex(Integer.parseInt(index));
+            episode.setIndexs(Integer.parseInt(index));
             episodes.add(episode);
         }
         if (episodes.size() < 1) {
@@ -68,7 +68,7 @@ public class QqParser implements Parser<Video> {
                 String value = "http://m.v.qq.com" + element.attr("href");
                 String index = element.text().replace("会员", "-V");
                 episode.setValue(value);
-                episode.setIndex(Integer.parseInt(index));
+                episode.setIndexs(Integer.parseInt(index));
                 if (!index.equals("登录")) {
                     episodes.add(episode);
                 }
@@ -87,7 +87,7 @@ public class QqParser implements Parser<Video> {
         String vid = params[0];
         String format = params[1].replace("p", "10");
         String key = videoKey(vid, file, format);
-        episode.setIndex(index);
+        episode.setIndexs(index);
         episode.setValue(playUrl("/", file, key));
         return episode;
     }

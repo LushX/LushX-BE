@@ -3,6 +3,7 @@ package cn.mailu.LushX.controller.protal;
 import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.constant.VideoTypeEnum;
+import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.entity.VideoRepertory;
 import cn.mailu.LushX.security.JWTUserDetails;
@@ -16,6 +17,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.jpa.criteria.predicate.ImplicitNumericExpressionTypeDeterminer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -151,6 +155,14 @@ public class VideoController {
     public ServerResponse likeVideo(@AuthenticationPrincipal JWTUserDetails jwtuser, @RequestBody Video video) {
         if (jwtuser != null) {
             VideoRepertory videoRepertory = videoRepertoryService.findByUserId(jwtuser.getUserId());
+            if(videoRepertory.getVideos().contains(video)){
+                return ServerResponse.createBySuccessMessage("已收藏");
+            }
+            Iterator<Episode> it=video.getEpisodes().iterator();
+            while (it.hasNext()){
+                Episode e= it.next();
+                e.setVideo(video);
+            }
             videoRepertory.getVideos().add(video);
             if (videoRepertoryService.save(videoRepertory) != null) {
                 return ServerResponse.createBySuccessMessage("收藏成功");
@@ -167,17 +179,16 @@ public class VideoController {
         if (jwtuser != null) {
             VideoRepertory videoRepertory = videoRepertoryService.findByUserId(jwtuser.getUserId());
             Set<Video> videos = videoRepertory.getVideos();
-            Video re=new Video();
-            for (Video a : videos) {
-                if (a.getVideoId().equals(videoId) ) {
-                    re=a;
-                    break;
+            Iterator<Video> it=videos.iterator();
+            while(it.hasNext()){
+                Video v=it.next();
+                if(v.getVideoId().equals(videoId)){
+                    it.remove();
                 }
             }
-            videos.remove(re);
             videoRepertory.setVideos(videos);
             if (videoRepertoryService.save(videoRepertory) != null) {
-                return ServerResponse.createBySuccess();
+                return ServerResponse.createBySuccessMessage("取消收藏成功");
             }
             return ServerResponse.createByErrorMessage("取消收藏失败");
         }

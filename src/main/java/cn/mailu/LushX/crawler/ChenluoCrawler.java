@@ -9,6 +9,7 @@ import cn.mailu.LushX.exception.LushXException;
 import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.JsoupUtils;
 import cn.mailu.LushX.util.TimeUtils;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.nodes.Document;
@@ -123,7 +124,7 @@ public class ChenluoCrawler {
             Element epBlock = infoBlock.select("div.row div.row").get(2);
 
             Elements epElements = epBlock.select("div#tvTabContent div.tab-pane").get(0).select("div[class~=^col-xs-1 play-]");
-            Set<Episode> episodes = Sets.newHashSet();
+            List<Episode> episodes = Lists.newArrayList();
 
             for (Element epElement : epElements) {
 
@@ -145,7 +146,7 @@ public class ChenluoCrawler {
 
                 }
 
-                episode.setIndex(epNum);
+                episode.setIndexs(epNum);
                 episode.setEpisodeId(UUID.randomUUID().toString());
                 episode.setValue(epUrl);
                 episodes.add(episode);

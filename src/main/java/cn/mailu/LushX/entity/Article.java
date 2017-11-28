@@ -1,6 +1,8 @@
 package cn.mailu.LushX.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -189,4 +191,23 @@ public class Article implements java.io.Serializable {
 		this.types = types;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+
+		if (!(o instanceof Article)) return false;
+
+		Article article = (Article) o;
+
+		return new EqualsBuilder()
+				.append(getArticleId(), article.getArticleId())
+				.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37)
+				.append(getArticleId())
+				.toHashCode();
+	}
 }
