@@ -1,5 +1,6 @@
 package cn.mailu.LushX.entity;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -27,8 +28,7 @@ public class VideoRepertory implements java.io.Serializable {
 
 	private String videoRepertoryId;
 	private String userId;
-	private Set<Video> videos = new HashSet<Video>(0);
-
+	private Collection<Video> videos ;
 	// Constructors
 
 	/** default constructor */
@@ -41,7 +41,7 @@ public class VideoRepertory implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public VideoRepertory(String videoRepertoryId, String userId, Set<Video> videos) {
+	public VideoRepertory(String videoRepertoryId, String userId, Collection<Video> videos) {
 		this.videoRepertoryId = videoRepertoryId;
 		this.userId = userId;
 		this.videos = videos;
@@ -75,11 +75,11 @@ public class VideoRepertory implements java.io.Serializable {
 			@JoinColumn(name = "video_repertory_id", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "video_id", nullable = false, updatable = false) })
 
-	public Set<Video> getVideos() {
+	public Collection<Video> getVideos() {
 		return this.videos;
 	}
 
-	public void setVideos(Set<Video> videos) {
+	public void setVideos(Collection<Video> videos) {
 		this.videos = videos;
 	}
 

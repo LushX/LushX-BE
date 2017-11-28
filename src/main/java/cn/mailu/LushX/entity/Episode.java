@@ -1,5 +1,7 @@
 package cn.mailu.LushX.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,8 +24,10 @@ public class Episode implements java.io.Serializable {
 	// Fields
 
 	private String episodeId;
+
 	private Video video;
-	private Integer index;
+
+	private Integer indexs;
 	private String value;
 
 	// Constructors
@@ -39,10 +43,10 @@ public class Episode implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Episode(String episodeId, Video video, Integer index, String value) {
+	public Episode(String episodeId, Video video, Integer indexs, String value) {
 		this.episodeId = episodeId;
 		this.video = video;
-		this.index = index;
+		this.indexs = indexs;
 		this.value = value;
 	}
 
@@ -70,14 +74,14 @@ public class Episode implements java.io.Serializable {
 		this.video = video;
 	}
 
-	@Column(name = "index")
+	@Column(name = "indexs")
 
-	public Integer getIndex() {
-		return this.index;
+	public Integer getIndexs() {
+		return this.indexs;
 	}
 
-	public void setIndex(Integer index) {
-		this.index = index;
+	public void setIndexs(Integer indexs) {
+		this.indexs = indexs;
 	}
 
 	@Column(name = "value", length = 50)

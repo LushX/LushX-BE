@@ -4,6 +4,7 @@ import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.entity.VideoRepertory;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class VideoVO {
     private String score;
     private Date time;
     private String other;
-    private Set<Episode> episodes = new HashSet<Episode>(0);
+    private Collection<Episode> episodes;
 
     public static VideoVO toVideoVO(Video v) {
         VideoVO videoVO=new VideoVO();
@@ -152,11 +153,11 @@ public class VideoVO {
         this.other = other;
     }
 
-    public Set<Episode> getEpisodes() {
+    public Collection<Episode> getEpisodes() {
         return episodes;
     }
 
-    public void setEpisodes(Set<Episode> episodes) {
+    public void setEpisodes(Collection<Episode> episodes) {
         this.episodes = episodes;
     }
 
