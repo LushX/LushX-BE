@@ -8,6 +8,7 @@ import cn.mailu.LushX.util.JsoupUtils;
 import cn.mailu.LushX.util.PinYin4jUtils;
 import cn.mailu.LushX.util.MD5Utils;
 import cn.mailu.LushX.util.TimeUtils;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -72,7 +73,7 @@ public class ChenluoCrawlerHelper {
             Element epBlock = infoBlock.select("div.row div.row").get(2);
 
             Elements epElements = epBlock.select("div#tvTabContent div.tab-pane").get(0).select("div[class~=^col-xs-1 play-[234]]");
-            Set<Episode> episodes = new HashSet<>();
+            List<Episode> episodes = Lists.newArrayList();
 
             for (Element epElement : epElements) {
 

@@ -44,6 +44,6 @@ public class VideoRepertoryServiceImpl implements VideoRepertoryService{
         for(Video v: videos){
             videoVOs.add(VideoVO.toVideoVO(v));
         }
-        return CommonUtils.getPage(pageable,videos);
+        return CommonUtils.getPage(pageable,videoVOs);
     }
 }

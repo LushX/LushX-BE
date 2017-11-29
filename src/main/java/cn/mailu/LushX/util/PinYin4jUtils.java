@@ -24,6 +24,9 @@ public class PinYin4jUtils {
     }
 
     public static String stringToPinyinString(String src){
+        if ("".equals(src) || null == src) {
+            return null;
+        }
         StringBuffer str=new StringBuffer();
         String[] arr=stringToPinyin(src);
         for(String item:arr){
