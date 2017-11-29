@@ -24,7 +24,7 @@ public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .host("localhost:8080")
+                .host("139.224.135.245:8080")
                 .protocols(Sets.newHashSet("http"))
                 .apiInfo(apiInfo())
                 .select()
