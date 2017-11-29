@@ -4,6 +4,7 @@ package cn.mailu.LushX.crawler;
 import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.constant.VideoTypeEnum;
 import cn.mailu.LushX.entity.Video;
+import cn.mailu.LushX.exception.LushXException;
 import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.JsoupUtils;
 import cn.mailu.LushX.util.crawlerHelper.ChenluoCrawlerHelper;
@@ -79,9 +80,15 @@ public class ChenluoCrawler {
 
             String urlPage = url.replace(".html", "") + i + ".html";
 
-            Document document = JsoupUtils.getDocWithPC(urlPage);
+            Document document;
+            try {
+                document = JsoupUtils.getDocWithPC(urlPage);
+                documents.add(document);
+            }catch (LushXException e){
+                logger.error(e.getMessage());
+                continue;
+            }
 
-            documents.add(document);
 
             logger.info("第" + i + "页 列表爬取完毕！ URL:  " + urlPage);
         }
