@@ -24,8 +24,8 @@ public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .host("139.224.135.245:8080")
-                .protocols(Sets.newHashSet("http"))
+                .host("api.lushx.top")
+                .protocols(Sets.newHashSet("https"))
                 .apiInfo(apiInfo())
                 .select()
                 .paths(PathSelectors.any())
