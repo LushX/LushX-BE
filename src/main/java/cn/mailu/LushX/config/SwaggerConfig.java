@@ -1,5 +1,6 @@
 package cn.mailu.LushX.config;
 
+import com.google.common.collect.Sets;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -24,6 +25,7 @@ public class SwaggerConfig {
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .host("localhost:8080")
+                .protocols(Sets.newHashSet("http"))
                 .apiInfo(apiInfo())
                 .select()
                 .paths(PathSelectors.any())

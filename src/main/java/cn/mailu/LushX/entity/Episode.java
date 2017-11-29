@@ -24,9 +24,7 @@ public class Episode implements java.io.Serializable {
 	// Fields
 
 	private String episodeId;
-	@JsonIgnore
 	private Video video;
-
 	private Integer indexs;
 	private String value;
 

@@ -2,12 +2,12 @@ package cn.mailu.LushX.vo;
 
 import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
-import cn.mailu.LushX.entity.VideoRepertory;
+import com.google.common.collect.Lists;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
 
 /**
  * @Author: NULL
@@ -28,7 +28,7 @@ public class VideoVO {
     private String score;
     private Date time;
     private String other;
-    private Collection<Episode> episodes;
+    private Collection<EpisodeVO> episodes;
 
     public static VideoVO toVideoVO(Video v) {
         VideoVO videoVO=new VideoVO();
@@ -36,7 +36,11 @@ public class VideoVO {
         videoVO.setAlias(v.getAlias());
         videoVO.setArea(v.getArea());
         videoVO.setDirector(v.getDirector());
-        videoVO.setEpisodes(v.getEpisodes());
+        List<EpisodeVO> episodeVOs= Lists.newArrayList();
+        for(Episode e:v.getEpisodes()){
+            episodeVOs.add(EpisodeVO.toEpisodeVO(e));
+        }
+        videoVO.setEpisodes(episodeVOs);
         videoVO.setImage(v.getImage());
         videoVO.setOther(v.getOther());
         videoVO.setPlayUrl(v.getPlayUrl());
@@ -153,11 +157,11 @@ public class VideoVO {
         this.other = other;
     }
 
-    public Collection<Episode> getEpisodes() {
+    public Collection<EpisodeVO> getEpisodes() {
         return episodes;
     }
 
-    public void setEpisodes(Collection<Episode> episodes) {
+    public void setEpisodes(Collection<EpisodeVO> episodes) {
         this.episodes = episodes;
     }
 
