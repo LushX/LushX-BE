@@ -96,7 +96,7 @@ public class ChenluoCrawlerHelper {
 
                 episode.setIndexs(epNum);
                 episode.setEpisodeId(MD5Utils.MD5EncodeUtf8(title+epNumStr));
-                episode.setValue(epUrl+"?channel="+PinYin4jUtils.stringToPinyinString(channel).toString());
+                episode.setValue(epUrl+"?channel="+PinYin4jUtils.stringToPinyinString(channel));
                 episodes.add(episode);
             }
 
