@@ -59,7 +59,6 @@ public class ChenluoCrawlerHelper {
             String summary = infoBlock.select("div.col-xs-12.movie-introduce p").text().replace("&nbsp", "");
             String channel=infoBlock.select("a#zu1-tab").text();
             video.setValue(infoUrl+"?channel="+PinYin4jUtils.stringToPinyinString(channel).toString());
-            video.setValue(infoUrl+"?channel="+channel);
             video.setVideoId(MD5Utils.MD5EncodeUtf8(title));
             video.setTitle(title);
             video.setImage(image);
