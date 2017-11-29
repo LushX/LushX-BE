@@ -54,7 +54,6 @@ public class ChenluoCrawler {
     @Async
     public void start() {
         logger.info("================Chenluocrawler start=============");
-
         pageTurning(CL_TV_URL_HOT, VideoTypeEnum.CL_TV_HOT.getCode());
         pageTurning(CL_MOVIE_URL_HOT, VideoTypeEnum.CL_MOVIES_HOT.getCode());
         pageTurning(CL_ZY_URL_HOT, VideoTypeEnum.CL_ZY_HOT.getCode());
@@ -62,7 +61,7 @@ public class ChenluoCrawler {
         pageTurning(CL_TV_URL_NEW, VideoTypeEnum.CL_TV_NEW.getCode());
         pageTurning(CL_MOVIE_URL_NEW, VideoTypeEnum.CL_MOVIES_NEW.getCode());
         pageTurning(CL_ZY_URL_NEW, VideoTypeEnum.CL_ZY_NEW.getCode());
-       pageTurning(CL_DM_URL_NEW, VideoTypeEnum.CL_DM_NEW.getCode());
+        pageTurning(CL_DM_URL_NEW, VideoTypeEnum.CL_DM_NEW.getCode());
         logger.info("================Chenluocrawler stop=============");
     }
 
