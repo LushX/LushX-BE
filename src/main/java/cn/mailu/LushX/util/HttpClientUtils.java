@@ -29,6 +29,8 @@ import java.util.Map.Entry;
  */
 public class HttpClientUtils {
 
+
+
     public static String fetch(String url) throws ClientProtocolException, IOException {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         String pageStr = "";
