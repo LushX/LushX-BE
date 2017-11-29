@@ -71,7 +71,7 @@ public class ChenluoCrawlerHelper {
             //video.setScore(score);
             Element epBlock = infoBlock.select("div.row div.row").get(2);
 
-            Elements epElements = epBlock.select("div#tvTabContent div.tab-pane").get(0).select("div[class~=^col-xs-1 play-[234]]");
+            Elements epElements = epBlock.select("div#tvTabContent div.tab-pane").get(0).select("div[class~=^col-xs-1 play-[1234]]");
             List<Episode> episodes = Lists.newArrayList();
 
             for (Element epElement : epElements) {
