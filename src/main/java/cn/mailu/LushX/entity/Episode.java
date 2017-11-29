@@ -24,9 +24,7 @@ public class Episode implements java.io.Serializable {
 	// Fields
 
 	private String episodeId;
-
 	private Video video;
-
 	private Integer indexs;
 	private String value;
 
@@ -84,7 +82,7 @@ public class Episode implements java.io.Serializable {
 		this.indexs = indexs;
 	}
 
-	@Column(name = "value", length = 50)
+	@Column(name = "value", length = 100)
 
 	public String getValue() {
 		return this.value;

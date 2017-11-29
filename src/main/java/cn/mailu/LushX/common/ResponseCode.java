@@ -9,7 +9,9 @@ public enum ResponseCode {
     ERROR(1,"ERROR"),       //失败
     NEED_LOGIN(10,"NEED_LOGIN"),   //未登录
     ACCESS_DENIED(20,"ACCESS DENIED"),   //权限不足
-    ILLEGAL_ARGUMENT(2,"ILLEGAL_ARGUMENT");   //非法参数
+    ILLEGAL_ARGUMENT(2,"ILLEGAL_ARGUMENT"),   //非法参数
+    NOT_FOUND(404,"NOT_FOUND"),   //404
+    INTERNAL_SERVER_ERROR(500,"INTERNAL_SERVER_ERROR");   //500
 
     private final int code;
     private final String desc;

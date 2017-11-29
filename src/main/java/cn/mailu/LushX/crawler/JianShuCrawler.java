@@ -4,6 +4,7 @@ import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Article;
 import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.util.JsoupUtils;
+import cn.mailu.LushX.util.MD5Utils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -115,7 +116,8 @@ public class JianShuCrawler {
         Article article = new Article();
 
         // 设置article属性
-        article.setArticleId(UUID.randomUUID().toString());
+        //id设置为title MD5加密
+        article.setArticleId(MD5Utils.MD5EncodeUtf8(document.select("h1.title").text()));
         article.setTitle(document.select("h1.title").text());
         article.setAuthor(document.select("span.name a").text());
         article.setTime(document.select("span.publish-time").text().replace("*",""));

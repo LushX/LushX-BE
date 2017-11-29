@@ -6,6 +6,7 @@ import cn.mailu.LushX.constant.VideoTypeEnum;
 import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.entity.VideoRepertory;
+import cn.mailu.LushX.searcher.impl.ChenluoLushxSearcherImpl;
 import cn.mailu.LushX.security.JWTUserDetails;
 import cn.mailu.LushX.service.RedisService;
 import cn.mailu.LushX.service.VideoRepertoryService;
@@ -27,10 +28,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author: NULL
@@ -144,7 +142,8 @@ public class VideoController {
     @ApiImplicitParam(name = "keyword", value = "关键词", required = true, paramType = "query")
     public ServerResponse searchVideo(@RequestParam(value = "keyword") String keyword) {
         if (StringUtils.isNotEmpty(keyword.trim())) {
-            //todo 搜索
+            ChenluoLushxSearcherImpl chenluoLushxSearcher=new ChenluoLushxSearcherImpl();
+            return ServerResponse.createBySuccess(chenluoLushxSearcher.parsePage(keyword));
         }
         return ServerResponse.createByErrorMessage("关键词不为空");
     }
@@ -178,7 +177,7 @@ public class VideoController {
     public ServerResponse dislikeVideo(@AuthenticationPrincipal JWTUserDetails jwtuser, @PathVariable String videoId) {
         if (jwtuser != null) {
             VideoRepertory videoRepertory = videoRepertoryService.findByUserId(jwtuser.getUserId());
-            Set<Video> videos = videoRepertory.getVideos();
+            Collection<Video> videos = videoRepertory.getVideos();
             Iterator<Video> it=videos.iterator();
             while(it.hasNext()){
                 Video v=it.next();
