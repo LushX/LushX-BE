@@ -142,7 +142,7 @@ public class Video implements java.io.Serializable {
 		this.type = type;
 	}
 
-	@Column(name = "value", length = 50)
+	@Column(name = "value", length = 100)
 
 	public String getValue() {
 		return this.value;
@@ -152,7 +152,7 @@ public class Video implements java.io.Serializable {
 		this.value = value;
 	}
 
-	@Column(name = "director", length = 15)
+	@Column(name = "director", length = 100)
 
 	public String getDirector() {
 		return this.director;
@@ -172,7 +172,7 @@ public class Video implements java.io.Serializable {
 		this.actor = actor;
 	}
 
-	@Column(name = "area", length = 15)
+	@Column(name = "area", length = 50)
 
 	public String getArea() {
 		return this.area;
