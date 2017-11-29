@@ -23,6 +23,14 @@ public class PinYin4jUtils {
         return stringToPinyin(src, false, null);
     }
 
+    public static String stringToPinyinString(String src){
+        StringBuffer str=new StringBuffer();
+        String[] arr=stringToPinyin(src);
+        for(String item:arr){
+            str.append(item);
+        }
+        return str.toString();
+    }
     /**
      * 将字符串转换成拼音数组
      *

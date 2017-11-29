@@ -5,6 +5,7 @@ import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.exception.LushXException;
 import cn.mailu.LushX.util.JsoupUtils;
+import cn.mailu.LushX.util.PinYin4jUtils;
 import cn.mailu.LushX.util.MD5Utils;
 import cn.mailu.LushX.util.TimeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -56,6 +57,8 @@ public class ChenluoCrawlerHelper {
             String time = infoBlock.select("td:contains(年份)+td >a").text();
             String summary = infoBlock.select("div.col-xs-12.movie-introduce p").text().replace("&nbsp", "");
             String channel=infoBlock.select("a#zu1-tab").text();
+            video.setValue(infoUrl+"?channel="+PinYin4jUtils.stringToPinyinString(channel).toString());
+            video.setVideoId(UUID.randomUUID().toString());
             video.setValue(infoUrl+"?channel="+channel);
             video.setVideoId(MD5Utils.MD5EncodeUtf8(title));
             video.setTitle(title);
@@ -94,7 +97,7 @@ public class ChenluoCrawlerHelper {
 
                 episode.setIndexs(epNum);
                 episode.setEpisodeId(UUID.randomUUID().toString());
-                episode.setValue(epUrl+"?channel="+channel);
+                episode.setValue(epUrl+"?channel="+PinYin4jUtils.stringToPinyinString(channel).toString());
                 episodes.add(episode);
             }
 
