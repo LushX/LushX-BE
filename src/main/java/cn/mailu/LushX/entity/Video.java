@@ -132,7 +132,7 @@ public class Video implements java.io.Serializable {
 		this.playUrl = playUrl;
 	}
 
-	@Column(name = "type", length = 2)
+	@Column(name = "type", length = 100)
 
 	public String getType() {
 		return this.type;
