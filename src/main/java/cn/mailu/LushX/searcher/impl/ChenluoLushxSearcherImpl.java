@@ -29,15 +29,14 @@ public class ChenluoLushxSearcherImpl implements LushxSearcher<Video> {
     @Override
     public List<Video> parsePage(String keyWord) {
 
+        List<Video> videos=new ArrayList<>();
         Document document = getResultDocument(keyWord);
 
         if (null == document) {
 
-            return null;
+            return videos;
 
         }
-
-        List<Video> videos;
 
         videos = ChenluoCrawlerHelper.getCLVideosFromPcDocument(document, VideoTypeEnum.CL_SEARCH.getCode());
 

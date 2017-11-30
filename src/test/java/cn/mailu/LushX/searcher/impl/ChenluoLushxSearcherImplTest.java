@@ -9,7 +9,7 @@ public class ChenluoLushxSearcherImplTest {
 
     @Test
     public void parsePage() throws Exception {
-        chenluoLushxSearcher.parsePage("狼");
+        chenluoLushxSearcher.parsePage("");
     }
 
 }
