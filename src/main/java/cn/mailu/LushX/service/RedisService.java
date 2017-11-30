@@ -1,6 +1,7 @@
 package cn.mailu.LushX.service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: NULL
@@ -9,10 +10,18 @@ import java.util.List;
  */
 public interface RedisService {
 
-    public Object getValueByKey(String key);
+    Object getValueByKey(String key);
 
-    public void saveByKey(String key,Object object);
+    void saveByKey(String key, Object object);
 
-    public List getListByKey(String key, long start , long end);
+    List getListByKey(String key, long start, long end);
+
+    List getListByKey(String key);
+
+    void saveAllForListByKey(String key, List list);
+
+    void saveObjectForListByKey(String key, Object object);
+
+    void setExpireByKey(String key,long timeout,TimeUnit timeUnit);
 
 }
