@@ -82,7 +82,7 @@ public class Episode implements java.io.Serializable {
 		this.indexs = indexs;
 	}
 
-	@Column(name = "value", length = 50)
+	@Column(name = "value", length = 100)
 
 	public String getValue() {
 		return this.value;

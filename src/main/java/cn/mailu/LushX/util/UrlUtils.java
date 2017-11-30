@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -91,6 +92,26 @@ public class UrlUtils {
         } catch (IOException exception) {
             throw new LushXException("youku api request error: " + api);
         }
+    }
+
+
+    /**
+     * URL 解码
+     *
+     * @return String
+     * @author xuzhenya
+     */
+    public static String getURLDecoderString(String str,String encoding) {
+        String result = "";
+        if (null == str) {
+            return "";
+        }
+        try {
+            result = java.net.URLDecoder.decode(str, encoding);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }

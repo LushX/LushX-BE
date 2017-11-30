@@ -1,6 +1,5 @@
 package cn.mailu.LushX.util.crawlerHelper;
 
-import cn.mailu.LushX.crawler.ChenluoCrawler;
 import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.exception.LushXException;
@@ -84,11 +83,12 @@ public class ChenluoCrawlerHelper {
                         .replace("第", "")
                         .replace("集", "")
                         .replace("期", "")
+                        .replace("-","")
                         .trim();
 
                 int epNum = 0;
 
-                if (StringUtils.isNotEmpty(epNumStr) && StringUtils.isNotBlank(epNumStr) && StringUtils.isNumeric(epNumStr)) {
+                if (StringUtils.isNotEmpty(epNumStr) && StringUtils.isNotBlank(epNumStr) && StringUtils.isNumeric(epNumStr)){
 
                     epNum = Integer.parseInt(epNumStr);
 
