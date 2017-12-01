@@ -1,14 +1,12 @@
 package cn.mailu.LushX.controller.api;
 
-import cn.mailu.LushX.common.ServerResponse;
 import cn.mailu.LushX.constant.RedisKey;
 import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
-import cn.mailu.LushX.parser.Parser;
 import cn.mailu.LushX.parser.ParserManager;
 import cn.mailu.LushX.parser.site.QqParser;
+import cn.mailu.LushX.parser.site.SpecialParser;
 import cn.mailu.LushX.service.RedisService;
-import cn.mailu.LushX.util.UrlUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -16,7 +14,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -31,6 +28,9 @@ public class VideoAPI {
 
     @Autowired
     private ParserManager parserManager;
+
+    @Autowired
+    private SpecialParser specialParser;
 
     @Autowired
     private RedisService redisService;
@@ -64,5 +64,19 @@ public class VideoAPI {
     @ApiImplicitParam(name = "type",value = "视频分类",required = true,paramType = "path")
     public List<Video> videos(@PathVariable("type") String type){
         return (List<Video>) redisService.getValueByKey(RedisKey.VIDEOS_KEY+"_"+type);
+    }
+
+
+    /**
+     * 解析获取视频真实播放地址
+     */
+    @GetMapping("/parse")
+    @ApiOperation(value = "获取视频播放地址 (视频流字符串以;隔开)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "value", value = "视频详情页面地址",required = true,paramType = "path"),
+    })
+    public String videoParse(@RequestParam("value") String value) {
+        System.out.println(value);
+        return specialParser.getApi(value);
     }
 }
