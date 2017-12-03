@@ -15,7 +15,6 @@ import java.util.Iterator;
  * @Modified By:
  */
 public class XmlUtils {
-    static String realUrl = "";
 
     public static String parseFile(String xml){
         SAXReader reader = new SAXReader();
@@ -33,17 +32,17 @@ public class XmlUtils {
 
     //遍历当前节点下的所有节点
     public static String listNodes(Element node){
-
+        String realUrl = "";
         //如果当前节点为file  且内容不为空，则输出
         if(!(node.getTextTrim().equals("")) && node.getName().equals("file")){
-            realUrl = realUrl + node.getText() + ";";
+            return node.getText() + ";";
         }
         //同时迭代当前节点下面的所有子节点
         //使用递归
         Iterator<Element> iterator = node.elementIterator();
         while(iterator.hasNext()){
             Element e = iterator.next();
-            listNodes(e);
+            realUrl = realUrl + listNodes(e);
         }
         return realUrl;
     }
