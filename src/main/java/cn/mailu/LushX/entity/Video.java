@@ -122,7 +122,7 @@ public class Video implements java.io.Serializable {
 		this.image = image;
 	}
 
-	@Column(name = "play_url", length = 100)
+	@Column(name = "play_url", length = 1024)
 
 	public String getPlayUrl() {
 		return this.playUrl;

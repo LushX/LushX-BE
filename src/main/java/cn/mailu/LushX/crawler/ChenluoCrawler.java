@@ -17,7 +17,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -49,7 +50,6 @@ public class ChenluoCrawler {
 
     @Autowired
     private RedisService redisService;
-
 
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     @Async
@@ -83,7 +83,7 @@ public class ChenluoCrawler {
             try {
                 document = JsoupUtils.getDocWithPC(urlPage);
                 documents.add(document);
-            }catch (LushXException e){
+            } catch (LushXException e) {
                 logger.error(e.getMessage());
                 continue;
             }

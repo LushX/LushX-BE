@@ -1,5 +1,6 @@
 package cn.mailu.LushX.util.crawlerHelper;
 
+import cn.mailu.LushX.constant.VideoTypeEnum;
 import cn.mailu.LushX.entity.Episode;
 import cn.mailu.LushX.entity.Video;
 import cn.mailu.LushX.exception.LushXException;
@@ -26,13 +27,13 @@ public class ChenluoCrawlerHelper {
      * @param document
      * @param type
      *
-     * 从列表页面获取电影
+     * 从列表页面获取视频
      *@Date: Created in 12:52 2017/11/28
      *
      */
     public static List<Video> getCLVideosFromPcDocument(Document document, int type) {
         List<Video> videos = new ArrayList<>();
-        //获取电影所在的元素区域
+        //获取视频所在的元素区域
         Elements videoElements = document.select("div.col-xs-1-5.col-sm-4.col-xs-6.movie-item");
         for (Element element : videoElements) {
             Video video = new Video();
@@ -40,16 +41,24 @@ public class ChenluoCrawlerHelper {
             String image = element.select("div.movie-item-in > a>img").attr("src");
             String infoUrl = "https://www.50s.cc" + element.select("div.movie-item-in > a").attr("href");
             //获取详情页
-            Document inpage = null;
+            Document infoPage = null;
             //catch 网页请求异常
             try {
-                inpage = JsoupUtils.getDocWithPC(infoUrl);
+                infoPage = JsoupUtils.getDocWithPC(infoUrl);
             } catch (LushXException e) {
                 logger.error(e.getErrorCode());
                 continue;
             }
 
-            Elements infoBlock = inpage.select("div.row");
+            //为电影设置播放源，放在属性other里
+            if(type== VideoTypeEnum.CL_MOVIES_HOT.getCode()||type==VideoTypeEnum.CL_MOVIES_NEW.getCode()){
+                Elements playUrlElements=infoPage.select("div.col-xs-1.play-1 a");
+                StringBuilder strHelper=new StringBuilder();
+                //遍历包含播放地址的元素，将地址以格式为“url1;url2;...;”的字符串存储起来
+                playUrlElements.forEach(playUrlElement-> strHelper.append("www.50s.cc"+playUrlElement.attr("href")+";"));
+                video.setPlayUrl(strHelper.toString());
+            }
+            Elements infoBlock = infoPage.select("div.row");
             String director = infoBlock.select("td:contains(导演)+td >a").text();
             String actor = infoBlock.select("td:contains(主演)+td >a").text().replace("展开全部", "");
             String videoType = infoBlock.select("td:contains(类型)+td >a").text();
